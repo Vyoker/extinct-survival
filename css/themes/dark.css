@@ -1,0 +1,24 @@
+:root {
+  /* Revisi v0.1.5: palet dihangatkan & dicerahkan (khaki/coklat ala Day R
+     Survival), geser dari nyaris-hitam ke coklat gelap hangat supaya
+     nggak terasa suram, tapi tetap cukup gelap buat teks terang tetap
+     kebaca jelas di atas background image. */
+  --bg-primary: #241a10;
+  --bg-secondary: #3a2c1a;
+  --bg-tertiary: #4a3a22;
+  --text-primary: #f2e6cd;
+  --text-dim: #b3a082;
+  --accent-orange: #ff8c2e;
+  --accent-red: #d1543f;
+  --border-color: #6b5636;
+
+  /* Solid block: dipakai di HUD top/bottom supaya tetap terbaca jelas
+     di atas background image */
+  --bg-solid: rgba(50, 38, 22, 0.92);
+
+  /* Glass/transparan: dipakai di card & panel supaya background image
+     tetap terlihat samar-samar di baliknya */
+  --bg-glass: rgba(58, 44, 26, 0.62);
+  --bg-glass-strong: rgba(58, 44, 26, 0.82);
+}
+

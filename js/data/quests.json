@@ -1,0 +1,75 @@
+[
+  {
+    "id": "prolog_build_fortress",
+    "category": "main",
+    "title": "Membangun Benteng Perlindungan",
+    "type": "collect",
+    "description": "Wilayah tempatmu berlindung butuh diperkuat sebelum lebih banyak ancaman datang. Kumpulkan material dari scavenge, crafting, atau Shop untuk membangun benteng perlindungan.",
+    "objectives": [
+      { "itemId": "wood_plank", "target": 50 },
+      { "itemId": "scrap_metal", "target": 100 },
+      { "itemId": "spare_parts", "target": 10 },
+      { "itemId": "canned_food_01", "target": 25 },
+      { "itemId": "energy_drink_01", "target": 15 },
+      { "itemId": "first_aid_kit_01", "target": 5 }
+    ],
+    "rewards": { "exp": 200, "rupiah": 500 },
+    "prereqQuestId": null,
+    "nextQuestId": "prolog_hunt_wildlife"
+  },
+  {
+    "id": "prolog_hunt_wildlife",
+    "category": "main",
+    "title": "Basmi Hewan Liar",
+    "type": "hunt",
+    "description": "Benteng sudah lebih kuat, tapi hewan buas di sekitar wilayah makin sering menyerang. Buru dan kurangi populasi mereka lewat Hunting di menu Jelajah.",
+    "objectives": [
+      { "enemyId": "serigala", "name": "Serigala Liar", "target": 10 },
+      { "enemyId": "anjing_liar", "name": "Anjing Liar", "target": 5 },
+      { "enemyId": "beruang", "name": "Beruang Madu", "target": 1 },
+      { "enemyId": "ular", "name": "Ular Berbisa", "target": 5 }
+    ],
+    "rewards": { "exp": 300, "rupiah": 800, "kredit": 20 },
+    "prereqQuestId": "prolog_build_fortress",
+    "nextQuestId": null
+  },
+  {
+    "id": "side_pedagang_kehausan",
+    "category": "side",
+    "title": "Pedagang Kehausan",
+    "type": "collect",
+    "description": "Seorang pedagang keliling kehabisan persediaan air bersih di tengah perjalanan. Bawakan dia air bersih sebagai balas budi.",
+    "objectives": [
+      { "itemId": "water_bottle_01", "target": 8 }
+    ],
+    "rewards": { "exp": 40, "rupiah": 120 },
+    "prereqQuestId": null,
+    "nextQuestId": null
+  },
+  {
+    "id": "side_bersihkan_pasar",
+    "category": "side",
+    "title": "Bersihkan Pasar Gelap",
+    "type": "hunt",
+    "description": "Preman pasar gelap semakin meresahkan pedagang kecil di Surabaya Stronghold. Bantu usir mereka.",
+    "objectives": [
+      { "enemyId": "preman_pasar", "name": "Preman Pasar Gelap", "target": 6 }
+    ],
+    "rewards": { "exp": 60, "rupiah": 150 },
+    "prereqQuestId": null,
+    "nextQuestId": null
+  },
+  {
+    "id": "side_suku_cadang_langka",
+    "category": "side",
+    "title": "Suku Cadang Langka",
+    "type": "collect",
+    "description": "Kolektif Bandung sedang riset alat baru dan butuh suku cadang tambahan. Kumpulkan dari reruntuhan atau Penjaga Otomatis Rusak.",
+    "objectives": [
+      { "itemId": "spare_parts", "target": 15 }
+    ],
+    "rewards": { "exp": 50, "rupiah": 100, "kredit": 5 },
+    "prereqQuestId": "prolog_build_fortress",
+    "nextQuestId": null
+  }
+]

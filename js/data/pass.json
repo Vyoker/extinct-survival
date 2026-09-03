@@ -1,0 +1,1851 @@
+[
+  {
+    "level": 1,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 24
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 58
+      }
+    ]
+  },
+  {
+    "level": 2,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 28
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 66
+      }
+    ]
+  },
+  {
+    "level": 3,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 32
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 74
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 4,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 36
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 82
+      }
+    ]
+  },
+  {
+    "level": 5,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 40
+      },
+      {
+        "type": "item",
+        "itemId": "canned_food_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 90
+      },
+      {
+        "type": "item",
+        "itemId": "scrap_helmet",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 6,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 44
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 98
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 7,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 48
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 106
+      }
+    ]
+  },
+  {
+    "level": 8,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 52
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 114
+      }
+    ]
+  },
+  {
+    "level": 9,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 56
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 122
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 10,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 60
+      },
+      {
+        "type": "item",
+        "itemId": "water_bottle_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 130
+      },
+      {
+        "type": "item",
+        "itemId": "leather_vest",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 11,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 64
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 138
+      }
+    ]
+  },
+  {
+    "level": 12,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 68
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 146
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 13,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 72
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 154
+      }
+    ]
+  },
+  {
+    "level": 14,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 76
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 162
+      }
+    ]
+  },
+  {
+    "level": 15,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 80
+      },
+      {
+        "type": "item",
+        "itemId": "bandage_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 170
+      },
+      {
+        "type": "item",
+        "itemId": "tin_shield",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 16,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 84
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 178
+      }
+    ]
+  },
+  {
+    "level": 17,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 88
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 186
+      }
+    ]
+  },
+  {
+    "level": 18,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 92
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 194
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 19,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 96
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 202
+      }
+    ]
+  },
+  {
+    "level": 20,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 100
+      },
+      {
+        "type": "item",
+        "itemId": "canned_food_01",
+        "qty": 2
+      },
+      {
+        "type": "kredit",
+        "amount": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 210
+      },
+      {
+        "type": "item",
+        "itemId": "ragged_hat",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 21,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 104
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 218
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 22,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 108
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 226
+      }
+    ]
+  },
+  {
+    "level": 23,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 112
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 234
+      }
+    ]
+  },
+  {
+    "level": 24,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 116
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 242
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 25,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 120
+      },
+      {
+        "type": "item",
+        "itemId": "water_bottle_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 250
+      },
+      {
+        "type": "kredit",
+        "amount": 15
+      },
+      {
+        "type": "item",
+        "itemId": "first_aid_kit_01",
+        "qty": 2
+      }
+    ]
+  },
+  {
+    "level": 26,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 124
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 258
+      }
+    ]
+  },
+  {
+    "level": 27,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 128
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 266
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 28,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 132
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 274
+      }
+    ]
+  },
+  {
+    "level": 29,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 136
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 282
+      }
+    ]
+  },
+  {
+    "level": 30,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 140
+      },
+      {
+        "type": "item",
+        "itemId": "bandage_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 290
+      },
+      {
+        "type": "item",
+        "itemId": "first_aid_kit_01",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 31,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 144
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 298
+      }
+    ]
+  },
+  {
+    "level": 32,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 148
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 306
+      }
+    ]
+  },
+  {
+    "level": 33,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 152
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 314
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 34,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 156
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 322
+      }
+    ]
+  },
+  {
+    "level": 35,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 160
+      },
+      {
+        "type": "item",
+        "itemId": "canned_food_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 330
+      },
+      {
+        "type": "item",
+        "itemId": "energy_drink_01",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 36,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 164
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 338
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 37,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 168
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 346
+      }
+    ]
+  },
+  {
+    "level": 38,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 172
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 354
+      }
+    ]
+  },
+  {
+    "level": 39,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 176
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 362
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 40,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 180
+      },
+      {
+        "type": "item",
+        "itemId": "water_bottle_01",
+        "qty": 2
+      },
+      {
+        "type": "kredit",
+        "amount": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 370
+      },
+      {
+        "type": "item",
+        "itemId": "scrap_helmet",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 41,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 184
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 378
+      }
+    ]
+  },
+  {
+    "level": 42,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 188
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 386
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 43,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 192
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 394
+      }
+    ]
+  },
+  {
+    "level": 44,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 196
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 402
+      }
+    ]
+  },
+  {
+    "level": 45,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 200
+      },
+      {
+        "type": "item",
+        "itemId": "bandage_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 410
+      },
+      {
+        "type": "item",
+        "itemId": "leather_vest",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 46,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 204
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 418
+      }
+    ]
+  },
+  {
+    "level": 47,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 208
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 426
+      }
+    ]
+  },
+  {
+    "level": 48,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 212
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 434
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 49,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 216
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 442
+      }
+    ]
+  },
+  {
+    "level": 50,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 220
+      },
+      {
+        "type": "item",
+        "itemId": "canned_food_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 450
+      },
+      {
+        "type": "kredit",
+        "amount": 30
+      },
+      {
+        "type": "item",
+        "itemId": "snake_venom",
+        "qty": 3
+      }
+    ]
+  },
+  {
+    "level": 51,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 224
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 458
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 52,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 228
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 466
+      }
+    ]
+  },
+  {
+    "level": 53,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 232
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 474
+      }
+    ]
+  },
+  {
+    "level": 54,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 236
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 482
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 55,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 240
+      },
+      {
+        "type": "item",
+        "itemId": "water_bottle_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 490
+      },
+      {
+        "type": "item",
+        "itemId": "ragged_hat",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 56,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 244
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 498
+      }
+    ]
+  },
+  {
+    "level": 57,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 248
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 506
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 58,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 252
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 514
+      }
+    ]
+  },
+  {
+    "level": 59,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 256
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 522
+      }
+    ]
+  },
+  {
+    "level": 60,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 260
+      },
+      {
+        "type": "item",
+        "itemId": "bandage_01",
+        "qty": 2
+      },
+      {
+        "type": "kredit",
+        "amount": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 530
+      },
+      {
+        "type": "item",
+        "itemId": "ripped_pants",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 61,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 264
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 538
+      }
+    ]
+  },
+  {
+    "level": 62,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 268
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 546
+      }
+    ]
+  },
+  {
+    "level": 63,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 272
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 554
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 64,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 276
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 562
+      }
+    ]
+  },
+  {
+    "level": 65,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 280
+      },
+      {
+        "type": "item",
+        "itemId": "canned_food_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 570
+      },
+      {
+        "type": "item",
+        "itemId": "first_aid_kit_01",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 66,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 284
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 578
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 67,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 288
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 586
+      }
+    ]
+  },
+  {
+    "level": 68,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 292
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 594
+      }
+    ]
+  },
+  {
+    "level": 69,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 296
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 602
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 70,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 300
+      },
+      {
+        "type": "item",
+        "itemId": "water_bottle_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 610
+      },
+      {
+        "type": "item",
+        "itemId": "energy_drink_01",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 71,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 304
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 618
+      }
+    ]
+  },
+  {
+    "level": 72,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 308
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 626
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 73,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 312
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 634
+      }
+    ]
+  },
+  {
+    "level": 74,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 316
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 642
+      }
+    ]
+  },
+  {
+    "level": 75,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 320
+      },
+      {
+        "type": "item",
+        "itemId": "bandage_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 650
+      },
+      {
+        "type": "kredit",
+        "amount": 45
+      },
+      {
+        "type": "item",
+        "itemId": "spare_parts",
+        "qty": 3
+      }
+    ]
+  },
+  {
+    "level": 76,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 324
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 658
+      }
+    ]
+  },
+  {
+    "level": 77,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 328
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 666
+      }
+    ]
+  },
+  {
+    "level": 78,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 332
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 674
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 79,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 336
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 682
+      }
+    ]
+  },
+  {
+    "level": 80,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 340
+      },
+      {
+        "type": "item",
+        "itemId": "canned_food_01",
+        "qty": 2
+      },
+      {
+        "type": "kredit",
+        "amount": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 690
+      },
+      {
+        "type": "item",
+        "itemId": "leather_vest",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 81,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 344
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 698
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 82,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 348
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 706
+      }
+    ]
+  },
+  {
+    "level": 83,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 352
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 714
+      }
+    ]
+  },
+  {
+    "level": 84,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 356
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 722
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 85,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 360
+      },
+      {
+        "type": "item",
+        "itemId": "water_bottle_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 730
+      },
+      {
+        "type": "item",
+        "itemId": "tin_shield",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 86,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 364
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 738
+      }
+    ]
+  },
+  {
+    "level": 87,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 368
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 746
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 88,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 372
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 754
+      }
+    ]
+  },
+  {
+    "level": 89,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 376
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 762
+      }
+    ]
+  },
+  {
+    "level": 90,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 380
+      },
+      {
+        "type": "item",
+        "itemId": "bandage_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 770
+      },
+      {
+        "type": "item",
+        "itemId": "ragged_hat",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 91,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 384
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 778
+      }
+    ]
+  },
+  {
+    "level": 92,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 388
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 786
+      }
+    ]
+  },
+  {
+    "level": 93,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 392
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 794
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 94,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 396
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 802
+      }
+    ]
+  },
+  {
+    "level": 95,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 400
+      },
+      {
+        "type": "item",
+        "itemId": "canned_food_01",
+        "qty": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 810
+      },
+      {
+        "type": "item",
+        "itemId": "ripped_pants",
+        "qty": 1
+      }
+    ]
+  },
+  {
+    "level": 96,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 404
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 818
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 97,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 408
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 826
+      }
+    ]
+  },
+  {
+    "level": 98,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 412
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 834
+      }
+    ]
+  },
+  {
+    "level": 99,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 416
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 842
+      },
+      {
+        "type": "kredit",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "level": 100,
+    "free": [
+      {
+        "type": "rupiah",
+        "amount": 420
+      },
+      {
+        "type": "item",
+        "itemId": "water_bottle_01",
+        "qty": 2
+      },
+      {
+        "type": "kredit",
+        "amount": 2
+      }
+    ],
+    "premium": [
+      {
+        "type": "rupiah",
+        "amount": 850
+      },
+      {
+        "type": "kredit",
+        "amount": 60
+      },
+      {
+        "type": "item",
+        "itemId": "pass_mythic_blade",
+        "qty": 1
+      },
+      {
+        "type": "item",
+        "itemId": "pass_mythic_armor",
+        "qty": 1
+      }
+    ]
+  }
+]

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Extinct Survival</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/themes/dark.css" id="theme-style">
+<link rel="stylesheet" href="css/battle.css">
+<link rel="stylesheet" href="css/spinwheel.css">
+<link rel="stylesheet" href="css/prolog.css">
+<link rel="stylesheet" href="css/menu-flyout.css">
+</head>
+<body>
+
+  <!-- ===================== SCREEN: LOGIN ===================== -->
+  <div id="screen-login" class="screen active">
+    <div class="login-box">
+      <h1 class="game-title">EXTINCT <span>SURVIVAL</span></h1>
+      <p class="game-subtitle">20 tahun pasca The Great Collapse</p>
+
+      <div class="form-group">
+        <input type="text" id="input-username" placeholder="Nama Karakter" maxlength="16">
+      </div>
+
+      <div class="form-group">
+        <select id="input-start-location">
+          <option value="surabaya_stronghold">Surabaya Stronghold</option>
+          <option value="bandung_collective">Bandung Collective</option>
+          <option value="bali_enclave">Bali Enclave</option>
+          <option value="jakarta_ruins">Jakarta Ruins</option>
+          <option value="kalimantan_wilds">Kalimantan Wilds</option>
+        </select>
+      </div>
+
+      <button id="btn-start-game" class="btn btn-primary">MULAI BERTAHAN HIDUP</button>
+      <button id="btn-continue-game" class="btn btn-secondary hidden">LANJUTKAN</button>
+
+      <p class="login-hint">Data tersimpan otomatis di perangkat ini (localStorage).</p>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN: PROLOG ===================== -->
+  <!-- Tampil sekali sesudah karakter baru dibuat, sebelum masuk dashboard -->
+  <div id="screen-prolog" class="screen">
+    <span class="prolog-skip-hint">Tap Lanjutkan untuk lewati</span>
+    <div class="prolog-viewport">
+      <div class="prolog-crawl" id="prolog-crawl-text"></div>
+    </div>
+    <button id="btn-prolog-continue" class="btn btn-primary prolog-continue-btn">LANJUTKAN ▶</button>
+  </div>
+
+  <!-- ===================== SCREEN: GAME ===================== -->
+  <div id="screen-game" class="screen">
+
+    <!-- Top bar: survival stats -->
+    <header id="hud-top">
+      <div class="hud-player-info">
+        <span id="hud-player-name">-</span>
+        <span id="hud-player-level">Lv.1</span>
+      </div>
+      <div class="hud-exp-bar">
+        <div class="bar-track">
+          <div id="bar-exp" class="bar-fill exp"></div>
+        </div>
+      </div>
+      <div class="hud-stats">
+        <div class="stat-pill health">❤ <span id="stat-health">100</span></div>
+        <div class="stat-pill hunger">🍖 <span id="stat-hunger">100</span></div>
+        <div class="stat-pill thirst">💧 <span id="stat-thirst">100</span></div>
+        <div class="stat-pill sanity">🧠 <span id="stat-sanity">100</span></div>
+      </div>
+      <div class="hud-energy">
+        <span class="energy-icon">⚡</span>
+        <div class="bar-track small">
+          <div id="bar-energy" class="bar-fill energy"></div>
+        </div>
+        <span id="text-energy">100/100</span>
+      </div>
+    </header>
+
+    <!-- Main content panel (swapped by panels.js) -->
+    <main id="main-panel">
+      <!-- Dashboard panel injected here by default -->
+    </main>
+
+    <!-- Bottom nav -->
+    <nav id="hud-bottom">
+      <button class="nav-btn active" data-panel="dashboard">🏠<span>Home</span></button>
+      <button class="nav-btn" data-panel="exploration">🗺️<span>Jelajah</span></button>
+      <button class="nav-btn" data-panel="inventory">🎒<span>Tas</span></button>
+      <button class="nav-btn" data-panel="skills">🏅<span>Skill</span></button>
+      <button class="nav-btn" id="btn-nav-menu">☰<span>Menu</span></button>
+    </nav>
+
+    <!-- Toast notifications -->
+    <div id="toast-container"></div>
+
+    <!-- Overlay root (dikelola OverlayManager) -->
+    <div id="overlay-root"></div>
+  </div>
+
+  <!-- ===================== SCREEN: BATTLE (TACTICAL) ===================== -->
+  <!-- Disinkronkan dari referensi extinct_battle.html (v0.0.9) -->
+  <div id="screen-battle-tactical" class="screen">
+
+    <div id="topbar">
+      <div id="pAvatar">🧑</div>
+      <div id="pInfo">
+        <div id="pName">VYOKER</div>
+        <div class="barRow"><span class="barLabel">❤</span><div class="barTrack"><div class="barFill hp" id="hpFill"></div></div><span class="barVal" id="hpVal">100/100</span></div>
+        <div class="barRow"><span class="barLabel">🛡</span><div class="barTrack"><div class="barFill arm" id="armFill"></div></div><span class="barVal" id="armVal">0</span></div>
+      </div>
+      <div id="apPips"></div>
+      <div id="turnTag">Giliranmu</div>
+    </div>
+
+    <div id="enemyStrip"></div>
+
+    <div id="boardWrap">
+      <div id="board"></div>
+      <div id="banner"></div>
+    </div>
+
+    <div id="dock">
+      <div id="actionRow"></div>
+      <div id="bottomRow">
+        <div id="fleeBtn">🚪 Kabur</div>
+        <div id="endTurnBtn">Akhiri Giliran</div>
+      </div>
+    </div>
+
+    <div id="modal">
+      <div id="modalBox">
+        <div id="modalTitle">Menang</div>
+        <div id="modalDesc"></div>
+        <div id="modalBtn">OK</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <script src="js/version.js"></script>
+  <script src="js/engine/core.js"></script>
+  <script src="js/engine/state.js"></script>
+  <script src="js/engine/events.js"></script>
+  <script src="js/data/item-db.js"></script>
+  <script src="js/data/location-db.js"></script>
+  <script src="js/game/cooldown.js"></script>
+  <script src="js/game/rarity.js"></script>
+  <script src="js/game/player.js"></script>
+  <script src="js/game/inventory.js"></script>
+  <script src="js/game/exploration.js"></script>
+  <script src="js/game/battle-engine.js"></script>
+  <script src="js/game/battle-bridge.js"></script>
+  <script src="js/game/skills.js"></script>
+  <script src="js/game/shop.js"></script>
+  <script src="js/game/crafting.js"></script>
+  <script src="js/game/ads.js"></script>
+  <script src="js/game/spinwheel.js"></script>
+  <script src="js/game/quests.js"></script>
+  <script src="js/game/factions.js"></script>
+  <script src="js/game/pass.js"></script>
+  <script src="js/ui/renderer.js"></script>
+  <script src="js/ui/overlay-manager.js"></script>
+  <script src="js/ui/panels.js"></script>
+  <script src="js/ui/notifications.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "ui": {
+    "start_game": "MULAI BERTAHAN HIDUP",
+    "continue_game": "LANJUTKAN",
+    "dashboard": "Dashboard",
+    "exploration": "Jelajah",
+    "inventory": "Tas",
+    "combat": "Combat",
+    "faction": "Faksi"
+  }
+}

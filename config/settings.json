@@ -1,0 +1,18 @@
+{
+  "gameName": "Extinct Survival",
+  "version": "0.1.1",
+  "versionNote": "Format versi: v0.0.X naik tiap update, setelah X=9 lanjut ke v0.1.0, dst.",
+  "engine": "ACode v2.4.1",
+  "defaultLanguage": "id",
+  "supportedLanguages": ["id", "en"],
+  "autosaveIntervalSeconds": 30,
+  "debugMode": true,
+  "timeScale": {
+    "note": "Real-time 1 menit = 1 menit in-game (1:1)",
+    "energyRegenMinutes": 5,
+    "hungerDecayMinutes": 10,
+    "thirstDecayMinutes": 8,
+    "healthRegenMinutes": 15
+  },
+  "idleRewardCapHours": 8
+}

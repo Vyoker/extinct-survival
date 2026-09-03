@@ -1,0 +1,67 @@
+/**
+ * Menu Flyout CSS
+ * Pengganti hamburger drawer: tap tombol "Menu" di bottom nav -> muncul
+ * strip pill icon-only melayang tepat di atasnya (bukan modal penuh),
+ * lebih cepat diakses & hemat 1 langkah dibanding drawer lama.
+ */
+.menu-flyout-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 850;
+  background: transparent;
+}
+
+.menu-flyout-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 58px;
+  display: flex;
+  justify-content: center;
+  z-index: 900;
+  opacity: 0;
+  transform: translateY(10px) scale(0.96);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  pointer-events: none;
+}
+.menu-flyout-wrap.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.menu-flyout-row {
+  display: flex;
+  gap: 8px;
+  background: var(--bg-glass-strong);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 8px 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+.menu-flyout-pill {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.menu-flyout-pill:active {
+  background: var(--accent-orange);
+  transform: scale(0.92);
+}
+.menu-flyout-pill.locked {
+  opacity: 0.55;
+}
+
+#btn-nav-menu.flyout-open {
+  color: var(--accent-orange);
+}

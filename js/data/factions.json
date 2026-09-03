@@ -1,0 +1,42 @@
+[
+  {
+    "id": "blue_tiger",
+    "name": "Blue Tiger",
+    "theme": "Air & Hewan",
+    "icon": "🐯",
+    "color": "#3b82f6",
+    "description": "Kelompok pemburu yang bergerak selincah air dan setajam insting hewan buas. Anggotanya mahir membaca medan basah dan jejak satwa liar."
+  },
+  {
+    "id": "mojang_beauty",
+    "name": "Mojang Beauty",
+    "theme": "Universal",
+    "icon": "💠",
+    "color": "#a855f7",
+    "description": "Faksi paling terbuka dan seimbang, tidak terikat satu elemen. Mojang Beauty menerima siapa saja yang percaya semua jalan bertahan hidup punya nilainya sendiri."
+  },
+  {
+    "id": "seafire",
+    "name": "Seafire",
+    "theme": "Api",
+    "icon": "🔥",
+    "color": "#e0522e",
+    "description": "Faksi agresif yang membawa api sebagai lambang kebangkitan dari reruntuhan. Anggotanya percaya dunia lama harus dibakar habis sebelum yang baru bisa tumbuh."
+  },
+  {
+    "id": "viking_bonex",
+    "name": "Viking Bonex",
+    "theme": "Kekuatan",
+    "icon": "🪓",
+    "color": "#8a6d3b",
+    "description": "Kumpulan pejuang bertubuh besar yang mengandalkan kekuatan mentah untuk bertahan. Bagi Viking Bonex, hukum rimba pasca-Collapse sangat sederhana: yang kuat yang bertahan."
+  },
+  {
+    "id": "white_ghost",
+    "name": "White Ghost",
+    "theme": "Kemurnian",
+    "icon": "👻",
+    "color": "#e8e8e8",
+    "description": "Faksi tertutup yang menjunjung kemurnian — tubuh, pikiran, dan wilayah harus dijaga bersih dari kontaminasi dunia yang sudah hancur."
+  }
+]

@@ -1,0 +1,79 @@
+/**
+ * Prolog Screen CSS
+ * Layar cerita pembuka (sekali tampil, sesudah karakter dibuat, sebelum
+ * masuk ke dashboard). Teks auto-scroll ke atas ala crawl, berujung ke
+ * baris ikonik "INILAH BAGAIMANA AKU MATI." Bisa di-skip kapan saja
+ * lewat tombol Lanjutkan di bawah.
+ */
+#screen-prolog {
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #5c4526 0%, #1c140b 100%);
+}
+
+.prolog-viewport {
+  width: 100%;
+  height: 72vh;
+  overflow: hidden;
+  position: relative;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 80%, transparent 100%);
+}
+
+.prolog-crawl {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  padding: 0 26px;
+  text-align: center;
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 2;
+  animation: prologCrawlUp 28s linear forwards;
+}
+
+.prolog-crawl p {
+  margin-bottom: 24px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+.prolog-city-name {
+  color: var(--accent-orange);
+  font-weight: bold;
+}
+
+.prolog-iconic-line {
+  margin-top: 48px;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: var(--accent-red);
+  text-shadow: 0 0 16px rgba(209,84,63,0.75);
+}
+
+@keyframes prologCrawlUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-165%); }
+}
+
+.prolog-continue-btn {
+  position: absolute;
+  bottom: 22px;
+  left: 20px;
+  right: 20px;
+  width: auto;
+  z-index: 5;
+}
+
+.prolog-skip-hint {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 10px;
+  color: var(--text-dim);
+  z-index: 5;
+}

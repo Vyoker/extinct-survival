@@ -1,0 +1,11 @@
+{
+  "ui": {
+    "start_game": "START SURVIVING",
+    "continue_game": "CONTINUE",
+    "dashboard": "Dashboard",
+    "exploration": "Explore",
+    "inventory": "Inventory",
+    "combat": "Combat",
+    "faction": "Faction"
+  }
+}

@@ -1,0 +1,521 @@
+[
+  {
+    "id": "machete_01",
+    "name": "Parang Tua",
+    "type": "weapon",
+    "rarity": "common",
+    "stats": {
+      "damage": 8,
+      "durability": 100
+    },
+    "description": "Parang berkarat tapi masih tajam. Senjata andalan di hutan Kalimantan.",
+    "craftable": true,
+    "recipe": {
+      "scrap_metal": 3,
+      "wood_plank": 1,
+      "rope": 1
+    },
+    "icon": "machete.webp"
+  },
+  {
+    "id": "rusty_knife_01",
+    "name": "Pisau Dapur Berkarat",
+    "type": "weapon",
+    "rarity": "common",
+    "stats": {
+      "damage": 4,
+      "durability": 60
+    },
+    "description": "Pisau dapur biasa yang sudah berkarat. Lebih baik daripada tangan kosong.",
+    "craftable": true,
+    "recipe": {
+      "scrap_metal": 2,
+      "wood_plank": 1
+    },
+    "icon": "rusty_knife.webp"
+  },
+  {
+    "id": "canned_food_01",
+    "name": "Makanan Kaleng",
+    "type": "consumable",
+    "rarity": "common",
+    "stats": {
+      "hunger": 25
+    },
+    "description": "Kaleng tua tanpa label, tapi masih layak dimakan.",
+    "craftable": false,
+    "icon": "canned_food.webp"
+  },
+  {
+    "id": "water_bottle_01",
+    "name": "Botol Air Bersih",
+    "type": "consumable",
+    "rarity": "common",
+    "stats": {
+      "thirst": 30
+    },
+    "description": "Air hasil saringan dari stasiun pemurnian Surabaya Stronghold.",
+    "craftable": false,
+    "icon": "water_bottle.webp"
+  },
+  {
+    "id": "energy_drink_01",
+    "name": "Minuman Energi",
+    "type": "consumable",
+    "rarity": "rare",
+    "stats": {
+      "energy": 20
+    },
+    "description": "Minuman berenergi langka, hasil temuan dari reruntuhan minimarket lama.",
+    "craftable": false,
+    "icon": "energy_drink.webp"
+  },
+  {
+    "id": "bandage_01",
+    "name": "Perban",
+    "type": "consumable",
+    "rarity": "common",
+    "stats": {
+      "health": 15
+    },
+    "description": "Perban bekas yang masih bersih, cukup untuk menutup luka ringan.",
+    "craftable": true,
+    "recipe": {
+      "herbs": 2
+    },
+    "icon": "bandage.webp"
+  },
+  {
+    "id": "first_aid_kit_01",
+    "name": "Kit P3K",
+    "type": "consumable",
+    "rarity": "rare",
+    "stats": {
+      "health": 40,
+      "sanity": 5
+    },
+    "description": "Kotak P3K lengkap yang jarang ditemukan utuh. Menyembuhkan luka cukup parah.",
+    "craftable": false,
+    "icon": "first_aid_kit.webp"
+  },
+  {
+    "id": "scrap_metal",
+    "name": "Besi Rongsokan",
+    "type": "material",
+    "rarity": "common",
+    "description": "Bahan dasar crafting untuk senjata dan perlengkapan.",
+    "craftable": false,
+    "icon": "scrap_metal.webp"
+  },
+  {
+    "id": "stone",
+    "name": "Batu",
+    "type": "material",
+    "rarity": "common",
+    "description": "Batu keras, bahan dasar untuk perkakas sederhana.",
+    "craftable": false,
+    "icon": "stone.webp"
+  },
+  {
+    "id": "wood_plank",
+    "name": "Kayu",
+    "type": "material",
+    "rarity": "common",
+    "description": "Potongan kayu dari reruntuhan atau hutan.",
+    "craftable": false,
+    "icon": "wood_plank.png"
+  },
+  {
+    "id": "rope",
+    "name": "Tali",
+    "type": "material",
+    "rarity": "common",
+    "description": "Tali kuat, berguna untuk crafting dan perangkap.",
+    "craftable": false,
+    "icon": "rope.png"
+  },
+  {
+    "id": "herbs",
+    "name": "Tanaman Obat",
+    "type": "material",
+    "rarity": "common",
+    "description": "Tanaman liar yang bisa diramu jadi obat.",
+    "craftable": false,
+    "icon": "herbs.png"
+  },
+  {
+    "id": "spare_parts",
+    "name": "Suku Cadang",
+    "type": "material",
+    "rarity": "uncommon",
+    "description": "Komponen elektronik/mekanik bekas, berguna untuk crafting lanjutan.",
+    "craftable": false,
+    "icon": "spare_parts.png"
+  },
+  {
+    "id": "ragged_hat",
+    "name": "Topi Lusuh",
+    "type": "armor",
+    "slot": "head",
+    "rarity": "common",
+    "stats": {
+      "defense": 1,
+      "durability": 40
+    },
+    "description": "Topi kumal yang masih bisa melindungi kepala dari terik dan debu.",
+    "craftable": false,
+    "icon": "ragged_hat.png"
+  },
+  {
+    "id": "scrap_helmet",
+    "name": "Helm Rongsokan",
+    "type": "armor",
+    "slot": "head",
+    "rarity": "uncommon",
+    "stats": {
+      "defense": 2,
+      "durability": 60
+    },
+    "description": "Helm proyek lama yang dimodifikasi seadanya, lumayan menahan benturan.",
+    "craftable": false,
+    "icon": "scrap_helmet.png"
+  },
+  {
+    "id": "torn_jacket",
+    "name": "Jaket Compang-camping",
+    "type": "armor",
+    "slot": "chest",
+    "rarity": "common",
+    "stats": {
+      "defense": 1,
+      "durability": 45
+    },
+    "description": "Jaket bolong di beberapa tempat, tapi masih menahan gesekan.",
+    "craftable": false,
+    "icon": "torn_jacket.png"
+  },
+  {
+    "id": "leather_vest",
+    "name": "Rompi Kulit",
+    "type": "armor",
+    "slot": "chest",
+    "rarity": "uncommon",
+    "stats": {
+      "defense": 2,
+      "durability": 65
+    },
+    "description": "Rompi kulit tebal, peninggalan pemburu Kalimantan Wilds.",
+    "craftable": false,
+    "icon": "leather_vest.png"
+  },
+  {
+    "id": "ripped_pants",
+    "name": "Celana Robek",
+    "type": "armor",
+    "slot": "legs",
+    "rarity": "common",
+    "stats": {
+      "defense": 1,
+      "durability": 40
+    },
+    "description": "Celana lapangan yang sudah robek di beberapa sisi, masih layak pakai.",
+    "craftable": false,
+    "icon": "ripped_pants.png"
+  },
+  {
+    "id": "tin_shield",
+    "name": "Perisai Seng",
+    "type": "armor",
+    "slot": "offhand",
+    "rarity": "common",
+    "stats": {
+      "defense": 2,
+      "durability": 55
+    },
+    "description": "Lempengan seng yang dibentuk jadi perisai darurat.",
+    "craftable": true,
+    "recipe": {
+      "scrap_metal": 4
+    },
+    "icon": "tin_shield.png"
+  },
+  {
+    "id": "fang_necklace",
+    "name": "Kalung Taring",
+    "type": "armor",
+    "slot": "accessory",
+    "rarity": "common",
+    "stats": {
+      "defense": 1,
+      "durability": 30
+    },
+    "description": "Kalung dari taring hewan buruan, dipercaya membawa keberuntungan kecil.",
+    "craftable": false,
+    "icon": "fang_necklace.png"
+  },
+  {
+    "id": "bone",
+    "name": "Tulang",
+    "type": "material",
+    "rarity": "common",
+    "description": "Tulang hewan buruan. Bisa dijual atau diolah jadi perkakas sederhana.",
+    "craftable": false,
+    "icon": "bone.png"
+  },
+  {
+    "id": "dog_fang",
+    "name": "Taring Anjing",
+    "type": "material",
+    "rarity": "common",
+    "description": "Taring tajam dari anjing liar hasil buruan.",
+    "craftable": false,
+    "icon": "dog_fang.png"
+  },
+  {
+    "id": "wolf_fang",
+    "name": "Taring Serigala",
+    "type": "material",
+    "rarity": "uncommon",
+    "description": "Taring serigala yang kuat, lebih bernilai daripada taring anjing biasa.",
+    "craftable": false,
+    "icon": "wolf_fang.png"
+  },
+  {
+    "id": "wolf_fur",
+    "name": "Bulu Serigala",
+    "type": "material",
+    "rarity": "uncommon",
+    "description": "Bulu tebal serigala, bisa diolah jadi pelapis pakaian penahan dingin.",
+    "craftable": false,
+    "icon": "wolf_fur.png"
+  },
+  {
+    "id": "bear_fur",
+    "name": "Bulu Beruang",
+    "type": "material",
+    "rarity": "rare",
+    "description": "Bulu beruang tebal, sulit didapat karena beruang jarang ditemui dan berbahaya diburu.",
+    "craftable": false,
+    "icon": "bear_fur.png"
+  },
+  {
+    "id": "snake_skin",
+    "name": "Kulit Ular",
+    "type": "material",
+    "rarity": "uncommon",
+    "description": "Kulit ular yang kuat dan lentur, bahan baku aksesoris dan armor ringan.",
+    "craftable": false,
+    "icon": "snake_skin.png"
+  },
+  {
+    "id": "snake_venom",
+    "name": "Bisa Ular",
+    "type": "material",
+    "rarity": "rare",
+    "description": "Bisa ular yang diambil dengan hati-hati. Berharga untuk crafting obat maupun dijual ke kolektor.",
+    "craftable": false,
+    "icon": "snake_venom.png"
+  },
+
+  {
+    "id": "bluetiger_claw_dagger",
+    "name": "Cakar Harimau Biru",
+    "type": "weapon",
+    "rarity": "rare",
+    "faction": "blue_tiger",
+    "stats": { "damage": 14, "durability": 120 },
+    "description": "Belati kembar berbentuk cakar, ditempa khusus anggota Blue Tiger. Gerakannya secepat terkaman di air.",
+    "craftable": false,
+    "icon": "bluetiger_claw_dagger.png"
+  },
+  {
+    "id": "bluetiger_scale_armor",
+    "name": "Zirah Sisik Air",
+    "type": "armor",
+    "slot": "chest",
+    "rarity": "epic",
+    "faction": "blue_tiger",
+    "stats": { "defense": 5, "durability": 150 },
+    "description": "Zirah bersisik yang meniru kulit hewan air, ringan tapi menyerap benturan dengan baik.",
+    "craftable": false,
+    "icon": "bluetiger_scale_armor.png"
+  },
+  {
+    "id": "bluetiger_fang_charm",
+    "name": "Taring Harimau Biru",
+    "type": "armor",
+    "slot": "accessory",
+    "rarity": "legendary",
+    "faction": "blue_tiger",
+    "stats": { "defense": 4 },
+    "description": "Jimat dari taring harimau biru legendaris, dipercaya memberi insting pemburu sejati.",
+    "craftable": false,
+    "icon": "bluetiger_fang_charm.png"
+  },
+
+  {
+    "id": "mojang_light_blade",
+    "name": "Pedang Cahaya Mojang",
+    "type": "weapon",
+    "rarity": "rare",
+    "faction": "mojang_beauty",
+    "stats": { "damage": 13, "durability": 130 },
+    "description": "Pedang seimbang tanpa keberpihakan elemen, ditempa dengan filosofi Mojang Beauty tentang harmoni.",
+    "craftable": false,
+    "icon": "mojang_light_blade.png"
+  },
+  {
+    "id": "mojang_balance_robe",
+    "name": "Jubah Keseimbangan",
+    "type": "armor",
+    "slot": "chest",
+    "rarity": "epic",
+    "faction": "mojang_beauty",
+    "stats": { "defense": 5, "durability": 150 },
+    "description": "Jubah yang ditenun dari berbagai bahan berbeda, melambangkan penerimaan segala jalan hidup.",
+    "craftable": false,
+    "icon": "mojang_balance_robe.png"
+  },
+  {
+    "id": "mojang_gem_pendant",
+    "name": "Permata Mojang",
+    "type": "armor",
+    "slot": "accessory",
+    "rarity": "legendary",
+    "faction": "mojang_beauty",
+    "stats": { "defense": 4 },
+    "description": "Permata warna-warni yang tidak terikat satu elemen, pusaka utama Mojang Beauty.",
+    "craftable": false,
+    "icon": "mojang_gem_pendant.png"
+  },
+
+  {
+    "id": "seafire_ember_machete",
+    "name": "Golok Bara Api",
+    "type": "weapon",
+    "rarity": "rare",
+    "faction": "seafire",
+    "stats": { "damage": 15, "durability": 110 },
+    "description": "Golok yang matanya selalu terlihat membara, ditempa di tungku Seafire dengan panas ekstrem.",
+    "craftable": false,
+    "icon": "seafire_ember_machete.png"
+  },
+  {
+    "id": "seafire_magma_armor",
+    "name": "Baju Zirah Magma",
+    "type": "armor",
+    "slot": "chest",
+    "rarity": "epic",
+    "faction": "seafire",
+    "stats": { "defense": 5, "durability": 150 },
+    "description": "Zirah bermotif retakan magma, dipakai anggota inti Seafire sebagai simbol kebangkitan dari abu.",
+    "craftable": false,
+    "icon": "seafire_magma_armor.png"
+  },
+  {
+    "id": "seafire_ember_pendant",
+    "name": "Liontin Ember",
+    "type": "armor",
+    "slot": "accessory",
+    "rarity": "legendary",
+    "faction": "seafire",
+    "stats": { "defense": 4 },
+    "description": "Liontin berisi bara yang tak pernah padam, pusaka tertinggi faksi Seafire.",
+    "craftable": false,
+    "icon": "seafire_ember_pendant.png"
+  },
+
+  {
+    "id": "vikingbonex_war_axe",
+    "name": "Kapak Viking Bonex",
+    "type": "weapon",
+    "rarity": "rare",
+    "faction": "viking_bonex",
+    "stats": { "damage": 17, "durability": 130 },
+    "description": "Kapak perang berat khas Viking Bonex, mengandalkan tenaga mentah dibanding kecepatan.",
+    "craftable": false,
+    "icon": "vikingbonex_war_axe.png"
+  },
+  {
+    "id": "vikingbonex_steel_armor",
+    "name": "Zirah Baja Viking",
+    "type": "armor",
+    "slot": "chest",
+    "rarity": "epic",
+    "faction": "viking_bonex",
+    "stats": { "defense": 6, "durability": 160 },
+    "description": "Zirah baja tebal yang jadi identitas Viking Bonex, mengutamakan pertahanan di atas segalanya.",
+    "craftable": false,
+    "icon": "vikingbonex_steel_armor.png"
+  },
+  {
+    "id": "vikingbonex_power_bracer",
+    "name": "Gelang Kekuatan Bonex",
+    "type": "armor",
+    "slot": "accessory",
+    "rarity": "legendary",
+    "faction": "viking_bonex",
+    "stats": { "defense": 3 },
+    "description": "Gelang besi berat yang dipercaya menambah tenaga pemakainya, diwariskan turun-temurun di Viking Bonex.",
+    "craftable": false,
+    "icon": "vikingbonex_power_bracer.png"
+  },
+
+  {
+    "id": "whiteghost_pure_dagger",
+    "name": "Belati Murni",
+    "type": "weapon",
+    "rarity": "rare",
+    "faction": "white_ghost",
+    "stats": { "damage": 13, "durability": 120 },
+    "description": "Belati putih bersih tanpa noda karat, dijaga ketat oleh anggota White Ghost.",
+    "craftable": false,
+    "icon": "whiteghost_pure_dagger.png"
+  },
+  {
+    "id": "whiteghost_sacred_robe",
+    "name": "Jubah Putih Suci",
+    "type": "armor",
+    "slot": "chest",
+    "rarity": "epic",
+    "faction": "white_ghost",
+    "stats": { "defense": 5, "durability": 150 },
+    "description": "Jubah putih yang selalu terlihat bersih meski dipakai bertarung, simbol kemurnian White Ghost.",
+    "craftable": false,
+    "icon": "whiteghost_sacred_robe.png"
+  },
+  {
+    "id": "whiteghost_purity_necklace",
+    "name": "Kalung Kemurnian",
+    "type": "armor",
+    "slot": "accessory",
+    "rarity": "legendary",
+    "faction": "white_ghost",
+    "stats": { "defense": 4 },
+    "description": "Kalung pusaka White Ghost, dipercaya menjaga pemakainya tetap murni dari pengaruh buruk dunia luar.",
+    "craftable": false,
+    "icon": "whiteghost_purity_necklace.png"
+  },
+
+  {
+    "id": "pass_mythic_blade",
+    "name": "Pisau Elite Pass",
+    "type": "weapon",
+    "rarity": "mythic",
+    "stats": { "damage": 22, "durability": 200 },
+    "description": "Senjata puncak Elite Pass, cuma didapat pemain yang menuntaskan jalur premium sampai level maksimal.",
+    "craftable": false,
+    "icon": "pass_mythic_blade.png"
+  },
+  {
+    "id": "pass_mythic_armor",
+    "name": "Zirah Elite Pass",
+    "type": "armor",
+    "slot": "chest",
+    "rarity": "mythic",
+    "stats": { "defense": 8, "durability": 220 },
+    "description": "Zirah eksklusif Elite Pass, lambang pemain yang benar-benar menuntaskan seluruh jalur premium.",
+    "craftable": false,
+    "icon": "pass_mythic_armor.png"
+  }
+]
