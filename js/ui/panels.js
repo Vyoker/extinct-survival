@@ -9,15 +9,6 @@ const Panels = (function () {
   // kecuali battle yang persist lewat gameState.combat).
   let explorationView = 'menu'; // 'menu' | 'travel' | 'hunting'
 
-  const SLOT_LABELS = {
-    head: '🪖',
-    chest: '👕',
-    legs: '👖',
-    weapon: '🗡️',
-    offhand: '🛡️',
-    accessory: '📿'
-  };
-
   // =========================================================
   // DASHBOARD
   // =========================================================
@@ -25,18 +16,6 @@ const Panels = (function () {
     const p = GameState.get().player;
     const world = GameState.get().world;
     const derived = Player.getDerivedStats();
-
-    const equipmentChips = Object.keys(SLOT_LABELS).map(slot => {
-      const equipped = p.equipment[slot];
-      const def = equipped && equipped.itemId ? ItemDB.get(equipped.itemId) : null;
-      const durText = def && equipped.durability !== null && equipped.durability !== undefined && def.stats && def.stats.durability
-        ? `<span class="slot-dur">${equipped.durability}/${def.stats.durability}</span>` : '';
-      return `<div class="equip-slot-cell ${def ? 'filled' : ''}" data-equip-slot="${slot}">
-                <span class="slot-tag">${SLOT_LABELS[slot]}</span>
-                ${def ? iconImgHtml(def.icon, def.name) : ''}
-                ${durText}
-              </div>`;
-    }).join('');
 
     return `
       <h2 class="panel-title">🏠 Dashboard</h2>
@@ -99,9 +78,7 @@ const Panels = (function () {
       </div>
 
       <div style="color:var(--accent-orange); font-size:13px; margin:14px 0 8px;">EQUIPMENT</div>
-      <div class="equip-slot-grid">
-        ${equipmentChips}
-      </div>
+      ${renderPaperdollBlock(p)}
       <p style="font-size:11px; color:var(--text-dim); margin-top:6px;">
         Tap slot untuk lihat detail, lepas, atau perbaiki.
       </p>
@@ -401,22 +378,45 @@ const Panels = (function () {
     return `<img src="${src}" alt="${(altText || '').replace(/"/g, '')}" onerror="this.onerror=null;this.src='assets/images/items/_placeholder.png';">`;
   }
 
+  // Urutan slot di sekitar figur: kiri atas->bawah, lalu kanan atas->bawah
+  const PAPERDOLL_ORDER = ['head', 'weapon', 'chest', 'offhand', 'legs', 'accessory'];
+
+  function renderEquipSlotNode(slot, p) {
+    const equipped = p.equipment[slot];
+    const def = equipped && equipped.itemId ? ItemDB.get(equipped.itemId) : null;
+    const durText = def && equipped.durability !== null && equipped.durability !== undefined && def.stats && def.stats.durability
+      ? `${equipped.durability}/${def.stats.durability}` : '';
+    return `
+      <div class="equip-slot-cell ${def ? 'filled' : ''}" data-equip-slot="${slot}">
+        <span class="slot-tag">${EQUIP_SLOT_NAMES[slot]}</span>
+        ${def ? iconImgHtml(def.icon, def.name) : `<span class="slot-empty-mark">${EQUIP_SLOT_LABELS[slot] || '➕'}</span>`}
+        ${durText ? `<span class="slot-dur">${durText}</span>` : ''}
+      </div>`;
+  }
+
+  // Blok paperdoll (figur karakter + 6 slot equipment di kiri/kanan).
+  // Dipakai di Dashboard (Home) — fokus tunggal tempat pemain kelola equipment.
+  function renderPaperdollBlock(p) {
+    const leftSlots = PAPERDOLL_ORDER.slice(0, 3).map(slot => renderEquipSlotNode(slot, p)).join('');
+    const rightSlots = PAPERDOLL_ORDER.slice(3, 6).map(slot => renderEquipSlotNode(slot, p)).join('');
+    return `
+      <div class="paperdoll-bg">
+        <div class="paperdoll">
+          <div class="paperdoll-col">${leftSlots}</div>
+          <div class="paperdoll-figure">
+            <img src="assets/images/character/paperdoll.webp" alt="Karakter"
+                 onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <span class="paperdoll-figure-fallback">🧍</span>
+          </div>
+          <div class="paperdoll-col">${rightSlots}</div>
+        </div>
+      </div>
+    `;
+  }
+
   function renderInventory() {
     const p = GameState.get().player;
     const inv = Inventory.getInventory();
-
-    const equipSlotCells = Object.keys(EQUIP_SLOT_LABELS).map(slot => {
-      const equipped = p.equipment[slot];
-      const def = equipped && equipped.itemId ? ItemDB.get(equipped.itemId) : null;
-      const durText = def && equipped.durability !== null && equipped.durability !== undefined && def.stats && def.stats.durability
-        ? `${equipped.durability}/${def.stats.durability}` : '';
-      return `
-        <div class="equip-slot-cell ${def ? 'filled' : ''}" data-equip-slot="${slot}">
-          <span class="slot-tag">${EQUIP_SLOT_LABELS[slot]}</span>
-          ${def ? iconImgHtml(def.icon, def.name) : ''}
-          ${durText ? `<span class="slot-dur">${durText}</span>` : ''}
-        </div>`;
-    }).join('');
 
     const itemCells = inv.length === 0
       ? `<p style="font-size:12px; color:var(--text-dim); grid-column:1/-1;">Tas kosong. Coba scavenge di tab Jelajah.</p>`
@@ -431,15 +431,14 @@ const Panels = (function () {
         }).join('');
 
     return `
-      <h2 class="panel-title">🎒 Inventaris & Equipment</h2>
+      <div class="inventory-parchment">
+        <h2 class="panel-title">🎒 Inventaris</h2>
 
-      <div style="color:var(--accent-orange); font-size:12px; margin-bottom:6px;">EQUIPMENT</div>
-      <div class="equip-slot-grid">${equipSlotCells}</div>
+        <button class="action-btn" id="btn-open-crafting">🔨 Crafting</button>
 
-      <button class="action-btn" id="btn-open-crafting">🔨 Crafting</button>
-
-      <div style="margin-top:16px; color:var(--accent-orange); font-size:13px; margin-bottom:8px;">TAS (${inv.reduce((a,e)=>a+e.qty,0)} item)</div>
-      <div class="icon-grid">${itemCells}</div>
+        <div style="margin-top:16px; color:var(--accent-orange); font-size:13px; margin-bottom:8px;">TAS (${inv.reduce((a,e)=>a+e.qty,0)} item)</div>
+        <div class="icon-grid">${itemCells}</div>
+      </div>
     `;
   }
 
@@ -586,10 +585,6 @@ const Panels = (function () {
 
     main.querySelectorAll('[data-item-detail]').forEach(row => {
       row.addEventListener('click', () => openItemDetail(row.dataset.itemDetail));
-    });
-
-    main.querySelectorAll('[data-equip-slot]').forEach(cell => {
-      cell.addEventListener('click', () => openEquipSlotPopup(cell.dataset.equipSlot));
     });
 
     const craftBtn = main.querySelector('#btn-open-crafting');

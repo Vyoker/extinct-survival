@@ -983,3 +983,47 @@ browser sungguhan — cuma logic intinya yang teruji penuh. Tolong cek
 di Acode/Termux sebelum dianggap final, terutama performa scroll 100
 baris kartu di WebView Android (kalau berasa berat, bisa dioptimasi
 jadi lazy-render per rentang level alih-alih render 100 baris sekaligus).
+
+## UPDATE v0.2.3: Pisah Equipment (Home) & Inventory (Tas), Parchment BG
+
+Revisi tata letak supaya masing-masing tab punya fokus tunggal, tidak
+lagi duplikat panel equipment di 2 tempat berbeda:
+
+### 1. Equipment sekarang HANYA di Dashboard (Home)
+Blok paperdoll (figur karakter + 6 slot equipment kiri/kanan) yang
+sebelumnya muncul di tab Tas **dipindah sepenuhnya ke Dashboard**,
+menggantikan grid 6-kolom polos yang lama di sana. Fungsi baru
+`renderPaperdollBlock()` di `js/ui/panels.js` jadi satu-satunya sumber
+markup equipment, dipanggil dari `renderDashboard()`. Semua interaksi
+(tap slot → mini popup detail/lepas/perbaiki) tetap identik seperti
+sebelumnya, cuma pindah lokasi.
+
+### 2. Tab Tas sekarang fokus Inventory + Crafting saja
+`renderInventory()` tidak lagi merender paperdoll — isinya cuma tombol
+🔨 Crafting dan grid icon Tas. `bindInventoryEvents()` ikut
+disederhanakan (listener `data-equip-slot` yang sudah tidak relevan di
+tab ini dihapus).
+
+### 3. Background kertas kuning tua di panel Tas
+Tab Tas dibungkus `<div class="inventory-parchment">` dengan background
+`assets/images/panels/equipment-bg.webp` (tekstur parchment yang sama
+dipakai ulang, konsisten temanya) + overlay gradient gelap tipis supaya
+teks & ikon tetap terbaca. Warna judul & tombol Crafting disesuaikan
+jadi gelap (coklat tua) supaya kontras di atas kertas terang, alih-alih
+warna terang bawaan tema dark.
+
+## Debug (v0.2.3)
+Diuji dengan Playwright (headless, viewport 390×800 ala HP):
+- Dashboard: `.paperdoll-bg` tampil, figur karakter + 6 slot equipment
+  ter-render, tap slot Senjata → mini popup detail terbuka & tertutup
+  normal
+- Tab Tas: `.paperdoll-bg` **tidak ada** (terkonfirmasi hilang total),
+  wrapper `.inventory-parchment` tampil, tombol Crafting tetap ada &
+  berfungsi
+- Background `equipment-bg.webp` & `paperdoll.webp` sama-sama fetch
+  sukses (HTTP 200), tidak ada 404
+- `node --check` ke semua file JS: nol syntax error. Semua JSON
+  divalidasi Python `json.load()`: nol error
+- Screenshot visual dashboard & inventory dicek manual — layout sesuai
+  ekspektasi, teks kontras jelas di atas parchment
+- **Nol console error / page error** di seluruh skenario pengujian
