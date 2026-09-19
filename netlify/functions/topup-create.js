@@ -1,15 +1,3 @@
-/**
- * POST /.netlify/functions/topup-create
- * Body: { packageId, playerId, playerName }
- *
- * Membuat order topup baru berstatus 'pending'. Nominal yang wajib
- * ditransfer pemain BUKAN harga bulat paket, tapi harga + kode unik
- * 1-899 rupiah (mis. Rp10.000 jadi Rp10.437). Karena QRIS yang dipakai
- * QRIS STATIS (satu gambar sama untuk semua transaksi, bukan QRIS
- * dinamis dari payment gateway), tidak ada callback otomatis dari bank/
- * e-wallet. Nominal unik ini cuma memudahkan admin mencocokkan mutasi
- * secara MANUAL saat verifikasi — bukan otomatisasi penuh.
- */
 const { getTopupStore } = require('@netlify/blobs');
 const { getPackage } = require('./utils/packages');
 const { generateOrderCode } = require('./utils/order-code');
