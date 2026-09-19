@@ -1,7 +1,3 @@
-/**
- * Helper kecil untuk membalas response JSON yang konsisten dari semua
- * Netlify Function di sistem topup ini.
- */
 function json(statusCode, data) {
   return {
     statusCode,
