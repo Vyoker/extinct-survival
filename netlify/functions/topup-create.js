@@ -1,9 +1,9 @@
-const { getTopupStore } = require('@netlify/blobs');
 const { getPackage } = require('./utils/packages');
 const { generateOrderCode } = require('./utils/order-code');
 const { json } = require('./utils/response');
+const { getTopupStore } = require('./utils/blob-store');
 
-const ORDER_TTL_MS = 30 * 60 * 1000; // order berlaku 30 menit
+const ORDER_TTL_MS = 30 * 60 * 1000;
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method Not Allowed' });
@@ -21,7 +21,7 @@ exports.handler = async (event) => {
   if (!playerId) return json(400, { error: 'playerId wajib diisi.' });
 
   const now = Date.now();
-  const uniqueAmount = pkg.priceRupiah + 1 + Math.floor(Math.random() * 899); // +Rp1..+Rp899
+  const uniqueAmount = pkg.priceRupiah + 1 + Math.floor(Math.random() * 899);
   const orderCode = generateOrderCode();
 
   const order = {
@@ -35,6 +35,20 @@ exports.handler = async (event) => {
     kredit: pkg.kredit,
     status: 'pending',
     createdAt: now,
+    expiresAt: now + ORDER_TTL_MS
+  };
+
+  const store = getTopupStore();
+  await store.setJSON(`order:${orderCode}`, order);
+
+  return json(200, {
+    orderCode,
+    uniqueAmount,
+    kredit: pkg.kredit,
+    priceRupiah: pkg.priceRupiah,
+    expiresAt: order.expiresAt
+  });
+};    createdAt: now,
     expiresAt: now + ORDER_TTL_MS
   };
 
