@@ -1,6 +1,6 @@
-const { getTopupStore } = require('@netlify/blobs');
 const { isAdminAuthorized } = require('./utils/auth');
 const { json } = require('./utils/response');
+const { getTopupStore } = require('./utils/blob-store');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method Not Allowed' });
