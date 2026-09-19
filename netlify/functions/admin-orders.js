@@ -1,11 +1,11 @@
-const { getStore } = require('@netlify/blobs');
+const { getTopupStore } = require('@netlify/blobs');
 const { isAdminAuthorized } = require('./utils/auth');
 const { json } = require('./utils/response');
 
 exports.handler = async (event) => {
   if (!isAdminAuthorized(event)) return json(401, { error: 'Unauthorized' });
 
-  const store = getStore('topup');
+  const store = getTopupStore();
   const { blobs } = await store.list({ prefix: 'order:' });
 
   const orders = [];
