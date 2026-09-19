@@ -1,4 +1,4 @@
-const { getStore } = require('@netlify/blobs');
+const { getTopupStore } = require('@netlify/blobs');
 const { isAdminAuthorized } = require('./utils/auth');
 const { json } = require('./utils/response');
 
