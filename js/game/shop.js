@@ -9,17 +9,17 @@ const Shop = (function () {
   'use strict';
 
   const CATALOG = [
-    { itemId: 'canned_food_01', price: 25 },
-    { itemId: 'water_bottle_01', price: 20 },
-    { itemId: 'bandage_01', price: 40 },
-    { itemId: 'first_aid_kit_01', price: 150 },
-    { itemId: 'energy_drink_01', price: 100 }
+    { itemId: 'canned_food_01', price: 250 },
+    { itemId: 'water_bottle_01', price: 200 },
+    { itemId: 'bandage_01', price: 400 },
+    { itemId: 'first_aid_kit_01', price: 500 },
+    { itemId: 'energy_drink_01', price: 500 }
   ];
 
   // Harga jual dasar per tier rarity (dipakai untuk item yang TIDAK ada
   // di katalog beli, misal material/armor hasil scavenge/hunting)
   const SELL_BASE_BY_RARITY = {
-    common: 5, uncommon: 15, rare: 40, epic: 100, legendary: 250, mythic: 600
+    common: 50, uncommon: 150, rare: 400, epic: 1000, legendary: 2500, mythic: 6000
   };
   const SELL_MULTIPLIER_FOR_CATALOG_ITEM = 0.4; // 40% dari harga beli
 

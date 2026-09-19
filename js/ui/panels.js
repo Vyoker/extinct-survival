@@ -761,6 +761,7 @@ const Panels = (function () {
   const FLYOUT_ITEMS = [
     { id: 'pass', icon: '🎫', action: 'pass', title: 'Pass' },
     { id: 'shop', icon: '🛒', action: 'shop', title: 'Shop' },
+    { id: 'topup', icon: '💳', action: 'topup', title: 'Top Up' },
     { id: 'quest', icon: '🎯', action: 'quest', title: 'Misi' },
     { id: 'spin', icon: '🎡', action: 'locked', title: 'Spin Wheel (terkunci)' },
     { id: 'mall', icon: '💎', action: 'toast-mall', title: 'Item Mall (segera)' },
@@ -834,6 +835,10 @@ const Panels = (function () {
       }
       case 'pass': {
         openPassOverlay();
+        break;
+      }
+      case 'topup': {
+        Topup.open();
         break;
       }
       case 'locked':

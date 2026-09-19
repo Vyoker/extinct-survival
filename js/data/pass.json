@@ -4,13 +4,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 24
+        "amount": 240
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 58
+        "amount": 580
       }
     ]
   },
@@ -19,13 +19,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 28
+        "amount": 280
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 66
+        "amount": 660
       }
     ]
   },
@@ -34,17 +34,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 32
+        "amount": 320
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 74
+        "amount": 740
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -53,13 +53,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 36
+        "amount": 360
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 82
+        "amount": 820
       }
     ]
   },
@@ -68,23 +68,23 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 40
+        "amount": 400
       },
       {
         "type": "item",
         "itemId": "canned_food_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 90
+        "amount": 900
       },
       {
         "type": "item",
         "itemId": "scrap_helmet",
-        "qty": 1
+        "qty": 10
       }
     ]
   },
@@ -93,17 +93,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 44
+        "amount": 440
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 98
+        "amount": 980
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -112,13 +112,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 48
+        "amount": 480
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 106
+        "amount": 1060
       }
     ]
   },
@@ -127,13 +127,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 52
+        "amount": 520
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 114
+        "amount": 1140
       }
     ]
   },
@@ -142,17 +142,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 56
+        "amount": 560
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 122
+        "amount": 1220
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -161,18 +161,18 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 60
+        "amount": 600
       },
       {
         "type": "item",
         "itemId": "water_bottle_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 130
+        "amount": 1300
       },
       {
         "type": "item",
@@ -186,13 +186,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 64
+        "amount": 640
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 138
+        "amount": 1380
       }
     ]
   },
@@ -201,17 +201,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 68
+        "amount": 680
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 146
+        "amount": 1460
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -220,13 +220,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 72
+        "amount": 720
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 154
+        "amount": 1540
       }
     ]
   },
@@ -235,13 +235,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 76
+        "amount": 760
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 162
+        "amount": 1620
       }
     ]
   },
@@ -250,18 +250,18 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 80
+        "amount": 800
       },
       {
         "type": "item",
         "itemId": "bandage_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 170
+        "amount": 1700
       },
       {
         "type": "item",
@@ -275,13 +275,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 84
+        "amount": 840
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 178
+        "amount": 1780
       }
     ]
   },
@@ -290,13 +290,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 88
+        "amount": 880
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 186
+        "amount": 1860
       }
     ]
   },
@@ -305,17 +305,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 92
+        "amount": 920
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 194
+        "amount": 1940
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -324,13 +324,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 96
+        "amount": 960
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 202
+        "amount": 2020
       }
     ]
   },
@@ -339,22 +339,22 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 100
+        "amount": 1000
       },
       {
         "type": "item",
         "itemId": "canned_food_01",
-        "qty": 2
+        "qty": 10
       },
       {
         "type": "kredit",
-        "amount": 2
+        "amount": 5
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 210
+        "amount": 2100
       },
       {
         "type": "item",
@@ -368,17 +368,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 104
+        "amount": 1040
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 218
+        "amount": 2180
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -387,13 +387,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 108
+        "amount": 1080
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 226
+        "amount": 2260
       }
     ]
   },
@@ -402,13 +402,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 112
+        "amount": 1120
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 234
+        "amount": 2340
       }
     ]
   },
@@ -417,17 +417,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 116
+        "amount": 1160
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 242
+        "amount": 2420
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -436,18 +436,18 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 120
+        "amount": 1200
       },
       {
         "type": "item",
         "itemId": "water_bottle_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 250
+        "amount": 2500
       },
       {
         "type": "kredit",
@@ -456,7 +456,7 @@
       {
         "type": "item",
         "itemId": "first_aid_kit_01",
-        "qty": 2
+        "qty": 10
       }
     ]
   },
@@ -465,13 +465,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 124
+        "amount": 1240
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 258
+        "amount": 2580
       }
     ]
   },
@@ -480,17 +480,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 128
+        "amount": 1280
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 266
+        "amount": 2660
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -499,13 +499,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 132
+        "amount": 1320
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 274
+        "amount": 2740
       }
     ]
   },
@@ -514,13 +514,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 136
+        "amount": 1360
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 282
+        "amount": 2820
       }
     ]
   },
@@ -529,23 +529,23 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 140
+        "amount": 1400
       },
       {
         "type": "item",
         "itemId": "bandage_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 290
+        "amount": 2900
       },
       {
         "type": "item",
         "itemId": "first_aid_kit_01",
-        "qty": 1
+        "qty": 10
       }
     ]
   },
@@ -554,13 +554,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 144
+        "amount": 1440
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 298
+        "amount": 2980
       }
     ]
   },
@@ -569,13 +569,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 148
+        "amount": 1480
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 306
+        "amount": 3060
       }
     ]
   },
@@ -584,17 +584,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 152
+        "amount": 1520
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 314
+        "amount": 3140
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -603,13 +603,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 156
+        "amount": 1560
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 322
+        "amount": 3220
       }
     ]
   },
@@ -618,23 +618,23 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 160
+        "amount": 1600
       },
       {
         "type": "item",
         "itemId": "canned_food_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 330
+        "amount": 3300
       },
       {
         "type": "item",
         "itemId": "energy_drink_01",
-        "qty": 1
+        "qty": 10
       }
     ]
   },
@@ -643,17 +643,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 164
+        "amount": 1640
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 338
+        "amount": 3380
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -662,13 +662,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 168
+        "amount": 1680
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 346
+        "amount": 3460
       }
     ]
   },
@@ -677,13 +677,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 172
+        "amount": 1720
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 354
+        "amount": 3540
       }
     ]
   },
@@ -692,17 +692,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 176
+        "amount": 1760
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 362
+        "amount": 3620
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -711,22 +711,22 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 180
+        "amount": 1800
       },
       {
         "type": "item",
         "itemId": "water_bottle_01",
-        "qty": 2
+        "qty": 10
       },
       {
         "type": "kredit",
-        "amount": 2
+        "amount": 5
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 370
+        "amount": 3700
       },
       {
         "type": "item",
@@ -740,13 +740,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 184
+        "amount": 1840
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 378
+        "amount": 3780
       }
     ]
   },
@@ -755,17 +755,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 188
+        "amount": 1880
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 386
+        "amount": 3860
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -774,13 +774,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 192
+        "amount": 1920
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 394
+        "amount": 3940
       }
     ]
   },
@@ -789,13 +789,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 196
+        "amount": 1960
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 402
+        "amount": 4020
       }
     ]
   },
@@ -804,18 +804,18 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 200
+        "amount": 2000
       },
       {
         "type": "item",
         "itemId": "bandage_01",
-        "qty": 2
+        "qty": 5
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 410
+        "amount": 4100
       },
       {
         "type": "item",
@@ -829,13 +829,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 204
+        "amount": 2040
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 418
+        "amount": 4180
       }
     ]
   },
@@ -844,13 +844,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 208
+        "amount": 2080
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 426
+        "amount": 4260
       }
     ]
   },
@@ -859,17 +859,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 212
+        "amount": 2120
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 434
+        "amount": 4340
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -878,13 +878,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 216
+        "amount": 2160
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 442
+        "amount": 4420
       }
     ]
   },
@@ -893,18 +893,18 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 220
+        "amount": 2200
       },
       {
         "type": "item",
         "itemId": "canned_food_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 450
+        "amount": 4500
       },
       {
         "type": "kredit",
@@ -922,17 +922,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 224
+        "amount": 2240
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 458
+        "amount": 4580
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -941,13 +941,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 228
+        "amount": 2280
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 466
+        "amount": 4660
       }
     ]
   },
@@ -956,13 +956,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 232
+        "amount": 2320
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 474
+        "amount": 4740
       }
     ]
   },
@@ -971,17 +971,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 236
+        "amount": 2360
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 482
+        "amount": 4820
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -990,18 +990,18 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 240
+        "amount": 2400
       },
       {
         "type": "item",
         "itemId": "water_bottle_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 490
+        "amount": 4900
       },
       {
         "type": "item",
@@ -1015,13 +1015,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 244
+        "amount": 2440
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 498
+        "amount": 4980
       }
     ]
   },
@@ -1030,17 +1030,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 248
+        "amount": 2480
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 506
+        "amount": 5060
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1049,13 +1049,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 252
+        "amount": 2520
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 514
+        "amount": 5140
       }
     ]
   },
@@ -1064,13 +1064,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 256
+        "amount": 2560
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 522
+        "amount": 5220
       }
     ]
   },
@@ -1079,22 +1079,22 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 260
+        "amount": 2600
       },
       {
         "type": "item",
         "itemId": "bandage_01",
-        "qty": 2
+        "qty": 5
       },
       {
         "type": "kredit",
-        "amount": 2
+        "amount": 5
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 530
+        "amount": 5300
       },
       {
         "type": "item",
@@ -1108,13 +1108,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 264
+        "amount": 2640
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 538
+        "amount": 5380
       }
     ]
   },
@@ -1123,13 +1123,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 268
+        "amount": 2680
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 546
+        "amount": 5460
       }
     ]
   },
@@ -1138,17 +1138,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 272
+        "amount": 2720
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 554
+        "amount": 5540
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1157,13 +1157,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 276
+        "amount": 2760
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 562
+        "amount": 5620
       }
     ]
   },
@@ -1172,23 +1172,23 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 280
+        "amount": 2800
       },
       {
         "type": "item",
         "itemId": "canned_food_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 570
+        "amount": 5700
       },
       {
         "type": "item",
         "itemId": "first_aid_kit_01",
-        "qty": 1
+        "qty": 10
       }
     ]
   },
@@ -1197,17 +1197,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 284
+        "amount": 2840
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 578
+        "amount": 5780
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1216,13 +1216,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 288
+        "amount": 2880
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 586
+        "amount": 5860
       }
     ]
   },
@@ -1231,13 +1231,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 292
+        "amount": 2920
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 594
+        "amount": 5940
       }
     ]
   },
@@ -1246,17 +1246,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 296
+        "amount": 2960
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 602
+        "amount": 6020
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1265,23 +1265,23 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 300
+        "amount": 3000
       },
       {
         "type": "item",
         "itemId": "water_bottle_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 610
+        "amount": 6100
       },
       {
         "type": "item",
         "itemId": "energy_drink_01",
-        "qty": 1
+        "qty": 10
       }
     ]
   },
@@ -1290,13 +1290,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 304
+        "amount": 3040
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 618
+        "amount": 6180
       }
     ]
   },
@@ -1305,17 +1305,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 308
+        "amount": 3080
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 626
+        "amount": 6260
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1324,13 +1324,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 312
+        "amount": 3120
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 634
+        "amount": 6340
       }
     ]
   },
@@ -1339,13 +1339,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 316
+        "amount": 3160
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 642
+        "amount": 6420
       }
     ]
   },
@@ -1354,18 +1354,18 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 320
+        "amount": 3200
       },
       {
         "type": "item",
         "itemId": "bandage_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 650
+        "amount": 6500
       },
       {
         "type": "kredit",
@@ -1374,7 +1374,7 @@
       {
         "type": "item",
         "itemId": "spare_parts",
-        "qty": 3
+        "qty": 5
       }
     ]
   },
@@ -1383,13 +1383,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 324
+        "amount": 3240
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 658
+        "amount": 6580
       }
     ]
   },
@@ -1398,13 +1398,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 328
+        "amount": 3280
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 666
+        "amount": 6660
       }
     ]
   },
@@ -1413,17 +1413,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 332
+        "amount": 3320
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 674
+        "amount": 6740
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1432,13 +1432,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 336
+        "amount": 3360
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 682
+        "amount": 6820
       }
     ]
   },
@@ -1447,22 +1447,22 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 340
+        "amount": 3400
       },
       {
         "type": "item",
         "itemId": "canned_food_01",
-        "qty": 2
+        "qty": 10
       },
       {
         "type": "kredit",
-        "amount": 2
+        "amount": 5
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 690
+        "amount": 6900
       },
       {
         "type": "item",
@@ -1476,17 +1476,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 344
+        "amount": 3440
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 698
+        "amount": 6980
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1495,13 +1495,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 348
+        "amount": 3480
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 706
+        "amount": 7060
       }
     ]
   },
@@ -1510,13 +1510,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 352
+        "amount": 3520
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 714
+        "amount": 7140
       }
     ]
   },
@@ -1525,17 +1525,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 356
+        "amount": 3560
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 722
+        "amount": 7220
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1544,18 +1544,18 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 360
+        "amount": 3600
       },
       {
         "type": "item",
         "itemId": "water_bottle_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 730
+        "amount": 7300
       },
       {
         "type": "item",
@@ -1569,13 +1569,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 364
+        "amount": 3640
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 738
+        "amount": 7380
       }
     ]
   },
@@ -1584,17 +1584,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 368
+        "amount": 3680
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 746
+        "amount": 7460
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1603,13 +1603,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 372
+        "amount": 3720
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 754
+        "amount": 7540
       }
     ]
   },
@@ -1618,13 +1618,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 376
+        "amount": 3760
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 762
+        "amount": 7620
       }
     ]
   },
@@ -1633,18 +1633,18 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 380
+        "amount": 3800
       },
       {
         "type": "item",
         "itemId": "bandage_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 770
+        "amount": 7700
       },
       {
         "type": "item",
@@ -1658,13 +1658,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 384
+        "amount": 3840
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 778
+        "amount": 7780
       }
     ]
   },
@@ -1673,13 +1673,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 388
+        "amount": 3880
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 786
+        "amount": 7860
       }
     ]
   },
@@ -1688,17 +1688,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 392
+        "amount": 3920
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 794
+        "amount": 7940
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1707,13 +1707,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 396
+        "amount": 3960
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 802
+        "amount": 8020
       }
     ]
   },
@@ -1722,18 +1722,18 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 400
+        "amount": 4000
       },
       {
         "type": "item",
         "itemId": "canned_food_01",
-        "qty": 2
+        "qty": 10
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 810
+        "amount": 8100
       },
       {
         "type": "item",
@@ -1747,17 +1747,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 404
+        "amount": 4040
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 818
+        "amount": 8180
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1766,13 +1766,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 408
+        "amount": 4080
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 826
+        "amount": 8260
       }
     ]
   },
@@ -1781,13 +1781,13 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 412
+        "amount": 4120
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 834
+        "amount": 8340
       }
     ]
   },
@@ -1796,17 +1796,17 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 416
+        "amount": 4160
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 842
+        "amount": 8420
       },
       {
         "type": "kredit",
-        "amount": 1
+        "amount": 5
       }
     ]
   },
@@ -1815,22 +1815,22 @@
     "free": [
       {
         "type": "rupiah",
-        "amount": 420
+        "amount": 4200
       },
       {
         "type": "item",
         "itemId": "water_bottle_01",
-        "qty": 2
+        "qty": 10
       },
       {
         "type": "kredit",
-        "amount": 2
+        "amount": 5
       }
     ],
     "premium": [
       {
         "type": "rupiah",
-        "amount": 850
+        "amount": 8500
       },
       {
         "type": "kredit",

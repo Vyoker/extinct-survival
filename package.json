@@ -1,0 +1,9 @@
+{
+  "name": "extinct-survival",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Extinct Survival — game statis + backend topup manual (Netlify Functions + Blobs)",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

@@ -4,5 +4,5 @@
  * setelah X mencapai 9, lanjut ke v0.1.0, lalu v0.1.1, dst.
  * Update angka ini manual tiap kali ada rilis baru.
  */
-const APP_VERSION = '0.2.3';
+const APP_VERSION = '0.2.5';
 window.APP_VERSION = APP_VERSION;

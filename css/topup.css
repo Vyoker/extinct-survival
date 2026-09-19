@@ -1,0 +1,84 @@
+/**
+ * Topup CSS
+ * Styling untuk alur Top Up Kredit (pilih paket -> instruksi QRIS -> status).
+ * Pakai token warna yang sama dengan tema dark yang sudah ada
+ * (--bg-glass, --accent-orange, --text-dim, dst) supaya menyatu.
+ */
+.topup-package-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.topup-package-card {
+  position: relative;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 16px 8px;
+  text-align: center;
+}
+.topup-package-card:active {
+  border-color: var(--accent-orange);
+  background: var(--bg-tertiary);
+}
+.topup-bonus-tag {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  background: var(--accent-orange);
+  color: #0a0a0a;
+  font-size: 9px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+.topup-package-kredit {
+  font-size: 17px;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.topup-package-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 2px;
+}
+.topup-package-price {
+  font-size: 13px;
+  color: var(--accent-orange);
+  font-weight: bold;
+}
+
+.topup-qris-card { text-align: center; }
+.topup-qris-img {
+  width: 100%;
+  max-width: 260px;
+  border-radius: 8px;
+  margin: 0 auto 8px;
+  display: block;
+  background: #fff;
+  padding: 6px;
+}
+.topup-merchant-name {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.topup-order-code {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  color: var(--accent-orange);
+}
+.topup-amount-row {
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px dashed var(--border-color);
+  border-bottom: 1px dashed var(--border-color);
+  margin: 4px 0;
+}
+.topup-amount-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--accent-orange) !important;
+}
