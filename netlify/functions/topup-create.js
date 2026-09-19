@@ -25,13 +25,13 @@ exports.handler = async (event) => {
   const orderCode = generateOrderCode();
 
   const order = {
-    orderCode,
-    playerId,
+    orderCode: orderCode,
+    playerId: playerId,
     playerName: String(playerName || '-').slice(0, 32),
     packageId: pkg.id,
     packageLabel: pkg.label,
     priceRupiah: pkg.priceRupiah,
-    uniqueAmount,
+    uniqueAmount: uniqueAmount,
     kredit: pkg.kredit,
     status: 'pending',
     createdAt: now,
@@ -39,25 +39,11 @@ exports.handler = async (event) => {
   };
 
   const store = getTopupStore();
-  await store.setJSON(`order:${orderCode}`, order);
+  await store.setJSON('order:' + orderCode, order);
 
   return json(200, {
-    orderCode,
-    uniqueAmount,
-    kredit: pkg.kredit,
-    priceRupiah: pkg.priceRupiah,
-    expiresAt: order.expiresAt
-  });
-};    createdAt: now,
-    expiresAt: now + ORDER_TTL_MS
-  };
-
-  const store = getStore('topup');
-  await store.setJSON(`order:${orderCode}`, order);
-
-  return json(200, {
-    orderCode,
-    uniqueAmount,
+    orderCode: orderCode,
+    uniqueAmount: uniqueAmount,
     kredit: pkg.kredit,
     priceRupiah: pkg.priceRupiah,
     expiresAt: order.expiresAt
