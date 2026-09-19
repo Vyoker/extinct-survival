@@ -10,7 +10,7 @@
  * e-wallet. Nominal unik ini cuma memudahkan admin mencocokkan mutasi
  * secara MANUAL saat verifikasi — bukan otomatisasi penuh.
  */
-const { getStore } = require('@netlify/blobs');
+const { getTopupStore } = require('@netlify/blobs');
 const { getPackage } = require('./utils/packages');
 const { generateOrderCode } = require('./utils/order-code');
 const { json } = require('./utils/response');
