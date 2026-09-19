@@ -1,4 +1,4 @@
-const { getStore } = require('@netlify/blobs');
+const { getTopupStore } = require('@netlify/blobs');
 const { isAdminAuthorized } = require('./utils/auth');
 const { json } = require('./utils/response');
 
@@ -16,7 +16,7 @@ exports.handler = async (event) => {
   const orderCode = String(payload.orderCode || '').toUpperCase();
   if (!orderCode) return json(400, { error: 'orderCode wajib diisi.' });
 
-  const store = getStore('topup');
+  const store = getTopupStore();
   const key = `order:${orderCode}`;
   const order = await store.get(key, { type: 'json' });
   if (!order) return json(404, { error: 'Order tidak ditemukan.' });
