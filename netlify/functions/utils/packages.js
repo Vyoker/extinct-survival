@@ -15,4 +15,3 @@ function getPackage(id) {
 }
 
 module.exports = { PACKAGES, getPackage };
- };
