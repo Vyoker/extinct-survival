@@ -6,7 +6,7 @@
  * server supaya polling berikutnya (atau reload di tengah proses) tidak
  * memicu penambahan Kredit dua kali di client.
  */
-const { getStore } = require('@netlify/blobs');
+const { getTopupStore } = require('@netlify/blobs');
 const { json } = require('./utils/response');
 
 exports.handler = async (event) => {
