@@ -1,11 +1,3 @@
-/**
- * GET /.netlify/functions/topup-status?code=AS-XXXXXX
- *
- * Dipoll berkala oleh client selama layar pembayaran terbuka. Begitu
- * status 'approved' terbaca SEKALI, langsung ditandai 'claimed' di
- * server supaya polling berikutnya (atau reload di tengah proses) tidak
- * memicu penambahan Kredit dua kali di client.
- */
 const { getTopupStore } = require('@netlify/blobs');
 const { json } = require('./utils/response');
 
@@ -13,7 +5,7 @@ exports.handler = async (event) => {
   const orderCode = event.queryStringParameters && event.queryStringParameters.code;
   if (!orderCode) return json(400, { error: 'Parameter code wajib diisi.' });
 
-  const store = getStore('topup');
+  const store = getTopupStore();
   const key = `order:${orderCode.toUpperCase()}`;
   const order = await store.get(key, { type: 'json' });
   if (!order) return json(404, { status: 'not_found' });
