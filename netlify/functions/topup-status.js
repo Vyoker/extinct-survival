@@ -1,5 +1,5 @@
-const { getTopupStore } = require('@netlify/blobs');
 const { json } = require('./utils/response');
+const { getTopupStore } = require('./utils/blob-store');
 
 exports.handler = async (event) => {
   const orderCode = event.queryStringParameters && event.queryStringParameters.code;
