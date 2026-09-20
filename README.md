@@ -42,7 +42,7 @@ Termux + Acode maupun di-deploy sebagai situs statis di Netlify.
 ## 🆕 Rilis Terbaru — `v0.2.5`
 
 - **Sistem Top Up** resmi aktif — QRIS statis terintegrasi, dashboard
-  verifikasi khusus developer (`admin/index2.html`), backend serverless
+  verifikasi khusus developer, backend serverless
   tanpa perlu server pihak ketiga.
 - **Balancing reward** Elite Pass, Items, dan Shop menyesuaikan ekonomi
   Rupiah & Kredit pasca aktifnya Top Up.
@@ -61,5 +61,5 @@ Netlify Functions + Netlify Blobs untuk backend Top Up.
 ## 👤 Dibuat oleh
 
 **Vyoker** — [YouTube](https://youtube.com/@Vyoker) ·
-[TikTok @vyoker.mp4](https://tiktok.com/@vyoker.mp4) ·
+[TikTok](https://tiktok.com/@vyoker.mp4) ·
 [Trakteer](https://trakteer.id/vyoker)
