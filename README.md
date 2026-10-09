@@ -4,7 +4,7 @@
 
 **20 tahun pasca *The Great Collapse* — bertahan hidup di reruntuhan Nusantara.**
 
-`v0.3.5` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
+`v0.3.7` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
 
 </div>
 
@@ -40,7 +40,23 @@ Termux + Acode maupun di-deploy sebagai situs statis di Netlify.
 | 💳 **Top Up** | QRIS statis + verifikasi manual, backend Netlify Functions & Blobs |
 | ☁️ **Cloud Save** | Simpan & pulihkan progres via kode rahasia, backend Netlify Blobs |
 
-## 🆕 Rilis Terbaru — `v0.3.5`
+## 🆕 Rilis Terbaru — `v0.3.7`
+
+- **Endpoint monitoring publik** `watch-pending` — mengembalikan
+  hanya agregat (jumlah pending/paid + lama menunggu terlama), tanpa
+  data sensitif, untuk dipoll cron monitoring tiap 5 menit.
+
+## Rilis `v0.3.6`
+
+- **Fix kritis: klaim Mail tidak menambah kredit** — `mail.js`
+  memakai `window.GameState`, padahal `state.js` dideklarasikan
+  dengan `const` yang tidak menempel di `window`, sehingga blok
+  penambah kredit selalu dilewati diam-diam (toast sukses tetap
+  muncul!). Sekarang pakai pengecekan aman + `GameState` di-export
+  ke `window` seperti modul lain. Audit seluruh modul: tidak ada
+  pola bug yang sama di tempat lain.
+
+## Rilis `v0.3.5`
 
 - **Fitur Mail** — kiriman kredit manual dari admin kini masuk sebagai
   **mail** yang harus di-**klaim** player lewat Menu → Mail (pill baru

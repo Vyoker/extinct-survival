@@ -109,7 +109,10 @@ const Mail = (function () {
       var mail = ((data && data.grants) || []).filter(function (g) { return g.id === id; })[0];
       if (!mail) throw new Error('Mail sudah tidak tersedia.');
       var k = parseInt(mail.kredit, 10) || 0;
-      if (k > 0 && window.GameState) {
+      // NOTE: pakai typeof-check, bukan window.GameState — state.js memakai
+      // `const` yang tidak menempel di window (bug v0.3.5: kredit tidak masuk
+      // tapi toast sukses tetap muncul).
+      if (k > 0 && typeof GameState !== 'undefined' && GameState.get) {
         GameState.get().player.currency.kredit += k;
         GameState.save();
       }

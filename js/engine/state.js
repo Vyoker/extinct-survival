@@ -305,3 +305,7 @@ const GameState = (function () {
 
   return { hasSave, load, save, init, get, startAutosave, stopAutosave, reset, migrateEquipmentDurability, exportSave, importSave };
 })();
+
+// v0.3.5: export ke window seperti modul lain (CloudSave/Events/Icons)
+// supaya aman diakses via window.GameState dari modul mana pun.
+window.GameState = GameState;
