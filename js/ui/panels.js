@@ -18,7 +18,7 @@ const Panels = (function () {
     const derived = Player.getDerivedStats();
 
     return `
-      <h2 class="panel-title">🏠 Dashboard</h2>
+      <h2 class="panel-title">${Icons.svg('home')} Dashboard</h2>
 
       <div class="card">
         <div class="card-row"><span>Nama</span><span>${p.name}</span></div>
@@ -31,8 +31,8 @@ const Panels = (function () {
 
       <div class="card">
         <div class="card-row"><span>Rupiah</span><span>Rp ${p.currency.rupiah.toLocaleString('id-ID')}</span></div>
-        <div class="card-row"><span>Kredit</span><span>💎 ${p.currency.kredit}</span></div>
-        <div class="card-row"><span>⚡ Energy</span><span>${p.energy}/${p.maxEnergy}</span></div>
+        <div class="card-row"><span>Kredit</span><span>${Icons.svg('gem')} ${p.currency.kredit}</span></div>
+        <div class="card-row"><span>${Icons.svg('bolt')} Energy</span><span>${p.energy}/${p.maxEnergy}</span></div>
       </div>
 
       ${renderQuestCard()}
@@ -49,12 +49,12 @@ const Panels = (function () {
         </div>
         <div class="card attr-col">
           <div class="attr-col-title">Efek (setelah equip)</div>
-          <div class="card-row"><span>⚔️ Damage</span><span>${derived.totalDamage}</span></div>
-          <div class="card-row"><span>💥 Crit</span><span>${derived.critChance}%</span></div>
-          <div class="card-row"><span>🛡️ Defense</span><span>${derived.defensePct}%</span></div>
-          <div class="card-row"><span>🌀 Evasion</span><span>${derived.evasionChance}%</span></div>
-          <div class="card-row"><span>🏃 Flee</span><span>${derived.fleeChance}%</span></div>
-          <div class="card-row"><span>🔧 Craft</span><span>+${derived.craftingBonus}%</span></div>
+          <div class="card-row"><span>${Icons.svg('swords')} Damage</span><span>${derived.totalDamage}</span></div>
+          <div class="card-row"><span>${Icons.svg('burst')} Crit</span><span>${derived.critChance}%</span></div>
+          <div class="card-row"><span>${Icons.svg('shield')} Defense</span><span>${derived.defensePct}%</span></div>
+          <div class="card-row"><span>${Icons.svg('refresh')} Evasion</span><span>${derived.evasionChance}%</span></div>
+          <div class="card-row"><span>${Icons.svg('run')} Flee</span><span>${derived.fleeChance}%</span></div>
+          <div class="card-row"><span>${Icons.svg('wrench')} Craft</span><span>+${derived.craftingBonus}%</span></div>
         </div>
       </div>
       <p style="font-size:10px; color:var(--text-dim); margin:4px 0 0;">
@@ -67,10 +67,10 @@ const Panels = (function () {
         <span style="color:var(--text-primary);">${p.attributePoints} poin tersedia</span>
       </div>
       <div class="card point-alloc-card">
-        ${renderPointRow('atk', '⚔️ ATK (Damage)', p.stats.atk * Player.POINT_VALUE_PCT)}
-        ${renderPointRow('def', '🛡️ DEF (Defense)', p.stats.def * Player.POINT_VALUE_PCT)}
-        ${renderPointRow('dex', '🌀 DEX (Crit/Evasion)', p.stats.dex * Player.POINT_VALUE_PCT)}
-        ${renderPointRow('int', '🔧 INT (Craft/Loot/Slot)', p.stats.int * Player.INT_VALUE_PCT)}
+        ${renderPointRow('atk', `${Icons.svg('swords')} ATK (Damage)`, p.stats.atk * Player.POINT_VALUE_PCT)}
+        ${renderPointRow('def', `${Icons.svg('shield')} DEF (Defense)`, p.stats.def * Player.POINT_VALUE_PCT)}
+        ${renderPointRow('dex', `${Icons.svg('refresh')} DEX (Crit/Evasion)`, p.stats.dex * Player.POINT_VALUE_PCT)}
+        ${renderPointRow('int', `${Icons.svg('wrench')} INT (Craft/Loot/Slot)`, p.stats.int * Player.INT_VALUE_PCT)}
         <p style="font-size:10px; color:var(--text-dim); margin-top:8px;">
           1 poin ATK/DEF/DEX = +0.2% status. 1 poin INT = +0.4% Craft &amp; Loot,
           +1 slot Tas. +5 poin tiap naik level. Alokasi bersifat permanen.
@@ -109,7 +109,7 @@ const Panels = (function () {
     if (accepted.length === 0 && availableCount === 0) {
       return `
         <div class="card" style="margin-top:0;">
-          <div class="card-row"><span>🎯 Misi</span><span style="color:#22c55e;">Semua misi selesai!</span></div>
+          <div class="card-row"><span>${Icons.svg('target')} Misi</span><span style="color:#22c55e;">Semua misi selesai!</span></div>
         </div>
       `;
     }
@@ -120,7 +120,7 @@ const Panels = (function () {
 
     return `
       <div class="card quest-card" id="dash-quest-card" style="margin-top:0; cursor:pointer;">
-        <div class="card-row"><span>🎯 Misi</span><span style="color:${readyCount > 0 ? '#22c55e' : 'var(--text-primary)'};">${summaryText}</span></div>
+        <div class="card-row"><span>${Icons.svg('target')} Misi</span><span style="color:${readyCount > 0 ? '#22c55e' : 'var(--text-primary)'};">${summaryText}</span></div>
       </div>
     `;
   }
@@ -132,7 +132,7 @@ const Panels = (function () {
     if (!factionId) {
       return `
         <div class="card faction-card" id="dash-faction-card" style="margin-top:0; cursor:pointer;">
-          <div class="card-row"><span>🏴 Faksi</span><span>Belum gabung — tap untuk pilih</span></div>
+          <div class="card-row"><span>${Icons.svg('flag')} Faksi</span><span>Belum gabung — tap untuk pilih</span></div>
         </div>
       `;
     }
@@ -144,8 +144,8 @@ const Panels = (function () {
 
     return `
       <div class="card faction-card" id="dash-faction-card" style="margin-top:0; cursor:pointer; border-color:${f.color};">
-        <div class="card-row"><span>${f.icon} ${f.name}</span><span style="color:${f.color};">${rank.name}</span></div>
-        <div class="card-row"><span>🪙 Koin Faksi</span><span>${coins}</span></div>
+        <div class="card-row"><span>${Icons.fromEmoji(f.icon)} ${f.name}</span><span style="color:${f.color};">${rank.name}</span></div>
+        <div class="card-row"><span>${Icons.svg('coin')} Koin Faksi</span><span>${coins}</span></div>
       </div>
     `;
   }
@@ -185,26 +185,26 @@ const Panels = (function () {
     const travelDisabled = !Exploration.canTravel();
 
     const scavengeLabel = Cooldown.isActive('scavenge')
-      ? `⏳ Tunggu ${Cooldown.remainingSec('scavenge')}s`
-      : `🧰 Scavenge (${Exploration.SCAVENGE_ENERGY_COST}⚡)`;
+      ? `${Icons.svg('clock')} Tunggu ${Cooldown.remainingSec('scavenge')}s`
+      : `${Icons.svg('box')} Scavenge (${Exploration.SCAVENGE_ENERGY_COST}${Icons.svg('bolt')})`;
     const travelLabel = Cooldown.isActive('travel')
-      ? `⏳ Tunggu ${Cooldown.remainingSec('travel')}s`
-      : `🚚 Travel (${Exploration.TRAVEL_ENERGY_COST}⚡)`;
+      ? `${Icons.svg('clock')} Tunggu ${Cooldown.remainingSec('travel')}s`
+      : `${Icons.svg('compass')} Travel (${Exploration.TRAVEL_ENERGY_COST}${Icons.svg('bolt')})`;
 
     return `
-      <h2 class="panel-title">🗺️ Jelajah</h2>
+      <h2 class="panel-title">${Icons.svg('map')} Jelajah</h2>
 
       <div class="card">
         <div class="location-name">${loc.name}</div>
         <p class="location-desc">${loc.description}</p>
-        <div class="card-row"><span>⚡ Energy</span><span>${p.energy}/${p.maxEnergy}</span></div>
+        <div class="card-row"><span>${Icons.svg('bolt')} Energy</span><span>${p.energy}/${p.maxEnergy}</span></div>
       </div>
 
       <button class="action-btn" id="btn-do-scavenge" ${scavengeDisabled ? 'disabled' : ''}>
         ${scavengeLabel}
       </button>
       <button class="action-btn" id="btn-goto-hunting" ${huntDisabled ? 'disabled' : ''}>
-        🏹 Hunting (${Exploration.HUNTING_ENERGY_COST}⚡)
+        ${Icons.svg('bow')} Hunting (${Exploration.HUNTING_ENERGY_COST}${Icons.svg('bolt')})
       </button>
       <button class="action-btn" id="btn-goto-travel" ${travelDisabled ? 'disabled' : ''}>
         ${travelLabel}
@@ -256,7 +256,7 @@ const Panels = (function () {
     `).join('');
 
     return `
-      <h2 class="panel-title">🚚 Travel</h2>
+      <h2 class="panel-title">${Icons.svg('compass')} Travel</h2>
       <button class="action-btn secondary" id="btn-back-menu">← Kembali</button>
       <div style="margin-top:10px;">${rows}</div>
     `;
@@ -295,7 +295,7 @@ const Panels = (function () {
     `).join('');
 
     return `
-      <h2 class="panel-title">🏹 Hunting - ${loc ? loc.name : ''}</h2>
+      <h2 class="panel-title">${Icons.svg('bow')} Hunting - ${loc ? loc.name : ''}</h2>
       <button class="action-btn secondary" id="btn-back-menu">← Kembali</button>
       <div style="margin-top:10px;">
         ${rows || '<p style="font-size:12px;color:var(--text-dim);">Tidak ada target buruan di sini.</p>'}
@@ -345,8 +345,13 @@ const Panels = (function () {
   }
 
   // Router internal untuk tab Jelajah
+  // tickRefresh = true saat dipanggil dari tick() 1-detik: konten
+  // di-refresh TANPA animasi entrance supaya tidak blink (lihat
+  // fix v0.3.2 — animasi fadeUp yang ke-replay tiap detik).
+  let tickRefresh = false;
   function renderExploration() {
     const main = document.getElementById('main-panel');
+    main.classList.toggle('no-anim', tickRefresh);
 
     if (explorationView === 'travel') {
       main.innerHTML = renderTravel();
@@ -389,7 +394,7 @@ const Panels = (function () {
     return `
       <div class="equip-slot-cell ${def ? 'filled' : ''}" data-equip-slot="${slot}">
         <span class="slot-tag">${EQUIP_SLOT_NAMES[slot]}</span>
-        ${def ? iconImgHtml(def.icon, def.name) : `<span class="slot-empty-mark">${EQUIP_SLOT_LABELS[slot] || '➕'}</span>`}
+        ${def ? iconImgHtml(def.icon, def.name) : `<span class="slot-empty-mark">${Icons.svg('plus')}</span>`}
         ${durText ? `<span class="slot-dur">${durText}</span>` : ''}
       </div>`;
   }
@@ -432,7 +437,7 @@ const Panels = (function () {
 
     return `
       <div class="inventory-parchment">
-        <h2 class="panel-title">🎒 Inventaris</h2>
+        <h2 class="panel-title">${Icons.svg('backpack')} Inventaris</h2>
 
         <button class="action-btn" id="btn-open-crafting">🔨 Crafting</button>
 
@@ -732,7 +737,7 @@ const Panels = (function () {
     }).join('');
 
     return `
-      <h2 class="panel-title">🏅 Skills</h2>
+      <h2 class="panel-title">${Icons.svg('medal')} Skills</h2>
       <div class="skills-grid">${cards}</div>
       <div class="card" style="margin-top:14px;">
         <p style="font-size:11px; color:var(--text-dim); line-height:1.7;">
@@ -759,20 +764,21 @@ const Panels = (function () {
   // lewat drawer 2-langkah seperti sebelumnya.
   // =========================================================
   const FLYOUT_ITEMS = [
-    { id: 'pass', icon: '🎫', action: 'pass', title: 'Pass' },
-    { id: 'shop', icon: '🛒', action: 'shop', title: 'Shop' },
-    { id: 'topup', icon: '💳', action: 'topup', title: 'Top Up' },
-    { id: 'quest', icon: '🎯', action: 'quest', title: 'Misi' },
-    { id: 'spin', icon: '🎡', action: 'locked', title: 'Spin Wheel (terkunci)' },
-    { id: 'mall', icon: '💎', action: 'toast-mall', title: 'Item Mall (segera)' },
-    { id: 'faction', icon: '🏴', action: 'faction', title: 'Faksi' }
+    { id: 'pass', iconName: 'ticket', action: 'pass', title: 'Pass' },
+    { id: 'shop', iconName: 'store', action: 'shop', title: 'Shop' },
+    { id: 'topup', iconName: 'card', action: 'topup', title: 'Top Up' },
+    { id: 'quest', iconName: 'target', action: 'quest', title: 'Misi' },
+    { id: 'spin', iconName: 'wheel', action: 'locked', title: 'Spin Wheel (terkunci)' },
+    { id: 'mall', iconName: 'gem', action: 'toast-mall', title: 'Item Mall (segera)' },
+    { id: 'faction', iconName: 'flag', action: 'faction', title: 'Faksi' },
+    { id: 'cloud', iconName: 'cloud', action: 'cloud', title: 'Simpan Online' }
   ];
 
   let menuFlyoutOpen = false;
 
   function renderMenuFlyoutPills() {
     return FLYOUT_ITEMS.map(it => `
-      <button class="menu-flyout-pill ${it.action === 'locked' ? 'locked' : ''}" data-flyout-action="${it.action}" title="${it.title}">${it.icon}</button>
+      <button class="menu-flyout-pill ${it.action === 'locked' ? 'locked' : ''}" data-flyout-action="${it.action}" title="${it.title}">${window.Icons ? Icons.svg(it.iconName) : it.title}</button>
     `).join('');
   }
 
@@ -842,8 +848,13 @@ const Panels = (function () {
         break;
       }
       case 'locked':
-        Events.emit('notify', { message: '🔒 Spin Wheel terkunci sementara (butuh integrasi iklan reward).', type: 'error' });
+        Events.emit('notify', { message: 'Spin Wheel terkunci sementara (butuh integrasi iklan reward).', type: 'error' });
         break;
+      case 'cloud': {
+        if (window.CloudSave) CloudSave.open();
+        else Events.emit('notify', { message: 'Modul cloud save belum termuat.', type: 'error' });
+        break;
+      }
       case 'toast-mall':
         Events.emit('notify', { message: 'Fitur Item Mall masih tahap pengembangan.' });
         break;
@@ -1013,9 +1024,9 @@ const Panels = (function () {
           <div class="card-row"><span>${f.icon} Faksi Kamu</span><span style="color:${f.color}; font-weight:bold;">${f.name}</span></div>
           <div class="card-row"><span>Rank</span><span>${rank.name}${rank.next ? ` (${rank.rep}/${rank.next.minRep})` : ' (MAX)'}</span></div>
           <div class="bar-track small" style="margin:4px 0 8px;"><div class="bar-fill exp" style="width:${rank.progressPct}%; background:${f.color};"></div></div>
-          <div class="card-row"><span>🪙 Koin Faksi</span><span>${coins}</span></div>
+          <div class="card-row"><span>${Icons.svg('coin')} Koin Faksi</span><span>${coins}</span></div>
         </div>
-        <button class="action-btn" id="btn-open-faction-shop">🎁 Tukar Koin Faksi</button>
+        <button class="action-btn" id="btn-open-faction-shop">${Icons.svg('gift')} Tukar Koin Faksi</button>
         <button class="action-btn secondary" id="btn-leave-faction">Keluar Faksi</button>
       `;
     } else {
@@ -1715,6 +1726,7 @@ const Panels = (function () {
   function render(panelName) {
     currentNavPanel = panelName;
     const main = document.getElementById('main-panel');
+    main.classList.remove('no-anim'); // navigasi antar panel selalu pakai animasi entrance
     switch (panelName) {
       case 'dashboard':
         main.innerHTML = renderDashboard();
@@ -1744,7 +1756,9 @@ const Panels = (function () {
   // transisi "cooldown baru saja habis" ikut tertangkap tepat waktu.
   function tick() {
     if (currentNavPanel === 'exploration' && explorationView === 'menu') {
+      tickRefresh = true;
       renderExploration();
+      tickRefresh = false;
     }
   }
 

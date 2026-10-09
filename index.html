@@ -11,6 +11,8 @@
 <link rel="stylesheet" href="css/prolog.css">
 <link rel="stylesheet" href="css/menu-flyout.css">
 <link rel="stylesheet" href="css/topup.css">
+<link rel="stylesheet" href="css/design.css">
+<link rel="stylesheet" href="css/battle-dayr.css">
 </head>
 <body>
 
@@ -36,8 +38,10 @@
 
       <button id="btn-start-game" class="btn btn-primary">MULAI BERTAHAN HIDUP</button>
       <button id="btn-continue-game" class="btn btn-secondary hidden">LANJUTKAN</button>
+      <button id="btn-cloud-restore" class="btn btn-secondary">MUAT DARI CLOUD</button>
 
       <p class="login-hint">Data tersimpan otomatis di perangkat ini (localStorage).</p>
+      <p class="login-hint" id="login-version">v0.3.0</p>
     </div>
   </div>
 
@@ -66,13 +70,13 @@
         </div>
       </div>
       <div class="hud-stats">
-        <div class="stat-pill health">❤ <span id="stat-health">100</span></div>
-        <div class="stat-pill hunger">🍖 <span id="stat-hunger">100</span></div>
-        <div class="stat-pill thirst">💧 <span id="stat-thirst">100</span></div>
-        <div class="stat-pill sanity">🧠 <span id="stat-sanity">100</span></div>
+        <div class="stat-pill health"><svg class="xicon"><use href="#xi-heart"/></svg> <span id="stat-health">100</span></div>
+        <div class="stat-pill hunger"><svg class="xicon"><use href="#xi-meat"/></svg> <span id="stat-hunger">100</span></div>
+        <div class="stat-pill thirst"><svg class="xicon"><use href="#xi-droplet"/></svg> <span id="stat-thirst">100</span></div>
+        <div class="stat-pill sanity"><svg class="xicon"><use href="#xi-eye"/></svg> <span id="stat-sanity">100</span></div>
       </div>
       <div class="hud-energy">
-        <span class="energy-icon">⚡</span>
+        <span class="energy-icon"><svg class="xicon"><use href="#xi-bolt"/></svg></span>
         <div class="bar-track small">
           <div id="bar-energy" class="bar-fill energy"></div>
         </div>
@@ -87,47 +91,50 @@
 
     <!-- Bottom nav -->
     <nav id="hud-bottom">
-      <button class="nav-btn active" data-panel="dashboard">🏠<span>Home</span></button>
-      <button class="nav-btn" data-panel="exploration">🗺️<span>Jelajah</span></button>
-      <button class="nav-btn" data-panel="inventory">🎒<span>Tas</span></button>
-      <button class="nav-btn" data-panel="skills">🏅<span>Skill</span></button>
-      <button class="nav-btn" id="btn-nav-menu">☰<span>Menu</span></button>
+      <button class="nav-btn active" data-panel="dashboard"><svg class="xicon"><use href="#xi-home"/></svg><span>Home</span></button>
+      <button class="nav-btn" data-panel="exploration"><svg class="xicon"><use href="#xi-map"/></svg><span>Jelajah</span></button>
+      <button class="nav-btn" data-panel="inventory"><svg class="xicon"><use href="#xi-backpack"/></svg><span>Tas</span></button>
+      <button class="nav-btn" data-panel="skills"><svg class="xicon"><use href="#xi-medal"/></svg><span>Skill</span></button>
+      <button class="nav-btn" id="btn-nav-menu"><svg class="xicon"><use href="#xi-menu"/></svg><span>Menu</span></button>
     </nav>
-
-    <!-- Toast notifications -->
-    <div id="toast-container"></div>
-
-    <!-- Overlay root (dikelola OverlayManager) -->
-    <div id="overlay-root"></div>
   </div>
 
   <!-- ===================== SCREEN: BATTLE (TACTICAL) ===================== -->
-  <!-- Disinkronkan dari referensi extinct_battle.html (v0.0.9) -->
+  <!-- Layout ala Day R Survival: panel kiri (kartu pemain + aksi),
+       arena tengah, panel kanan (kartu musuh). Di layar portrait
+       sempit, panel-panel menumpuk otomatis via CSS. -->
   <div id="screen-battle-tactical" class="screen">
 
-    <div id="topbar">
-      <div id="pAvatar">🧑</div>
-      <div id="pInfo">
-        <div id="pName">VYOKER</div>
-        <div class="barRow"><span class="barLabel">❤</span><div class="barTrack"><div class="barFill hp" id="hpFill"></div></div><span class="barVal" id="hpVal">100/100</span></div>
-        <div class="barRow"><span class="barLabel">🛡</span><div class="barTrack"><div class="barFill arm" id="armFill"></div></div><span class="barVal" id="armVal">0</span></div>
+    <div id="battle-layout">
+      <aside id="battle-side">
+        <div id="topbar" class="drk-panel">
+          <div id="pAvatar"><svg class="xicon"><use href="#xi-survivor"/></svg></div>
+          <div id="pInfo">
+            <div id="pName">VYOKER</div>
+            <div class="barRow"><span class="barLabel hp"><svg class="xicon"><use href="#xi-plus"/></svg></span><div class="barTrack"><div class="barFill hp" id="hpFill"></div></div><span class="barVal" id="hpVal">100/100</span></div>
+            <div class="barRow"><span class="barLabel"><svg class="xicon"><use href="#xi-shield"/></svg></span><div class="barTrack"><div class="barFill arm" id="armFill"></div></div><span class="barVal" id="armVal">0</span></div>
+            <div id="apPips"></div>
+          </div>
+        </div>
+        <div id="turnTag">Giliranmu</div>
+        <div id="actionRow"></div>
+      </aside>
+
+      <div id="boardWrap">
+        <div id="board"></div>
+        <div id="banner"></div>
       </div>
-      <div id="apPips"></div>
-      <div id="turnTag">Giliranmu</div>
-    </div>
 
-    <div id="enemyStrip"></div>
-
-    <div id="boardWrap">
-      <div id="board"></div>
-      <div id="banner"></div>
+      <aside id="battle-foes">
+        <div class="foes-title">MUSUH</div>
+        <div id="enemyStrip"></div>
+      </aside>
     </div>
 
     <div id="dock">
-      <div id="actionRow"></div>
       <div id="bottomRow">
-        <div id="fleeBtn">🚪 Kabur</div>
-        <div id="endTurnBtn">Akhiri Giliran</div>
+        <div id="fleeBtn"><svg class="xicon"><use href="#xi-door"/></svg> Kabur</div>
+        <div id="endTurnBtn">Akhiri Putaran</div>
       </div>
     </div>
 
@@ -140,8 +147,14 @@
     </div>
   </div>
 
+  <!-- Toast & overlay di level body supaya bisa dipakai dari layar mana pun
+       (termasuk layar login yang #screen-game-nya display:none) -->
+  <div id="toast-container"></div>
+  <div id="overlay-root"></div>
+
   <!-- ===================== SCRIPTS ===================== -->
   <script src="js/version.js"></script>
+  <script src="js/ui/icons.js"></script>
   <script src="js/engine/core.js"></script>
   <script src="js/engine/state.js"></script>
   <script src="js/engine/events.js"></script>
@@ -157,6 +170,7 @@
   <script src="js/game/skills.js"></script>
   <script src="js/game/shop.js"></script>
   <script src="js/game/topup.js"></script>
+  <script src="js/game/cloudsave.js"></script>
   <script src="js/game/crafting.js"></script>
   <script src="js/game/ads.js"></script>
   <script src="js/game/spinwheel.js"></script>

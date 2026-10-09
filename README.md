@@ -4,7 +4,7 @@
 
 **20 tahun pasca *The Great Collapse* — bertahan hidup di reruntuhan Nusantara.**
 
-`v0.2.5` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
+`v0.3.2` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
 
 </div>
 
@@ -38,8 +38,42 @@ Termux + Acode maupun di-deploy sebagai situs statis di Netlify.
 | 🛒 **Shop** | Beli & jual item dengan harga dinamis sesuai rarity |
 | 🎯 **Quest** | Misi bertahap dengan reward Rupiah, EXP, dan item |
 | 💳 **Top Up** | QRIS statis + verifikasi manual, backend Netlify Functions & Blobs |
+| ☁️ **Cloud Save** | Simpan & pulihkan progres via kode rahasia, backend Netlify Blobs |
 
-## 🆕 Rilis Terbaru — `v0.2.5`
+## 🆕 Rilis Terbaru — `v0.3.2`
+
+- **Fix blink di menu Jelajah** — animasi entrance kartu tidak lagi
+  ke-replay tiap detik saat countdown cooldown me-refresh panel
+  (kelas `no-anim` saat tick, animasi tetap jalan saat navigasi).
+- **Icon senjata battle pakai gambar aset asli** — kartu senjata kini
+  menampilkan gambar item yang dipakai (mis. `machete.webp`) dengan
+  fallback placeholder bila file tidak ada; SVG generik hanya dipakai
+  bila item tidak punya gambar.
+
+## Rilis `v0.3.1`
+
+- **Battle UI ala Day R Survival** — layout 3 kolom (panel aksi kiri,
+  arena tengah, panel musuh kanan), kartu pemain & musuh gaya rivet
+  gelap, kartu aksi parchment dengan badge AP jam pasir, arena khaki
+  dengan highlight hijau terang. Otomatis menumpuk vertikal di layar
+  portrait sempit. Animasi battle v0.3.0 (lunge, hit flash, shake)
+  dipertahankan.
+- Tombol "Akhiri Giliran" diganti "Akhiri Putaran" mengikuti istilah
+  Day R.
+
+## Rilis `v0.3.0`
+
+- **Cloud Save** — simpan progres ke cloud (Netlify Blobs) dengan kode
+  rahasia 16 karakter; pulihkan di HP lain lewat menu ☰ → Simpan Online
+  atau tombol "Muat dari Cloud" di layar login.
+- **Visual overhaul "Ashfall Professional"** — seluruh emoticon diganti
+  ikon SVG konsisten (`js/ui/icons.js`), tipografi modern, animasi battle
+  baru (lunge attack, hit flash, screen shake, damage crit), HUD & navigasi
+  dipoles ulang.
+- Perbaikan: toast & overlay kini tampil juga di layar login
+  (sebelumnya tersembunyi karena berada di dalam `#screen-game`).
+
+## 🆕 Rilis `v0.2.5`
 
 - **Sistem Top Up** resmi aktif — QRIS statis terintegrasi, dashboard
   verifikasi khusus developer, backend serverless

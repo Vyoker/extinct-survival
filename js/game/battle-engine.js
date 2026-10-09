@@ -42,7 +42,9 @@
 const COLS = 7, ROWS = 8;
 const TILE = { EMPTY:'empty', TREE:'tree', ROCK:'rock', BUSH:'bush', STUMP:'stump', HAZARD:'hazard', EXIT:'exit' };
 const BLOCKING = [TILE.TREE, TILE.ROCK, TILE.STUMP];
-const TILE_ICON = { tree:'🌲', rock:'🪨', bush:'🌿', stump:'🪵', hazard:'', exit:'🚪', empty:'' };
+// Nama ikon (lihat js/ui/icons.js) untuk dekorasi tile — emoticon lama
+// sudah diganti SVG agar tampilan lebih profesional.
+const TILE_ICON = { tree:'pine', rock:'rock', bush:'bush', stump:'stump', hazard:'', exit:'door', empty:'' };
 
 let state = null; // main battle state
 
@@ -157,6 +159,8 @@ function renderTop(){
   for(let i=0;i<p.maxAp;i++){
     const d = document.createElement('div');
     d.className = 'pip'+(i<p.ap?' filled':'');
+    // Pip AP ala Day R: ikon jam pasir (bukan kotak polos)
+    d.innerHTML = window.Icons ? Icons.svg('hourglass') : '';
     pipsEl.appendChild(d);
   }
   const tag = document.getElementById('turnTag');
@@ -170,12 +174,18 @@ function renderEnemyStrip(){
   state.units.slice(1).forEach(u=>{
     const card = document.createElement('div');
     card.className = 'eCard'+(!u.alive?' dead':'')+(state.pendingAction && u.alive && inAttackRange(u) ? ' targetable':'')+(state.actingUnitId===u.id?' acting':'');
+    const ic = (n)=> window.Icons ? Icons.svg(n) : '';
     card.innerHTML = `
-      <div class="eIcon">${u.icon}</div>
-      <div class="eName">${u.name}</div>
-      <div class="eHpTrack"><div class="eHpFill" style="width:${Math.max(0,u.hp/u.maxHp*100)}%"></div></div>
-      <div class="eHpVal">${Math.max(0,u.hp)}/${u.maxHp}</div>
-      <div class="eDmg">⚔ ${u.dmgMin}-${u.dmgMax}</div>
+      <div class="eIcon">${window.Icons ? Icons.fromEmoji(u.icon) : u.icon}</div>
+      <div class="eBody">
+        <div class="eName">${u.name}</div>
+        <div class="eHpTrack"><div class="eHpFill" style="width:${Math.max(0,u.hp/u.maxHp*100)}%"></div></div>
+        <div class="eHpVal">${Math.max(0,u.hp)}/${u.maxHp}</div>
+        <div class="eMeta">
+          <span>${ic('shield')} ${u.armor||0}</span>
+          <span class="dmg">${ic('fang')} ${u.dmgMin}-${u.dmgMax}</span>
+        </div>
+      </div>
     `;
     if(u.alive){
       card.onclick = ()=> tryAttackUnit(u);
@@ -225,7 +235,8 @@ function renderBoard(){
         if(state.pendingAction.range===1 || hasLineOfSight(p,t)) el.classList.add('atkHint');
       }
     }
-    el.textContent = TILE_ICON[t.type] || '';
+    const tileIcon = TILE_ICON[t.type];
+    el.innerHTML = tileIcon && window.Icons ? Icons.svg(tileIcon) : '';
     el.style.position='relative';
     el.onclick = ()=> onTileClick(t);
 
@@ -233,17 +244,11 @@ function renderBoard(){
     if(u){
       const tok = document.createElement('div');
       tok.className = 'unitTok '+(u.isPlayer?'playerTok':'enemyTok')+(state.selectedTargetId===u.id?' selectedTarget':'')+(state.actingUnitId===u.id?' actingUnit':'');
-      tok.textContent = u.icon;
+      tok.innerHTML = window.Icons ? Icons.fromEmoji(u.icon) : u.icon;
       const hp = document.createElement('div');
       hp.className='miniHp';
       hp.innerHTML = `<i style="width:${Math.max(0,u.hp/u.maxHp*100)}%"></i>`;
       tok.appendChild(hp);
-      if(u.isPlayer){
-        const s = document.createElement('div');
-        s.className='statusIcon';
-        s.textContent='🎯';
-        tok.appendChild(s);
-      }
       el.appendChild(tok);
     }
     board.appendChild(el);
@@ -257,7 +262,14 @@ function renderActions(){
 
   const moveBtn = document.createElement('div');
   moveBtn.className = 'actBtn'+(state.pendingAction==='move'?' active':'')+(p.ap<1||state.turn!=='player'?' disabled':'');
-  moveBtn.innerHTML = `<div class="ic">🏃</div><div class="lbl">Pindah</div><div class="sub">1 AP/petak</div>`;
+  moveBtn.innerHTML = `
+    <div class="actBody">
+      <div class="actIcon">${window.Icons ? Icons.svg('run') : ''}</div>
+      <div class="actMeta">
+        <div class="lbl">Pindah</div>
+        <div class="actStats"><span>1 AP/petak</span></div>
+      </div>
+    </div>`;
   moveBtn.onclick = ()=>{
     if(state.turn!=='player'||p.ap<1) return;
     state.pendingAction = state.pendingAction==='move' ? null : 'move';
@@ -270,11 +282,23 @@ function renderActions(){
     const btn = document.createElement('div');
     const active = state.pendingAction===w;
     btn.className = 'actBtn'+(active?' active':'')+((p.ap<w.apCost||noAmmo||state.turn!=='player')?' disabled':'');
+    // v0.3.2: prioritaskan gambar aset asli item; fallback ke SVG generik.
+    const wIcon = w.iconImg
+      ? `<img src="${w.iconImg}" alt="${w.name}" onerror="this.onerror=null;this.src='assets/images/items/_placeholder.png';">`
+      : (window.Icons ? Icons.svg(w.iconName || Icons.iconName(w.icon)) : w.icon);
+    const ic = (n)=> window.Icons ? Icons.svg(n) : '';
     btn.innerHTML = `
-      <div class="apBadge">${w.apCost}AP</div>
-      <div class="ic">${w.icon}</div>
-      <div class="lbl">${w.name}</div>
-      <div class="sub">${w.dmgMin}-${w.dmgMax}${w.ammo!==null ? ' · '+w.ammo+'/'+w.maxAmmo : ''}</div>
+      <div class="apBadge">${ic('hourglass')}${w.apCost}</div>
+      <div class="actBody">
+        <div class="actIcon">${wIcon}</div>
+        <div class="actMeta">
+          <div class="lbl">${w.name}</div>
+          <div class="actStats">
+            <span>${ic('crosshair')} ${w.dmgMin}–${w.dmgMax}</span>
+            ${w.ammo!==null ? `<span>${ic('bullet')} ${w.ammo}/${w.maxAmmo}</span>` : ''}
+          </div>
+        </div>
+      </div>
     `;
     btn.onclick = ()=>{
       if(state.turn!=='player'||p.ap<w.apCost||noAmmo) return;
@@ -297,8 +321,8 @@ function onTileClick(t){
     p.ap -= reach.cost;
     p.x = t.x; p.y = t.y;
     state.pendingAction = null;
-    checkHazard(p);
     render();
+    checkHazard(p);
     return;
   }
   if(state.pendingAction && state.pendingAction!=='move'){
@@ -322,25 +346,67 @@ function tryAttackUnit(target){
   const distance = dist(p,target);
   const hitChance = clamp(92 - distance*4 - target.armor*0.4, 25, 97);
   const roll = Math.random()*100;
-  const tileEl = findUnitTileEl(target.id);
-
-  if(roll<=hitChance){
-    let dmg = Math.round(rand(w.dmgMin,w.dmgMax));
-    dmg = Math.max(1, Math.round(dmg - target.armor*0.3));
-    target.hp -= dmg;
-    spawnFloatText(tileEl, '-'+dmg, false);
-    if(target.hp<=0){
-      target.hp = 0;
-      target.alive = false;
-      showBanner((target.name)+' tumbang!');
-    }
-  } else {
-    spawnFloatText(tileEl, 'Meleset', true);
-  }
 
   state.pendingAction = null;
-  render();
-  checkBattleEnd();
+  render(); // segarkan AP/ammo dulu; damage diterapkan saat animasi menyentuh target
+
+  animateAttack(p.id, target.id, ()=>{
+    const tileEl = findUnitTileEl(target.id);
+    if(roll<=hitChance){
+      let dmg = Math.round(rand(w.dmgMin,w.dmgMax));
+      dmg = Math.max(1, Math.round(dmg - target.armor*0.3));
+      const isCrit = dmg >= w.dmgMax - 1 && w.dmgMax > w.dmgMin;
+      target.hp -= dmg;
+      spawnFloatText(tileEl, '-'+dmg, false, isCrit);
+      if(target.hp<=0){
+        target.hp = 0;
+        target.alive = false;
+        showBanner((target.name)+' tumbang!');
+      }
+    } else {
+      spawnFloatText(tileEl, 'Meleset', true, false);
+    }
+    render();
+    checkBattleEnd();
+  });
+}
+
+/* ---------------- ANIMASI SERANG ----------------
+   Token penyerang "menerjang" ke arah target (lunge), lalu saat
+   kontak: kilatan pada target + guncangan papan + angka damage.
+   Semua berbasis CSS (GPU) agar mulus di WebView Android. */
+function animateAttack(attackerId, targetId, onHit){
+  const aEl = findUnitTileEl(attackerId);
+  const tEl = findUnitTileEl(targetId);
+  const aTok = aEl ? aEl.querySelector('.unitTok') : null;
+  const tTok = tEl ? tEl.querySelector('.unitTok') : null;
+
+  if(aEl && tEl && aTok){
+    const ar = aEl.getBoundingClientRect();
+    const tr = tEl.getBoundingClientRect();
+    // Terjang 45% jarak menuju target
+    const dx = (tr.left - ar.left) * 0.45;
+    const dy = (tr.top - ar.top) * 0.45;
+    aTok.style.setProperty('--lx', dx.toFixed(1)+'px');
+    aTok.style.setProperty('--ly', dy.toFixed(1)+'px');
+    aTok.classList.add('ds-lunge');
+    setTimeout(()=>{ if(aTok.isConnected) aTok.classList.remove('ds-lunge'); }, 420);
+  }
+
+  // Efek kena (disinkronkan dengan momen kontak lunge)
+  setTimeout(()=>{
+    const tok = tEl ? tEl.querySelector('.unitTok') : tTok;
+    if(tok && tok.isConnected){
+      tok.classList.add('ds-hit');
+      setTimeout(()=>{ if(tok.isConnected) tok.classList.remove('ds-hit'); }, 340);
+    }
+    const wrap = document.getElementById('boardWrap');
+    if(wrap){
+      wrap.classList.add('ds-shake');
+      setTimeout(()=>wrap.classList.remove('ds-shake'), 360);
+    }
+    if(typeof onHit === 'function') onHit();
+  }, 140);
 }
 
 function checkHazard(unit){
@@ -360,14 +426,14 @@ function findUnitTileEl(unitId){
   return document.getElementById('board').children[idx] || null;
 }
 
-function spawnFloatText(tileEl, text, isMiss){
+function spawnFloatText(tileEl, text, isMiss, isCrit){
   if(!tileEl) return;
   const d = document.createElement('div');
-  d.className = 'dmgFloat'+(isMiss?' miss':'');
+  d.className = 'dmgFloat'+(isMiss?' miss':'')+(isCrit?' crit':'');
   d.textContent = text;
   d.style.left = '50%'; d.style.top='10%'; d.style.transform='translateX(-50%)';
   tileEl.appendChild(d);
-  setTimeout(()=>d.remove(),800);
+  setTimeout(()=>d.remove(),900);
 }
 
 function showBanner(text){
@@ -432,14 +498,17 @@ function enemyAct(e){
       const nd = Math.max(Math.abs(c.x-p.x), Math.abs(c.y-p.y));
       if(nd<bestD){ bestD=nd; best=c; }
     });
-    if(best){ e.x=best.x; e.y=best.y; checkHazard(e); }
+    if(best){ e.x=best.x; e.y=best.y; render(); checkHazard(e); } // render dulu supaya lunge & efek hazard tepat posisi
   }
   if(dist(e,p)<=1 && p.alive){
-    const dmg = Math.round(rand(e.dmgMin,e.dmgMax));
-    const realDmg = Math.max(1, Math.round(dmg - p.armor*0.3));
-    p.hp -= realDmg;
-    const el = findUnitTileEl(p.id);
-    spawnFloatText(el, '-'+realDmg, false);
+    animateAttack(e.id, p.id, ()=>{
+      const dmg = Math.round(rand(e.dmgMin,e.dmgMax));
+      const realDmg = Math.max(1, Math.round(dmg - p.armor*0.3));
+      p.hp -= realDmg;
+      const el = findUnitTileEl(p.id);
+      spawnFloatText(el, '-'+realDmg, false, false);
+      render();
+    });
   }
 }
 
@@ -505,7 +574,7 @@ function start(config){
   }, config.player);
   player.maxArmor = player.armor;
   player.ap = player.maxAp;
-  player.weapons.forEach(w=>{ if(w.ammo===undefined) w.ammo=null; if(w.maxAmmo===undefined) w.maxAmmo=w.ammo; w.range = w.range || (w.icon==='🔪'?1:5); });
+  player.weapons.forEach(w=>{ if(w.ammo===undefined) w.ammo=null; if(w.maxAmmo===undefined) w.maxAmmo=w.ammo; w.iconName = w.iconName || (window.Icons ? Icons.iconName(w.icon) : 'question'); w.range = w.range || (w.iconName==='knife'?1:5); });
 
   const spawnSpots = [];
   for(let x=1;x<cols-1;x++) spawnSpots.push({x,y:0});

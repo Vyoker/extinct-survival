@@ -11,8 +11,20 @@
 
     const btnStart = document.getElementById('btn-start-game');
     const btnContinue = document.getElementById('btn-continue-game');
+    const btnCloudRestore = document.getElementById('btn-cloud-restore');
     const inputName = document.getElementById('input-username');
     const inputLocation = document.getElementById('input-start-location');
+
+    // Tampilkan versi app di layar login
+    const versionEl = document.getElementById('login-version');
+    if (versionEl && window.APP_VERSION) versionEl.textContent = 'v' + window.APP_VERSION;
+
+    if (btnCloudRestore) {
+      btnCloudRestore.addEventListener('click', () => {
+        if (window.CloudSave) CloudSave.open('restore');
+        else Events.emit('notify', { message: 'Modul cloud save belum termuat.', type: 'error' });
+      });
+    }
 
     // Jika ada save sebelumnya, tampilkan tombol lanjutkan
     if (GameState.hasSave()) {

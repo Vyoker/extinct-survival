@@ -30,6 +30,10 @@ const Topup = (function () {
   const QRIS_IMAGE = 'assets/images/qris-afistore.jpg';
   const MERCHANT_NAME = 'Afistore';
 
+  function IC(name) {
+    return window.Icons ? Icons.svg(name) : '';
+  }
+
   let packagesCache = null;
   let pollHandle = null;
   let countdownHandle = null;
@@ -92,7 +96,7 @@ const Topup = (function () {
         ${packages.map(p => `
           <div class="topup-package-card" data-package="${p.id}">
             ${p.bonusLabel ? `<div class="topup-bonus-tag">${p.bonusLabel}</div>` : ''}
-            <div class="topup-package-kredit">💎 ${p.kredit.toLocaleString('id-ID')}</div>
+            <div class="topup-package-kredit">${IC('gem')} ${p.kredit.toLocaleString('id-ID')}</div>
             <div class="topup-package-label">${p.label}</div>
             <div class="topup-package-price">${formatRupiah(p.priceRupiah)}</div>
           </div>
@@ -105,11 +109,11 @@ const Topup = (function () {
     const packages = await fetchPackages();
     return `
       <div class="overlay-header">
-        <span class="overlay-title">💳 Top Up Kredit</span>
+        <span class="overlay-title">${IC('card')} Top Up Kredit</span>
         <button class="overlay-close-btn" id="topup-close">✕</button>
       </div>
       <div class="card">
-        <div class="card-row"><span>Kredit kamu</span><span>💎 ${getPlayer().currency.kredit.toLocaleString('id-ID')}</span></div>
+        <div class="card-row"><span>Kredit kamu</span><span>${IC('gem')} ${getPlayer().currency.kredit.toLocaleString('id-ID')}</span></div>
       </div>
       <p style="font-size:11px; color:var(--text-dim); margin-bottom:10px; line-height:1.6;">
         Pilih paket, bayar via QRIS, lalu tunggu verifikasi. Prosesnya
@@ -135,7 +139,7 @@ const Topup = (function () {
   function renderPaymentScreen(order) {
     return `
       <div class="overlay-header">
-        <span class="overlay-title">💳 Selesaikan Pembayaran</span>
+        <span class="overlay-title">${IC('card')} Selesaikan Pembayaran</span>
         <button class="overlay-close-btn" id="topup-close">✕</button>
       </div>
 
@@ -146,7 +150,7 @@ const Topup = (function () {
 
       <div class="card">
         <div class="card-row"><span>Kode Order</span><span class="topup-order-code">${order.orderCode}</span></div>
-        <div class="card-row"><span>Paket</span><span>💎 ${order.kredit.toLocaleString('id-ID')} Kredit</span></div>
+        <div class="card-row"><span>Paket</span><span>${IC('gem')} ${order.kredit.toLocaleString('id-ID')} Kredit</span></div>
         <div class="card-row topup-amount-row">
           <span>Transfer TEPAT sejumlah</span>
           <span class="topup-amount-value">${formatRupiah(order.uniqueAmount)}</span>
@@ -155,12 +159,12 @@ const Topup = (function () {
       </div>
 
       <p style="font-size:11px; color:var(--accent-orange); line-height:1.6; margin-bottom:10px;">
-        ⚠️ Nominal harus PAS sampai 3 digit terakhir — ini kode unik supaya
+        ${IC('alert')} Nominal harus PAS sampai 3 digit terakhir — ini kode unik supaya
         transfermu gampang ditemukan admin saat verifikasi manual. Kalau
         dibulatkan, verifikasi bisa lebih lama atau gagal cocok.
       </p>
 
-      <button class="action-btn" id="topup-check-status">🔄 Saya Sudah Bayar / Cek Status</button>
+      <button class="action-btn" id="topup-check-status">${IC('refresh')} Saya Sudah Bayar / Cek Status</button>
       <button class="action-btn secondary" id="topup-cancel">Batalkan Order</button>
       <p id="topup-status-line" style="font-size:11px; color:var(--text-dim); text-align:center; margin-top:6px;"></p>
     `;
@@ -205,7 +209,7 @@ const Topup = (function () {
         GameState.save();
         clearPending();
         Events.emit('player:updated');
-        Events.emit('notify', { message: `✅ Topup berhasil! +💎${data.kredit} Kredit masuk.` });
+        Events.emit('notify', { message: `Topup berhasil! +${data.kredit} Kredit masuk.` });
         OverlayManager.close(currentOverlayId);
         return;
       }
@@ -251,7 +255,7 @@ const Topup = (function () {
 
   async function createOrder(packageId, panel) {
     panel.innerHTML = `
-      <div class="overlay-header"><span class="overlay-title">💳 Top Up Kredit</span></div>
+      <div class="overlay-header"><span class="overlay-title">${IC('card')} Top Up Kredit</span></div>
       <p style="font-size:12px; color:var(--text-dim); text-align:center; padding:20px 0;">Membuat order...</p>
     `;
     const p = getPlayer();
@@ -264,7 +268,7 @@ const Topup = (function () {
       const data = await res.json();
       if (!res.ok) {
         panel.innerHTML = `
-          <div class="overlay-header"><span class="overlay-title">💳 Top Up Kredit</span><button class="overlay-close-btn" id="topup-close">✕</button></div>
+          <div class="overlay-header"><span class="overlay-title">${IC('card')} Top Up Kredit</span><button class="overlay-close-btn" id="topup-close">✕</button></div>
           <p style="font-size:12px; color:var(--accent-red);">${data.error || 'Gagal membuat order.'}</p>
         `;
         const closeBtn = panel.querySelector('#topup-close');

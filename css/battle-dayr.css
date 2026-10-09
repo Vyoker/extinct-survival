@@ -1,0 +1,415 @@
+/**
+ * Battle Theme "Day R" — v0.3.1
+ * Tampilan battle ala Day R Survival: panel gelap kehijauan dengan
+ * bingkai rivet, kartu aksi parchment, kartu musuh gelap, dan arena
+ * khaki dengan highlight hijau terang. Animasi (lunge, hit flash,
+ * shake) dari design.css dipertahankan.
+ *
+ * Layout: 3 kolom di layar lebar (aksi | arena | musuh), menumpuk
+ * otomatis di portrait sempit.
+ */
+
+/* ============ LAYOUT ============ */
+#screen-battle-tactical {
+  background: #0e0c07;
+}
+#battle-layout {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 158px minmax(0, 1fr) 132px;
+  gap: 6px;
+  padding: 6px;
+}
+#battle-side {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+  min-width: 0;
+}
+#battle-foes {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+.foes-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #a89a72;
+  text-align: center;
+  padding: 4px 0;
+  text-transform: uppercase;
+}
+
+/* ============ PANEL GELAP (rivet) ============ */
+.drk-panel {
+  background:
+    radial-gradient(circle at 6px 6px, rgba(255,255,255,0.09) 2px, transparent 2.5px),
+    radial-gradient(circle at calc(100% - 6px) 6px, rgba(255,255,255,0.09) 2px, transparent 2.5px),
+    radial-gradient(circle at 6px calc(100% - 6px), rgba(255,255,255,0.09) 2px, transparent 2.5px),
+    radial-gradient(circle at calc(100% - 6px) calc(100% - 6px), rgba(255,255,255,0.09) 2px, transparent 2.5px),
+    linear-gradient(180deg, #2c2718 0%, #1e1b11 100%);
+  border: 1px solid #5c5138;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 3px 10px rgba(0,0,0,0.5);
+}
+
+/* ============ KARTU PEMAIN ============ */
+#battle-side #topbar {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 8px;
+  border-bottom: 1px solid #5c5138;
+  background:
+    radial-gradient(circle at 6px 6px, rgba(255,255,255,0.09) 2px, transparent 2.5px),
+    radial-gradient(circle at calc(100% - 6px) 6px, rgba(255,255,255,0.09) 2px, transparent 2.5px),
+    linear-gradient(180deg, #2c2718 0%, #1e1b11 100%);
+  border: 1px solid #5c5138;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 3px 10px rgba(0,0,0,0.5);
+}
+#battle-side #pAvatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #4a4232, #171410);
+  border: 2px solid #8a7442;
+  box-shadow: 0 0 0 2px #14110a, 0 2px 6px rgba(0,0,0,0.6);
+  color: #e8c26a;
+  flex: 0 0 auto;
+}
+#battle-side #pAvatar .xicon { width: 26px; height: 26px; }
+#battle-side #pInfo { flex: 1; min-width: 0; }
+#battle-side #pName {
+  color: #e8c26a;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#battle-side .barRow { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
+#battle-side .barLabel { color: #8fd14f; display: inline-flex; width: 14px; justify-content: center; }
+#battle-side .barLabel .xicon { width: 13px; height: 13px; }
+#battle-side .barTrack {
+  flex: 1;
+  height: 9px;
+  border-radius: 5px;
+  background: #0b0a06;
+  border: 1px solid #000;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
+  overflow: hidden;
+}
+#battle-side .barFill.hp { background: linear-gradient(180deg, #a8e063, #5a9c2c); }
+#battle-side .barFill.arm { background: linear-gradient(180deg, #7ec4ef, #3d7fb0); }
+#battle-side .barVal { font-size: 11px; font-weight: 800; color: #d8cfae; min-width: 40px; text-align: right; }
+
+#battle-side #apPips { display: flex; gap: 4px; margin-top: 6px; }
+#battle-side .pip {
+  width: 16px; height: 18px;
+  background: none; border: none; border-radius: 0;
+  color: #4a4232;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+#battle-side .pip .xicon { width: 100%; height: 100%; }
+#battle-side .pip.filled { color: #f5b942; filter: drop-shadow(0 0 3px rgba(245,185,66,0.7)); }
+
+#battle-side #turnTag {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #2c3a1a, #1c2612);
+  color: #a8e063;
+  border: 1px solid #4a5a2c;
+}
+#battle-side #turnTag.enemyTurn {
+  background: linear-gradient(180deg, #3a1e1a, #26120f);
+  color: #ff8f85;
+  border-color: #5a2c22;
+  animation: none;
+}
+
+/* ============ KARTU AKSI (parchment) ============ */
+#battle-side #actionRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  padding-bottom: 2px;
+}
+#battle-side #actionRow::-webkit-scrollbar { display: none; }
+#actionRow .actBtn {
+  position: relative;
+  background: linear-gradient(180deg, #d9c9a2 0%, #c2ab7d 100%);
+  border: 1px solid #6b5a38;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 6px rgba(0,0,0,0.45);
+  color: #3a2f1c;
+  padding: 7px 8px;
+  min-width: 0;
+  text-align: left;
+  cursor: pointer;
+}
+#actionRow .actBtn:active { transform: scale(0.97); }
+#actionRow .actBtn.disabled { opacity: 0.45; filter: grayscale(0.6); }
+#actionRow .actBtn.active {
+  outline: 2px solid #f59e0b;
+  outline-offset: 1px;
+  box-shadow: 0 0 10px rgba(245,158,11,0.55), inset 0 1px 0 rgba(255,255,255,0.5);
+  background: linear-gradient(180deg, #e8d6ab 0%, #d0b988 100%);
+}
+#actionRow .actBody { display: flex; gap: 8px; align-items: center; }
+#actionRow .actIcon {
+  width: 40px; height: 40px; flex: 0 0 auto;
+  background: linear-gradient(180deg, #efe3c2, #d6c096);
+  border: 1px solid #8a7442;
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  color: #4a3a1e;
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.6);
+}
+#actionRow .actIcon .xicon { width: 24px; height: 24px; }
+#actionRow .actIcon img {
+  width: 100%; height: 100%; object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+}
+#actionRow .actMeta { flex: 1; min-width: 0; }
+#actionRow .actBtn .lbl {
+  font-size: 12px; font-weight: 800; color: #3a2f1c;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin: 0;
+}
+#actionRow .actStats { display: flex; gap: 8px; margin-top: 3px; font-size: 10px; font-weight: 700; color: #5c4a28; }
+#actionRow .actStats .xicon { width: 11px; height: 11px; vertical-align: -1px; margin-right: 2px; }
+#actionRow .apBadge {
+  position: absolute; top: -7px; right: -5px;
+  display: inline-flex; align-items: center; gap: 2px;
+  background: radial-gradient(circle at 35% 30%, #ffe9b0, #d99a1f);
+  border: 1px solid #7a5a12;
+  color: #3a2408;
+  font-size: 10px; font-weight: 800;
+  border-radius: 10px;
+  padding: 2px 7px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+#actionRow .apBadge .xicon { width: 11px; height: 11px; }
+
+/* ============ KARTU MUSUH (panel kanan) ============ */
+#battle-foes #enemyStrip {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  padding: 2px;
+  background: none;
+  border: none;
+}
+#battle-foes #enemyStrip::-webkit-scrollbar { display: none; }
+#enemyStrip .eCard {
+  width: 100%;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  text-align: left;
+  background:
+    radial-gradient(circle at 6px 6px, rgba(255,255,255,0.07) 1.5px, transparent 2px),
+    linear-gradient(180deg, #2c2718 0%, #1c1911 100%);
+  border: 1px solid #5c5138;
+  border-radius: 6px;
+  padding: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+#enemyStrip .eCard.dead { opacity: 0.35; filter: grayscale(1); }
+#enemyStrip .eCard.targetable {
+  border-color: #f59e0b;
+  box-shadow: 0 0 10px rgba(245,158,11,0.6);
+  animation: ds-floatY 1.6s ease-in-out infinite;
+}
+#enemyStrip .eCard.acting {
+  border-color: #e8c26a;
+  box-shadow: 0 0 12px rgba(232,194,106,0.7);
+}
+#enemyStrip .eIcon {
+  width: 42px; height: 42px; flex: 0 0 auto;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #3d3626, #14110a);
+  border: 2px solid #6b5f43;
+  display: flex; align-items: center; justify-content: center;
+  color: #ffb35c;
+  padding: 0;
+}
+#enemyStrip .eIcon .xicon { width: 24px; height: 24px; }
+#enemyStrip .eBody { flex: 1; min-width: 0; }
+#enemyStrip .eName {
+  font-size: 10px; font-weight: 800; color: #e8c26a;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  border-bottom: 1px solid rgba(232,194,106,0.2);
+  padding-bottom: 2px; margin-bottom: 3px;
+}
+#enemyStrip .eHpTrack { height: 7px; border-radius: 4px; background: #0b0a06; border: 1px solid #000; overflow: hidden; }
+#enemyStrip .eHpFill { height: 100%; background: linear-gradient(180deg, #a8e063, #5a9c2c); transition: width 0.35s ease; }
+#enemyStrip .eHpVal { font-size: 10px; font-weight: 800; color: #a8e063; margin-top: 1px; }
+#enemyStrip .eMeta { display: flex; gap: 8px; margin-top: 2px; font-size: 9px; font-weight: 700; color: #a89a72; }
+#enemyStrip .eMeta .xicon { width: 10px; height: 10px; vertical-align: -1px; margin-right: 2px; }
+#enemyStrip .eMeta .dmg { color: #f0a05c; }
+
+/* ============ ARENA KHAKI ============ */
+#screen-battle-tactical #boardWrap {
+  background:
+    radial-gradient(ellipse at 18% 22%, rgba(70, 52, 28, 0.35), transparent 55%),
+    radial-gradient(ellipse at 85% 75%, rgba(70, 52, 28, 0.3), transparent 50%),
+    radial-gradient(ellipse at 60% 10%, rgba(255, 244, 214, 0.12), transparent 45%),
+    linear-gradient(180deg, #c4b183 0%, #b09a6e 60%, #a28a5f 100%);
+  border: 1px solid #5c5138;
+  border-radius: 6px;
+  box-shadow: inset 0 0 40px rgba(60, 42, 20, 0.45);
+  overflow: auto;
+}
+#screen-battle-tactical #board {
+  background: rgba(20, 14, 8, 0.55);
+  border: 2px solid #4a3f28;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5), inset 0 0 24px rgba(0,0,0,0.6);
+  gap: 2px;
+  padding: 4px;
+}
+#screen-battle-tactical .tile {
+  background: linear-gradient(135deg, rgba(214, 196, 152, 0.16), rgba(120, 96, 60, 0.14));
+  border: 1px solid rgba(74, 58, 34, 0.35);
+  border-radius: 3px;
+  color: #6e5c3c;
+}
+#screen-battle-tactical .tile.blocked {
+  background: linear-gradient(135deg, rgba(90, 70, 44, 0.35), rgba(60, 46, 28, 0.3));
+  color: #57492f;
+}
+#screen-battle-tactical .tile.moveHint {
+  background: rgba(184, 243, 74, 0.55);
+  box-shadow: inset 0 0 0 2px rgba(120, 200, 40, 0.9), 0 0 12px rgba(184, 243, 74, 0.65);
+  cursor: pointer;
+}
+#screen-battle-tactical .tile.atkHint {
+  background: rgba(245, 158, 11, 0.4);
+  box-shadow: inset 0 0 0 2px rgba(245, 158, 11, 0.9), 0 0 10px rgba(245,158,11,0.5);
+  cursor: pointer;
+}
+#screen-battle-tactical .tile.hazard {
+  background: linear-gradient(135deg, rgba(140, 40, 36, 0.45), rgba(80, 20, 18, 0.4));
+  box-shadow: inset 0 0 0 1px rgba(229, 72, 77, 0.55);
+}
+#screen-battle-tactical .tile.exit {
+  background: linear-gradient(135deg, rgba(86, 182, 232, 0.35), rgba(40, 90, 120, 0.3));
+  box-shadow: inset 0 0 0 2px rgba(86, 182, 232, 0.75);
+}
+
+#screen-battle-tactical .unitTok {
+  border-radius: 50%;
+  border: 2px solid #2b2b2b;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.2);
+}
+#screen-battle-tactical .unitTok.playerTok {
+  border-color: #d8b25c;
+  box-shadow: 0 0 10px rgba(216,178,92,0.55), 0 3px 8px rgba(0,0,0,0.6);
+}
+#screen-battle-tactical .unitTok.enemyTok { border-color: #7a4a2a; }
+#screen-battle-tactical .unitTok.selectedTarget {
+  border-color: #e5484d;
+  box-shadow: 0 0 12px rgba(229,72,77,0.85);
+}
+
+/* ============ DOCK BAWAH ============ */
+#screen-battle-tactical #dock {
+  background: linear-gradient(180deg, #241f13, #14110a);
+  border-top: 1px solid #5c5138;
+  padding: 8px;
+}
+#screen-battle-tactical #bottomRow { display: flex; gap: 8px; }
+#screen-battle-tactical #endTurnBtn {
+  flex: 1;
+  background: linear-gradient(180deg, #d9c9a2 0%, #c2ab7d 100%);
+  border: 1px solid #6b5a38;
+  border-radius: 6px;
+  color: #3a2f1c;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 11px 6px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 6px rgba(0,0,0,0.45);
+}
+#screen-battle-tactical #endTurnBtn:active { transform: scale(0.97); filter: brightness(1.06); }
+#screen-battle-tactical #fleeBtn {
+  flex: 0 0 96px;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  background: linear-gradient(180deg, #5a2c26, #3a1c17);
+  border: 1px solid #6e3a32;
+  border-radius: 6px;
+  color: #f0c9c2;
+  font-weight: 700; font-size: 12px;
+}
+#screen-battle-tactical #fleeBtn:active { transform: scale(0.96); }
+#screen-battle-tactical #fleeBtn.disabled { opacity: 0.35; }
+#screen-battle-tactical #fleeBtn .xicon { width: 15px; height: 15px; }
+
+/* ============ MODAL & BANNER ============ */
+#screen-battle-tactical #modalBox {
+  background: linear-gradient(180deg, #2c2718, #1a1710);
+  border: 1px solid #8a7442;
+  border-radius: 10px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+#screen-battle-tactical #modalTitle { letter-spacing: 2px; text-transform: uppercase; }
+#screen-battle-tactical #modalDesc { color: #c9bd97; }
+#screen-battle-tactical #modalBtn {
+  background: linear-gradient(180deg, #d9c9a2, #c2ab7d);
+  border: 1px solid #6b5a38;
+  border-radius: 6px;
+  color: #3a2f1c;
+  font-weight: 800;
+  padding: 10px 34px;
+}
+#screen-battle-tactical #banner {
+  background: linear-gradient(180deg, #e8d6ab, #c2a05c);
+  color: #3a2a10;
+  border: 1px solid #7a5a12;
+  border-radius: 8px;
+  letter-spacing: 1px;
+}
+
+/* ============ PORTRAIT SEMPIT: tumpuk vertikal ============ */
+@media (max-width: 640px) {
+  #battle-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 5px;
+    padding: 5px;
+  }
+  #battle-foes { grid-row: 1; min-height: 0; }
+  #battle-foes .foes-title { display: none; }
+  #battle-foes #enemyStrip {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  #enemyStrip .eCard { flex: 0 0 168px; }
+  #boardWrap { grid-row: 2; }
+  #battle-side { grid-row: 3; }
+  #battle-side #topbar { padding: 6px; }
+  #battle-side #pAvatar { width: 38px; height: 38px; }
+  #battle-side #turnTag { padding: 3px 6px; font-size: 9px; }
+  #battle-side #actionRow {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  #actionRow .actBtn { flex: 0 0 150px; }
+}

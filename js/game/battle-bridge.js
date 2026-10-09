@@ -33,6 +33,10 @@ const BattleBridge = (function () {
     const weaponEntry = {
       name: weaponDef ? weaponDef.name : 'Tangan Kosong',
       icon: weaponDef ? '🔪' : '👊',
+      iconName: weaponDef ? 'knife' : 'fist',
+      // v0.3.2: pakai gambar aset asli item (mis. machete.webp) untuk
+      // icon senjata di battle, bukan lagi icon SVG generik.
+      iconImg: weaponDef && weaponDef.icon ? 'assets/images/items/' + weaponDef.icon : null,
       apCost: 1,
       dmgMin, dmgMax,
       range: 1,

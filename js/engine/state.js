@@ -279,5 +279,29 @@ const GameState = (function () {
     state = null;
   }
 
-  return { hasSave, load, save, init, get, startAutosave, stopAutosave, reset, migrateEquipmentDurability };
+  // Ekspor seluruh state untuk cloud save (dipakai CloudSave).
+  // Mengembalikan objek siap-JSON: { app, appVersion, exportedAt, save }.
+  function exportSave() {
+    if (!state) return null;
+    return {
+      app: 'extinct-survival',
+      appVersion: window.APP_VERSION || '0.0.0',
+      exportedAt: Date.now(),
+      save: JSON.parse(JSON.stringify(state))
+    };
+  }
+
+  // Impor save dari cloud: validasi bentuk, migrasi skema lama,
+  // lalu jadikan state aktif + simpan lokal. Melempar Error kalau
+  // format tidak valid.
+  function importSave(payload) {
+    if (!payload || typeof payload !== 'object' || !payload.save || !payload.save.player) {
+      throw new Error('Format data cloud tidak valid.');
+    }
+    state = migrate(JSON.parse(JSON.stringify(payload.save)));
+    save();
+    return state;
+  }
+
+  return { hasSave, load, save, init, get, startAutosave, stopAutosave, reset, migrateEquipmentDurability, exportSave, importSave };
 })();
