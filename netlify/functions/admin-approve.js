@@ -20,7 +20,8 @@ exports.handler = async (event) => {
   const key = `order:${orderCode}`;
   const order = await store.get(key, { type: 'json' });
   if (!order) return json(404, { error: 'Order tidak ditemukan.' });
-  if (order.status !== 'pending' && order.status !== 'expired') {
+  // v0.3.4: "paid" = player sudah klik "Saya Sudah Bayar", tinggal verifikasi.
+  if (order.status !== 'pending' && order.status !== 'expired' && order.status !== 'paid') {
     return json(409, { error: `Order sudah berstatus ${order.status}, tidak bisa di-approve lagi.` });
   }
 

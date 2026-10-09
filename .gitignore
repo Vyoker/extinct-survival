@@ -1,0 +1,21 @@
+# === Rahasia lokal: JANGAN di-push ke GitHub ===
+.env
+.env.*
+!.env.example
+
+# === Log & sampah editor ===
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# === Dependencies lokal (kalau pakai netlify-cli / tooling di Termux) ===
+node_modules/
+__pycache__/
+*.pyc
+venv/
+
+# CATATAN: file QRIS (assets/images/qris-afistore.jpg) dan folder
+# netlify/functions SENGAJA tidak di-exclude — keduanya harus ikut ke-push
+# agar Top Up & Cloud Save jalan di Netlify.

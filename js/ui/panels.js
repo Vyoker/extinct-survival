@@ -775,6 +775,11 @@ const Panels = (function () {
   ];
 
   let menuFlyoutOpen = false;
+  // v0.3.3: timestamp flyout terakhir dibuka. WebView Android kadang
+  // mengirim klik ganda "hantu" ~300ms setelah tap; tanpa jeda ini, klik
+  // hantu langsung menutup flyout yang baru dibuka (bug: menu "langsung
+  // hilang" sehingga user harus double-tap/spam).
+  let flyoutOpenedAt = 0;
 
   function renderMenuFlyoutPills() {
     return FLYOUT_ITEMS.map(it => `
@@ -783,7 +788,12 @@ const Panels = (function () {
   }
 
   function openMenuFlyout() {
-    if (menuFlyoutOpen) { closeMenuFlyout(); return; }
+    const now = Date.now();
+    if (menuFlyoutOpen) {
+      if (now - flyoutOpenedAt < 450) return; // abaikan klik-tutup hantu
+      closeMenuFlyout();
+      return;
+    }
 
     const wrap = document.createElement('div');
     wrap.className = 'menu-flyout-wrap';
@@ -798,6 +808,7 @@ const Panels = (function () {
     document.body.appendChild(backdrop);
 
     requestAnimationFrame(() => wrap.classList.add('show'));
+    flyoutOpenedAt = Date.now();
     menuFlyoutOpen = true;
 
     const menuBtn = document.getElementById('btn-nav-menu');

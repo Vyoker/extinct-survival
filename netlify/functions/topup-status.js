@@ -11,6 +11,9 @@ exports.handler = async (event) => {
   if (!order) return json(404, { status: 'not_found' });
 
   const now = Date.now();
+  // v0.3.4: hanya "pending" yang bisa kedaluwarsa otomatis. Status "paid"
+  // (player sudah klik "Saya Sudah Bayar") dikunci menunggu verifikasi
+  // manual admin — tidak boleh hilang sendiri.
   if (order.status === 'pending' && now > order.expiresAt) {
     order.status = 'expired';
     await store.setJSON(key, order);
@@ -21,6 +24,10 @@ exports.handler = async (event) => {
     order.claimedAt = now;
     await store.setJSON(key, order);
     return json(200, { status: 'approved', kredit: order.kredit, orderCode: order.orderCode });
+  }
+
+  if (order.status === 'paid') {
+    return json(200, { status: 'paid', kredit: order.kredit, orderCode: order.orderCode });
   }
 
   if (order.status === 'claimed') return json(200, { status: 'claimed' });

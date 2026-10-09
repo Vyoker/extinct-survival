@@ -91,3 +91,43 @@ manual.
   `topup-create.js`) — order lama yang tidak diapprove tetap tersimpan
   berstatus `expired` tapi masih bisa di-approve manual kalau ternyata
   transfernya baru ketahuan belakangan.
+
+## Kirim Kredit Manual (v0.3.3)
+
+Kalau order topup bermasalah (mis. player menutup panel sebelum admin
+approve sehingga kredit tidak ter-klaim), admin bisa kirim kredit
+langsung tanpa lewat order:
+
+1. Minta **kode save** player (player: Menu → Simpan Online → salin kode).
+2. Buka `/admin/index2.html` → kartu **Kirim Kredit Manual**.
+3. Isi kode save + jumlah kredit + catatan (opsional) → **Kirim Kredit**.
+4. Kredit masuk otomatis di game player (±30 detik, perlu internet),
+   lengkap dengan notifikasi "Kredit masuk!". Riwayat di dashboard
+   berubah dari TERKIRIM menjadi DITERIMA setelah game player ack.
+
+Catatan teknis:
+- Grant disimpan di Netlify Blobs store `credits`, key `grant:<KODE16>`.
+- Player yang belum pernah Simpan Online tidak punya kode → tidak bisa
+  menerima kiriman manual (minta player Simpan Online dulu).
+- Tidak perlu environment variable baru — pakai `ADMIN_PASSWORD`
+  yang sama seperti order topup.
+
+## Status "paid" — tombol "Saya Sudah Bayar" (v0.3.4)
+
+Alur topup sekarang:
+
+1. Player pilih paket → order `pending`, bayar via QRIS tepat nominal unik.
+2. Player klik **"Saya Sudah Bayar"** → `POST topup-confirm` → order
+   dikunci jadi `paid`. Layar berubah jadi "Menunggu verifikasi admin".
+3. Order `paid` **tidak bisa kedaluwarsa sendiri** (server tidak
+   meng-expire-nya). Menu Top Up selalu me-resume order ini, bahkan
+   setelah app ditutup.
+4. Admin lihat badge **SUDAH BAYAR** (+ jam bayar) di tab Pending →
+   cek mutasi → Approve/Reject manual seperti biasa.
+5. Saat approved, polling client mengubahnya jadi `claimed` dan kredit
+   masuk otomatis.
+
+Kenapa: sebelumnya countdown 30 menit menghapus pending order dari HP
+player; kalau admin approve belakangan, kredit approved tidak pernah
+ter-klaim (tidak ada yang polling). Sekarang kasus itu tertutup —
+kecuali player menekan "Batalkan Order" sendiri, order tidak hilang.

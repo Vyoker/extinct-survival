@@ -4,7 +4,7 @@
 
 **20 tahun pasca *The Great Collapse* — bertahan hidup di reruntuhan Nusantara.**
 
-`v0.3.2` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
+`v0.3.4` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
 
 </div>
 
@@ -40,7 +40,38 @@ Termux + Acode maupun di-deploy sebagai situs statis di Netlify.
 | 💳 **Top Up** | QRIS statis + verifikasi manual, backend Netlify Functions & Blobs |
 | ☁️ **Cloud Save** | Simpan & pulihkan progres via kode rahasia, backend Netlify Blobs |
 
-## 🆕 Rilis Terbaru — `v0.3.2`
+## 🆕 Rilis Terbaru — `v0.3.4`
+
+- **Topup: tombol "Saya Sudah Bayar"** — player klik tombol ini setelah
+  transfer; order dikunci berstatus `paid` (badge "SUDAH BAYAR" di
+  dashboard admin + jam bayar). Status paid **tidak bisa kedaluwarsa
+  sendiri** — menunggu verifikasi manual admin. Keputusan approve
+  tetap manual seperti sebelumnya.
+- **Menu Top Up tidak lagi kembali ke pilih paket sendiri** — order
+  pending selalu di-resume ke layar pembayaran saat menu dibuka
+  (termasuk setelah app ditutup). Countdown habis tidak lagi menghapus
+  order diam-diam; kalau benar expired, tampil layar expired dengan
+  tombol eksplisit "Buat Order Baru". Ini memperbaiki kasus kredit
+  approved tapi tidak pernah ter-klaim.
+- Endpoint baru `topup-confirm`; `topup-status` & `admin-approve`
+  mendukung status `paid`.
+
+## Rilis `v0.3.3`
+
+- **Kirim kredit manual dari admin** — dashboard admin punya form baru:
+  input kode save player + jumlah kredit + catatan. Kredit masuk
+  **otomatis** di game (poll tiap 30 detik), tanpa perlu klaim.
+  Ada riwayat kiriman (TERKIRIM/DITERIMA). Endpoint:
+  `credit-send` (admin), `credit-pending` + `credit-ack` (game),
+  `admin-credits` (riwayat). Grant di-key pakai kode save 16 karakter
+  (tidak bisa ditebak) supaya tidak bisa diklaim orang lain.
+- **Panel Top Up menampilkan kode save** player supaya gampang
+  diberikan ke admin untuk kiriman manual.
+- **Fix bug menu flyout "langsung hilang"** — WebView Android kadang
+  mengirim klik ganda hantu ~300ms setelah tap; sekarang klik-tutup
+  dalam 450ms setelah dibuka diabaikan.
+
+## Rilis `v0.3.2`
 
 - **Fix blink di menu Jelajah** — animasi entrance kartu tidak lagi
   ke-replay tiap detik saat countdown cooldown me-refresh panel
