@@ -529,6 +529,20 @@ html, body {
 #btn-nav-menu.flyout-open { color: var(--ds-gold); transform: rotate(90deg); }
 #btn-nav-menu { transition: transform 0.22s var(--ds-ease), color 0.18s ease; }
 
+/* ============ 12. MAIL (v0.3.5) ============ */
+.mail-item { margin-bottom: 10px; }
+.mail-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+.mail-head b { font-size: 13px; color: var(--text-primary); }
+.mail-time { font-size: 10px; color: var(--text-dim); white-space: nowrap; }
+.mail-body { font-size: 12px; color: var(--text-dim); line-height: 1.7; margin: 0 0 10px; }
+.mail-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.mail-kredit { font-size: 14px; font-weight: 800; color: var(--ds-gold); display: flex; align-items: center; gap: 6px; }
+.mail-kredit .xicon { width: 18px; height: 18px; }
+.mail-claim-btn { width: auto; padding: 9px 26px; margin: 0; flex-shrink: 0; }
+.empty-mail { text-align: center; padding: 36px 12px; color: var(--text-dim); }
+.empty-mail .xicon { width: 44px; height: 44px; opacity: 0.35; margin-bottom: 10px; }
+.empty-mail p { font-size: 12px; line-height: 1.7; margin: 0; }
+
 #screen-login { background: radial-gradient(ellipse at 50% 30%, #4a3a22 0%, #1c140b 65%, #0d0b07 100%); }
 .game-title {
   font-weight: 900;

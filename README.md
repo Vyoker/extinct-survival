@@ -4,7 +4,7 @@
 
 **20 tahun pasca *The Great Collapse* — bertahan hidup di reruntuhan Nusantara.**
 
-`v0.3.4` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
+`v0.3.5` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
 
 </div>
 
@@ -40,7 +40,17 @@ Termux + Acode maupun di-deploy sebagai situs statis di Netlify.
 | 💳 **Top Up** | QRIS statis + verifikasi manual, backend Netlify Functions & Blobs |
 | ☁️ **Cloud Save** | Simpan & pulihkan progres via kode rahasia, backend Netlify Blobs |
 
-## 🆕 Rilis Terbaru — `v0.3.4`
+## 🆕 Rilis Terbaru — `v0.3.5`
+
+- **Fitur Mail** — kiriman kredit manual dari admin kini masuk sebagai
+  **mail** yang harus di-**klaim** player lewat Menu → Mail (pill baru
+  di menu flyout, lengkap dengan badge jumlah). Menggantikan auto-apply
+  diam-diam v0.3.3. Mail juga jadi backup resmi untuk topup yang
+  gagal/nyangkut: admin tinggal kirim mail kompensasi dari dashboard.
+- Form kirim manual admin dapat kolom **Judul mail**.
+- Icon amplop baru di library (`mail`).
+
+## Rilis `v0.3.4`
 
 - **Topup: tombol "Saya Sudah Bayar"** — player klik tombol ini setelah
   transfer; order dikunci berstatus `paid` (badge "SUDAH BAYAR" di

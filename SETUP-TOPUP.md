@@ -131,3 +131,22 @@ Kenapa: sebelumnya countdown 30 menit menghapus pending order dari HP
 player; kalau admin approve belakangan, kredit approved tidak pernah
 ter-klaim (tidak ada yang polling). Sekarang kasus itu tertutup —
 kecuali player menekan "Batalkan Order" sendiri, order tidak hilang.
+
+## Mail — klaim kiriman manual (v0.3.5)
+
+Sejak v0.3.5, kiriman kredit manual TIDAK lagi masuk otomatis. Alurnya:
+
+1. Admin kirim dari dashboard (kode save + kredit + judul + pesan).
+2. Di game player muncul badge di pill **Mail** (Menu) + notifikasi
+   "Ada mail baru dari admin!".
+3. Player buka Menu → Mail → tekan **Klaim** → kredit masuk.
+
+Fungsi yang sama dipakai sebagai **backup topup yang gagal**:
+kalau ada order nyangkut (mis. approved tapi tidak ter-klaim),
+admin kirim mail kompensasi dengan judul mis. "Kompensasi Topup"
+dan catatan kode ordernya. Player klaim seperti biasa.
+
+Teknis: mail = grant di store Blobs `credits` (endpoint lama
+`credit-send`/`credit-pending`/`credit-ack` dipakai ulang, tanpa
+fungsi baru). Modul client: `js/game/mail.js` (menggantikan
+`js/game/credit.js` yang dihapus).

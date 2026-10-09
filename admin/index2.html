@@ -135,11 +135,12 @@
     <div class="manual-card">
       <div class="manual-title">✉️ Kirim Kredit Manual</div>
       <p class="manual-hint">Kirim langsung ke player pakai <b>kode save</b>-nya (player: Menu → Simpan Online → salin kode).
-      Kredit masuk otomatis di game, tanpa perlu klaim.</p>
+      Masuk sebagai <b>mail</b> — player klaim lewat Menu → Mail.</p>
       <div class="manual-form">
         <input id="mc-code" placeholder="Kode save: XXXX-XXXX-XXXX-XXXX" maxlength="19" autocomplete="off">
         <input id="mc-kredit" type="number" placeholder="Jumlah kredit" min="1" max="100000">
-        <input id="mc-note" placeholder="Catatan (opsional)" style="grid-column: 1 / -1;">
+        <input id="mc-title" placeholder="Judul mail (mis. Kompensasi Topup)" maxlength="60" style="grid-column: 1 / -1;">
+        <input id="mc-note" placeholder="Isi pesan (opsional)" style="grid-column: 1 / -1;">
         <button id="btn-mc-send">Kirim Kredit</button>
       </div>
       <div id="mc-result"></div>
@@ -251,6 +252,7 @@
   function sendManualCredit() {
     const code = document.getElementById('mc-code').value.trim();
     const kredit = parseInt(document.getElementById('mc-kredit').value, 10);
+    const title = document.getElementById('mc-title').value.trim();
     const note = document.getElementById('mc-note').value.trim();
     if (!code) { setMcResult('Isi kode save player dulu.', false); return; }
     if (!kredit || kredit < 1) { setMcResult('Isi jumlah kredit yang valid.', false); return; }
@@ -258,11 +260,12 @@
     apiCall('/credit-send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code: code, kredit: kredit, note: note })
+      body: JSON.stringify({ code: code, kredit: kredit, title: title, note: note })
     }).then(function (d) {
-      setMcResult('Terkirim! +' + d.grant.kredit + ' kredit ke ' + d.grant.code + '. Masuk otomatis di game player.', true);
+      setMcResult('Terkirim! +' + d.grant.kredit + ' kredit ke ' + d.grant.code + '. Player klaim lewat Menu → Mail.', true);
       document.getElementById('mc-code').value = '';
       document.getElementById('mc-kredit').value = '';
+      document.getElementById('mc-title').value = '';
       document.getElementById('mc-note').value = '';
       loadCreditLog();
     }).catch(function (e) {
@@ -287,6 +290,7 @@
         '<div class="mc-log-item">' +
           '<div class="row"><span class="mc-code">' + e.code + '</span>' +
           '<span class="badge ' + (e.claimed ? 'received' : 'sent') + '">' + (e.claimed ? 'DITERIMA' : 'TERKIRIM') + '</span></div>' +
+          (e.title ? '<div class="row"><span>Judul</span><b>' + e.title.replace(/</g, '&lt;') + '</b></div>' : '') +
           '<div class="row"><span>Kredit</span><b>💎' + Number(e.kredit).toLocaleString('id-ID') + '</b></div>' +
           (e.note ? '<div class="row"><span>Catatan</span><b>' + e.note.replace(/</g, '&lt;') + '</b></div>' : '') +
           '<div class="row"><span>Waktu</span><b>' + fmtTime(e.createdAt) + '</b></div>' +

@@ -53,6 +53,26 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  position: relative;
+}
+/* v0.3.5: badge jumlah mail belum diklaim */
+.flyout-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: #e5484d;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #14100b;
+  pointer-events: none;
 }
 .menu-flyout-pill:active {
   background: var(--accent-orange);

@@ -767,6 +767,7 @@ const Panels = (function () {
     { id: 'pass', iconName: 'ticket', action: 'pass', title: 'Pass' },
     { id: 'shop', iconName: 'store', action: 'shop', title: 'Shop' },
     { id: 'topup', iconName: 'card', action: 'topup', title: 'Top Up' },
+    { id: 'mail', iconName: 'mail', action: 'mail', title: 'Mail' },
     { id: 'quest', iconName: 'target', action: 'quest', title: 'Misi' },
     { id: 'spin', iconName: 'wheel', action: 'locked', title: 'Spin Wheel (terkunci)' },
     { id: 'mall', iconName: 'gem', action: 'toast-mall', title: 'Item Mall (segera)' },
@@ -856,6 +857,12 @@ const Panels = (function () {
       }
       case 'topup': {
         Topup.open();
+        break;
+      }
+      case 'mail': {
+        // v0.3.5: inbox kiriman admin — klaim manual ala game umumnya.
+        if (window.Mail) Mail.open();
+        else Events.emit('notify', { message: 'Modul mail belum termuat.', type: 'error' });
         break;
       }
       case 'locked':

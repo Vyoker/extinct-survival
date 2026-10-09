@@ -145,7 +145,7 @@ const Topup = (function () {
       <span class="topup-order-code" style="font-size:12px;">${code}</span>
     </div>
     <div style="font-size:10px; color:var(--text-dim); opacity:0.8; margin-top:2px;">
-      Berikan kode ini ke admin bila ingin dikirimi kredit manual — masuk otomatis.
+      Berikan kode ini ke admin bila ingin dikirimi kredit via Mail (klaim di Menu → Mail).
     </div>`;
   }
 

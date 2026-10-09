@@ -25,6 +25,8 @@ exports.handler = async (event) => {
   const code = normCode(payload.code);
   const kredit = parseInt(payload.kredit, 10);
   const note = String(payload.note || '').slice(0, 120);
+  // v0.3.5: grant juga dipakai sebagai "mail" — judul tampil di inbox player.
+  const title = String(payload.title || '').slice(0, 60) || 'Kiriman dari Admin';
 
   if (!isValidCode(code)) {
     return json(400, { error: 'Kode save tidak valid. Minta player buka Menu > Simpan Online untuk melihat kodenya.' });
@@ -39,6 +41,7 @@ exports.handler = async (event) => {
 
   const grant = {
     id: 'CR' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase(),
+    title: title,
     kredit: kredit,
     note: note,
     createdAt: Date.now(),
@@ -52,6 +55,7 @@ exports.handler = async (event) => {
   log.unshift({
     id: grant.id,
     code: fmtCode(code),
+    title: title,
     kredit: kredit,
     note: note,
     createdAt: grant.createdAt,

@@ -112,8 +112,8 @@
     // Ticker 1 detik untuk update countdown cooldown (Scavenge/Travel)
     setInterval(() => Panels.tick(), 1000);
 
-    // v0.3.3: sinkron kiriman kredit manual dari admin (tiap 30 detik)
-    if (window.CreditSync) CreditSync.start();
+    // v0.3.5: cek mail (kiriman admin) berkala untuk badge
+    if (window.Mail) Mail.start();
 
     Events.on('player:updated', () => Renderer.renderHUD());
 
