@@ -160,6 +160,8 @@ const BattleBridge = (function () {
   // Titik masuk utama: dipanggil dari panels.js saat pemain pilih target Hunting
   function startHunt(enemyDef, onFinish) {
     Renderer.showScreen('screen-battle-tactical');
+    // v0.3.9: BGM battle (fallback ke main bila file belum ada)
+    if (window.AudioManager) AudioManager.playBgm('battle');
 
     window.ExtinctBattle.start({
       cols: 7,

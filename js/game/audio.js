@@ -13,7 +13,13 @@ const AudioManager = (function () {
   'use strict';
 
   const PREF_KEY = 'extinct_survival_audio';
-  const BGM_SRC = 'assets/audio/bgm-main.mp3';
+  // v0.3.9: peta track BGM. 'battle' otomatis fallback ke 'main'
+  // kalau file-nya belum ada (404) — tinggal taruh file-nya nanti.
+  const BGM_TRACKS = {
+    main: 'assets/audio/bgm-main.mp3',
+    battle: 'assets/audio/bgm-battle.mp3'
+  };
+  let bgmTrack = 'main';
 
   const prefs = { bgm: 70, sfx: 80, muted: false };
 
@@ -194,25 +200,56 @@ const AudioManager = (function () {
   function ensureBgm() {
     if (bgmEl) return bgmEl;
     try {
-      bgmEl = new Audio(BGM_SRC);
+      bgmEl = new Audio(BGM_TRACKS[bgmTrack] || BGM_TRACKS.main);
       bgmEl.loop = true;
       bgmEl.preload = 'auto';
+      // Kalau file track tidak ada (mis. bgm-battle.mp3 belum dibuat),
+      // diam-diam fallback ke track utama.
+      bgmEl.addEventListener('error', function onErr() {
+        bgmEl.removeEventListener('error', onErr);
+        if (bgmTrack !== 'main') {
+          bgmTrack = 'main';
+          try {
+            bgmEl.src = BGM_TRACKS.main;
+            if (!prefs.muted) bgmEl.play().catch(function () {});
+          } catch (e) {}
+        }
+      });
       applyBgmVol();
     } catch (e) { bgmEl = null; }
     return bgmEl;
   }
 
-  function applyBgmVol() {
-    if (bgmEl) bgmEl.volume = prefs.muted ? 0 : (prefs.bgm / 100) * 0.9;
+  // v0.3.9: ducking otomatis — BGM battle dipelankan supaya SFX
+  // jauh lebih terdengar. Faktor 0.45 dari volume setting user.
+  const BGM_DUCK = { main: 1.0, battle: 0.45 };
+
+  function bgmTargetVol() {
+    if (prefs.muted) return 0;
+    const duck = BGM_DUCK[bgmTrack] || 1.0;
+    return (prefs.bgm / 100) * 0.9 * duck;
   }
 
-  function playBgm() {
+  function applyBgmVol() {
+    if (bgmEl) bgmEl.volume = bgmTargetVol();
+  }
+
+  // track: 'main' | 'battle'. Pindah track = ganti src lalu mainkan
+  // ulang (dengan fade-in yang sama).
+  function playBgm(track) {
+    const want = track || 'main';
+    if (bgmEl && bgmTrack === want && !bgmEl.paused) return; // sudah bunyi
+    if (bgmEl && bgmTrack !== want) {
+      try { bgmEl.pause(); } catch (e) {}
+      bgmEl = null;
+    }
+    bgmTrack = want;
     const el = ensureBgm();
     if (!el) return;
     try {
       // Fade-in halus 1.2 detik supaya tidak "jedug".
       if (fadeTimer) { clearInterval(fadeTimer); fadeTimer = null; }
-      const target = prefs.muted ? 0 : (prefs.bgm / 100) * 0.9;
+      const target = bgmTargetVol();
       el.volume = 0;
       const p = el.play();
       if (p && typeof p.catch === 'function') p.catch(function () {});
@@ -291,7 +328,7 @@ const AudioManager = (function () {
       (p.muted ? 'DIMATIKAN — tap untuk nyalakan' : 'MENYALA — tap untuk matikan') +
       '</button>' +
       '</div>' +
-      '<p class="audio-hint">BGM: "Ashes of the Archipelago" — dibuat dengan Suno.</p>' +
+      '<p class="audio-hint">BGM: "Ashes of the Archipelago" (utama) &amp; "Final Assault" (battle) — dibuat dengan Suno.<br>Saat battle, BGM otomatis dipelankan supaya efek suara lebih jelas.</p>' +
       '</div>';
     const id = OverlayManager.open(html, { closeOnBackdrop: true });
     if (!id) return;
@@ -355,8 +392,8 @@ const AudioManager = (function () {
     });
     // Tandai BGM sudah pernah dimulai (untuk resume visibilitychange).
     const origPlay = playBgm;
-    playBgm = function () { // eslint-disable-line no-func-assign
-      origPlay();
+    playBgm = function (track) { // eslint-disable-line no-func-assign
+      origPlay(track);
       if (bgmEl) { try { bgmEl.dataset.started = '1'; } catch (e) {} }
     };
     refreshMuteBtn();
@@ -366,7 +403,7 @@ const AudioManager = (function () {
     init: init,
     unlock: unlock,
     sfx: sfx,
-    playBgm: function () { playBgm(); },
+    playBgm: function (track) { playBgm(track); },
     stopBgm: stopBgm,
     toggleMute: toggleMute,
     setMuted: setMuted,

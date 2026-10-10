@@ -4,7 +4,7 @@
 
 **20 tahun pasca *The Great Collapse* — bertahan hidup di reruntuhan Nusantara.**
 
-`v0.3.8` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
+`v0.3.9` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
 
 </div>
 
@@ -40,7 +40,25 @@ Termux + Acode maupun di-deploy sebagai situs statis di Netlify.
 | 💳 **Top Up** | QRIS statis + verifikasi manual, backend Netlify Functions & Blobs |
 | ☁️ **Cloud Save** | Simpan & pulihkan progres via kode rahasia, backend Netlify Blobs |
 
-## 🆕 Rilis Terbaru — `v0.3.8`
+## 🆕 Rilis Terbaru — `v0.3.9`
+
+- **Splash screen** — layar loading dengan logo + progress bar bertahap
+  (data item → lokasi → misi → faksi → pass → karakter), versi app
+  tampil di splash.
+- **Auto-sync cloud (opsi B)** — saat startup, game memeriksa simpanan
+  cloud; kalau versi cloud lebih baru dari terakhir di-push, muncul
+  tawaran "Pulihkan dari Cloud / Tetap Data Lokal" (tidak ditimpa
+  diam-diam). Timeout 9 detik, gagal koneksi dilewati diam-diam.
+- **Redesign UI Elite Pass** — hero header (level besar + progress +
+  badge premium), roadmap reward horizontal snap-scroll (node berdenyut
+  emas kalau bisa diklaim), panel detail per level dengan chip reward
+  (ikon + glow rarity), kartu upsell premium baru, tombol "Klaim Semua"
+  sticky di bawah.
+- **Infra BGM battle** — `AudioManager.playBgm('battle')` otomatis saat
+  masuk battle dan kembali ke main saat selesai; fallback ke track utama
+  sampai file `bgm-battle.mp3` (Suno) tersedia.
+
+## Rilis `v0.3.8`
 
 - **Sistem audio penuh (SFX + BGM)** — modul baru `js/game/audio.js`
   (`AudioManager`):

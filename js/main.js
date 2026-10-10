@@ -82,52 +82,172 @@
 
     const btnContinueProlog = document.getElementById('btn-prolog-continue');
     btnContinueProlog.onclick = () => {
-      enterGame();
+      enterGame({ isNew: true });
     };
   }
 
-  async function enterGame() {
-    await ItemDB.load();
-    await LocationDB.load();
-    await QuestDB.load();
-    if (window.QuestSystem) QuestSystem.ensureShape();
-    await FactionDB.load();
-    if (window.FactionSystem) FactionSystem.ensureShape();
-    await PassDB.load();
-    if (window.PassSystem) PassSystem.ensureShape();
-    GameState.migrateEquipmentDurability();
+  // v0.3.9: alur masuk game lewat SPLASH SCREEN — loading data
+  // bertahap dengan progress bar + cek cloud save otomatis (opsi B:
+  // kalau simpanan cloud lebih baru, tawarkan pulihkan).
+  async function enterGame(opts) {
+    opts = opts || {};
+    Renderer.showScreen('screen-splash');
 
-    Player.applyOfflineProgress();
-    GameState.save();
+    const barFill = document.getElementById('splash-bar-fill');
+    const statusEl = document.getElementById('splash-status');
+    const versionEl = document.getElementById('splash-version');
+    if (versionEl && window.APP_VERSION) versionEl.textContent = 'v' + window.APP_VERSION;
+    const setP = (pct, label) => {
+      if (barFill) barFill.style.width = Math.min(100, Math.max(0, pct)) + '%';
+      if (statusEl && label) statusEl.textContent = label;
+    };
+    // Beri kesempatan browser render splash dulu sebelum kerja berat.
+    const paint = () => new Promise(r => requestAnimationFrame(() => setTimeout(r, 30)));
 
-    Renderer.showScreen('screen-game');
+    try {
+      setP(4, 'Menyiapkan...');
+      await paint();
 
-    if (window.BattleBridge) BattleBridge.recoverInterruptedBattle();
-    Renderer.renderHUD();
+      const stages = [
+        ['Memuat data item...', async () => { await ItemDB.load(); }],
+        ['Memuat data lokasi...', async () => { await LocationDB.load(); }],
+        ['Memuat data misi...', async () => { await QuestDB.load(); }],
+        ['Memuat data faksi...', async () => { await FactionDB.load(); }],
+        ['Memuat data pass...', async () => { await PassDB.load(); }]
+      ];
+      for (let i = 0; i < stages.length; i++) {
+        setP(8 + i * 13, stages[i][0]);
+        await paint();
+        await stages[i][1]();
+      }
 
-    Panels.initNav();
-    Panels.render('dashboard');
+      // Cek cloud save (opsi B) — lewati untuk karakter baru.
+      if (!opts.isNew) {
+        setP(78, 'Memeriksa simpanan cloud...');
+        await paint();
+        await maybeCloudRestore();
+      }
 
-    Player.startLoop();
-    GameState.startAutosave();
+      setP(88, 'Menyiapkan karakter...');
+      await paint();
+      if (window.QuestSystem) QuestSystem.ensureShape();
+      if (window.FactionSystem) FactionSystem.ensureShape();
+      if (window.PassSystem) PassSystem.ensureShape();
+      GameState.migrateEquipmentDurability();
 
-    // v0.3.8: mulai BGM (gesture user dari tombol tadi = izin autoplay)
-    if (window.AudioManager) AudioManager.playBgm();
+      Player.applyOfflineProgress();
+      GameState.save();
 
-    // Ticker 1 detik untuk update countdown cooldown (Scavenge/Travel)
-    setInterval(() => Panels.tick(), 1000);
+      setP(96, 'Menyelesaikan...');
+      await paint();
 
-    // v0.3.5: cek mail (kiriman admin) berkala untuk badge
-    if (window.Mail) Mail.start();
+      Renderer.showScreen('screen-game');
 
-    Events.on('player:updated', () => Renderer.renderHUD());
+      if (window.BattleBridge) BattleBridge.recoverInterruptedBattle();
+      Renderer.renderHUD();
 
-    // Save saat tab ditutup/di-minimize (penting untuk mobile webview)
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) GameState.save();
+      Panels.initNav();
+      Panels.render('dashboard');
+
+      Player.startLoop();
+      GameState.startAutosave();
+
+      // v0.3.8: mulai BGM (gesture user dari tombol tadi = izin autoplay)
+      if (window.AudioManager) AudioManager.playBgm();
+
+      // Ticker 1 detik untuk update countdown cooldown (Scavenge/Travel)
+      setInterval(() => Panels.tick(), 1000);
+
+      // v0.3.5: cek mail (kiriman admin) berkala untuk badge
+      if (window.Mail) Mail.start();
+
+      Events.on('player:updated', () => Renderer.renderHUD());
+
+      // Save saat tab ditutup/di-minimize (penting untuk mobile webview)
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) GameState.save();
+      });
+      window.addEventListener('beforeunload', () => GameState.save());
+
+      Events.emit('notify', { message: `Selamat datang di dunia yang hancur, ${GameState.get().player.name}.` });
+    } catch (e) {
+      if (statusEl) {
+        statusEl.textContent = 'Gagal memuat: ' + (e.message || e);
+        statusEl.style.color = 'var(--accent-red)';
+      }
+    }
+  }
+
+  // v0.3.9: cek cloud save saat startup. Kalau versi cloud lebih baru
+  // dari terakhir kita push, tawarkan pulihkan (tidak ditimpa diam-diam).
+  // Mengembalikan Promise<boolean>: true jika user memilih pulihkan.
+  function maybeCloudRestore() {
+    return new Promise((resolve) => {
+      (async () => {
+        try {
+          if (!window.CloudSave) return resolve(false);
+          const code = CloudSave.getCode();
+          if (!code) return resolve(false);
+          const ctrl = new AbortController();
+          const timer = setTimeout(() => { try { ctrl.abort(); } catch (e) {} }, 9000);
+          let res;
+          try {
+            res = await fetch('/.netlify/functions/player-load?code=' + encodeURIComponent(code), { signal: ctrl.signal });
+          } catch (e) {
+            clearTimeout(timer);
+            return resolve(false); // offline / bukan Netlify → lewati diam-diam
+          }
+          clearTimeout(timer);
+          if (!res.ok) return resolve(false);
+          const data = await res.json().catch(() => null);
+          const cloudTs = data && data.updatedAt;
+          const lastPushed = CloudSave.getLastSaved();
+          // Cloud dianggap lebih baru kalau timestamp-nya melampaui
+          // terakhir kita simpan ke cloud.
+          if (!cloudTs || (lastPushed && cloudTs <= lastPushed + 2000)) return resolve(false);
+
+          const box = document.getElementById('splash-cloud-box');
+          const desc = document.getElementById('splash-cloud-desc');
+          const btnR = document.getElementById('splash-cloud-restore');
+          const btnL = document.getElementById('splash-cloud-local');
+          const statusEl = document.getElementById('splash-status');
+          let cloudName = '';
+          try {
+            const sp = data && data.data && data.data.save && data.data.save.player;
+            if (sp && sp.name) cloudName = ' • ' + sp.name;
+          } catch (e) {}
+          if (desc) desc.textContent = 'Versi cloud: ' + fmtCloudTime(cloudTs) + cloudName + '. Pulihkan dan timpa data lokal di perangkat ini?';
+          if (box) box.classList.remove('hidden');
+          const done = async (restore) => {
+            if (box) box.classList.add('hidden');
+            if (btnR) btnR.onclick = null;
+            if (btnL) btnL.onclick = null;
+            if (restore) {
+              try {
+                if (statusEl) statusEl.textContent = 'Memulihkan dari cloud...';
+                await CloudSave.loadFrom(code);
+                Events.emit('notify', { message: 'Save cloud dipulihkan.' });
+                resolve(true);
+              } catch (e) {
+                Events.emit('notify', { message: 'Gagal pulihkan cloud: ' + e.message, type: 'error' });
+                resolve(false);
+              }
+            } else {
+              resolve(false);
+            }
+          };
+          if (btnR) btnR.onclick = () => done(true);
+          if (btnL) btnL.onclick = () => done(false);
+        } catch (e) {
+          resolve(false);
+        }
+      })();
     });
-    window.addEventListener('beforeunload', () => GameState.save());
+  }
 
-    Events.emit('notify', { message: `Selamat datang di dunia yang hancur, ${GameState.get().player.name}.` });
+  function fmtCloudTime(ts) {
+    try {
+      return new Date(ts).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+    } catch (e) { return ''; }
   }
 })();

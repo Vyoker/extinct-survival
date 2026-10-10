@@ -903,28 +903,86 @@ const Panels = (function () {
     return '';
   }
 
-  function renderPassCell(levelData, track, currentLevel, premiumUnlocked) {
-    const lvl = levelData.level;
-    const rewards = levelData[track];
-    if (!rewards || rewards.length === 0) {
-      return `<div class="pass-cell empty">—</div>`;
-    }
-    const text = rewards.map(formatPassReward).join(', ');
-    const claimed = PassSystem.isClaimed(lvl, track);
-    const reached = lvl <= currentLevel;
+  // v0.3.9: ELITE PASS — redesign modern. Hero header + roadmap
+  // horizontal (snap-scroll) + panel detail per level + sticky bar
+  // "Klaim Semua". Logika klaim tetap memakai PassSystem.
+  let selectedPassLevel = null;
 
-    let actionHtml;
-    if (claimed) {
-      actionHtml = `<span class="pass-claimed">✅ Diklaim</span>`;
-    } else if (track === 'premium' && !premiumUnlocked) {
-      actionHtml = `<span class="pass-locked-icon">🔒 Premium</span>`;
-    } else if (!reached) {
-      actionHtml = `<span class="pass-locked-icon">🔒 Lv.${lvl}</span>`;
-    } else {
-      actionHtml = `<button class="mini-btn" data-pass-claim="${lvl}:${track}">Klaim</button>`;
-    }
+  function passLevelState(lvl, progress) {
+    if (lvl > progress.level) return 'locked';
+    const ld = window.PassDB ? PassDB.getLevelData(lvl) : null;
+    let claimable = false;
+    let allClaimed = true;
+    ['free', 'premium'].forEach((t) => {
+      const rw = ld && ld[t];
+      if (!rw || !rw.length) return;
+      if (PassSystem.isClaimed(lvl, t)) return;
+      allClaimed = false;
+      if (PassSystem.canClaim(lvl, t).ok) claimable = true;
+    });
+    if (claimable) return 'claimable';
+    if (allClaimed) return 'done';
+    return lvl === progress.level ? 'current' : 'open';
+  }
 
-    return `<div class="pass-cell"><div class="pass-cell-text">${text}</div>${actionHtml}</div>`;
+  function renderPassRewardChip(reward) {
+    if (!window.Icons) return `<span class="pass-chip"><b>${reward.type}</b></span>`;
+    if (reward.type === 'rupiah') {
+      return `<span class="pass-chip">${Icons.svg('coin')}<b>Rp${Number(reward.amount).toLocaleString('id-ID')}</b></span>`;
+    }
+    if (reward.type === 'kredit') {
+      return `<span class="pass-chip premium">${Icons.svg('gem')}<b>${reward.amount}</b></span>`;
+    }
+    if (reward.type === 'item') {
+      const def = window.ItemDB ? ItemDB.get(reward.itemId) : null;
+      const iconHtml = Icons.svg(def && def.icon ? Icons.iconName(def.icon) : 'gift');
+      const rcolor = def && def.rarity && window.Rarity ? Rarity.getColor(def.rarity) : null;
+      const name = def ? def.name : reward.itemId;
+      const qty = reward.qty && reward.qty > 1 ? ' ×' + reward.qty : '';
+      return `<span class="pass-chip"${rcolor ? ` style="border-color:${rcolor};"` : ''}>${iconHtml}<b>${name}${qty}</b></span>`;
+    }
+    return '';
+  }
+
+  function passTrackAction(lvl, track, progress) {
+    const ld = PassDB.getLevelData(lvl);
+    const rewards = ld && ld[track];
+    if (!rewards || !rewards.length) return '<span class="pass-stempty">—</span>';
+    if (PassSystem.isClaimed(lvl, track)) {
+      return `<span class="pass-stclaimed">${Icons.svg('check')} Diklaim</span>`;
+    }
+    if (track === 'premium' && !progress.premiumUnlocked) {
+      return `<span class="pass-stlocked">${Icons.svg('lock')} Premium</span>`;
+    }
+    if (lvl > progress.level) {
+      return `<span class="pass-stlocked">${Icons.svg('lock')} Lv.${lvl}</span>`;
+    }
+    return `<button class="mini-btn pass-claim-btn" data-pass-claim="${lvl}:${track}">Klaim</button>`;
+  }
+
+  function renderPassDetail(lvl, progress) {
+    const ld = PassDB.getLevelData(lvl);
+    const tracks = [
+      { id: 'free', name: 'FREE' },
+      { id: 'premium', name: 'PREMIUM' }
+    ];
+    const trackHtml = tracks.map((t) => {
+      const rewards = (ld && ld[t.id]) || [];
+      const chips = rewards.length
+        ? rewards.map(renderPassRewardChip).join('')
+        : '<span class="pass-stempty">Tidak ada reward</span>';
+      return `
+        <div class="pass-track ${t.id}">
+          <div class="pass-track-name">${t.name}</div>
+          <div class="pass-chips">${chips}</div>
+          <div class="pass-track-action">${passTrackAction(lvl, t.id, progress)}</div>
+        </div>`;
+    }).join('');
+    return `
+      <div class="pass-detail">
+        <div class="pass-detail-head">LEVEL ${lvl} <span>• tap node lain untuk lihat reward</span></div>
+        <div class="pass-detail-tracks">${trackHtml}</div>
+      </div>`;
   }
 
   function renderPassOverlay() {
@@ -933,41 +991,56 @@ const Panels = (function () {
     const progress = PassSystem.getProgress();
     const claimableCount = PassSystem.countClaimable();
     const allLevels = PassDB.all();
+    if (selectedPassLevel == null) selectedPassLevel = progress.level;
+    const sel = Math.min(Math.max(1, selectedPassLevel), progress.maxLevel);
 
-    const rows = allLevels.map(levelData => `
-      <div class="card pass-row ${levelData.level > progress.level ? 'pass-row-locked' : ''} ${levelData.level === progress.level ? 'pass-row-current' : ''}">
-        <div class="pass-row-level">Lv.${levelData.level}</div>
-        <div class="pass-row-tracks">
-          ${renderPassCell(levelData, 'free', progress.level, progress.premiumUnlocked)}
-          ${renderPassCell(levelData, 'premium', progress.level, progress.premiumUnlocked)}
-        </div>
-      </div>
-    `).join('');
+    const nodes = allLevels.map((ld) => {
+      const st = passLevelState(ld.level, progress);
+      const isSel = ld.level === sel ? ' sel' : '';
+      const badge = st === 'claimable' ? '<span class="pass-node-dot"></span>'
+        : st === 'done' ? `<span class="pass-node-check">${Icons.svg('check')}</span>` : '';
+      return `<button class="pass-node st-${st}${isSel}" data-pass-node="${ld.level}" title="Level ${ld.level}"><span class="pass-node-num">${ld.level}</span>${badge}</button>`;
+    }).join('');
+
+    const heroPremium = progress.premiumUnlocked
+      ? `<div class="pass-hero-premium on">${Icons.svg('ticket')} PREMIUM AKTIF</div>`
+      : `<div class="pass-hero-premium off">${Icons.svg('ticket')} FREE</div>`;
 
     return `
       <div class="overlay-header">
-        <span class="overlay-title">🎫 Elite Pass</span>
-        <button class="overlay-close-btn" id="ov-close-pass">✕</button>
+        <span class="overlay-title">${Icons.svg('ticket')} Elite Pass</span>
+        <button class="overlay-close-btn" id="ov-close-pass">${Icons.svg('x')}</button>
       </div>
-      <div class="card">
-        <div class="card-row"><span>Level Pass</span><span>${progress.level}/${progress.maxLevel}</span></div>
-        <div class="bar-track small" style="margin:4px 0 8px;"><div class="bar-fill exp" style="width:${progress.progressPct}%;"></div></div>
-        <div class="card-row"><span>EXP</span><span>${progress.level >= progress.maxLevel ? 'MAX' : `${progress.exp}/${progress.required}`}</span></div>
-        <p style="font-size:10px; color:var(--text-dim); margin-top:6px;">Pass naik otomatis dari EXP yang kamu dapat main seperti biasa (Scavenge, Hunting, Misi).</p>
+      <div class="pass-hero">
+        <div class="pass-hero-top">
+          <div>
+            <div class="pass-hero-kicker">SEASON PASS</div>
+            <div class="pass-hero-lv">LV.${progress.level}<span>/${progress.maxLevel}</span></div>
+          </div>
+          ${heroPremium}
+        </div>
+        <div class="bar-track pass-hero-bar"><div class="bar-fill exp" style="width:${progress.progressPct}%;"></div></div>
+        <div class="pass-hero-sub">${progress.level >= progress.maxLevel ? 'MAX LEVEL' : `${progress.exp}/${progress.required} EXP ke level berikutnya`}</div>
       </div>
       ${!progress.premiumUnlocked ? `
-        <div class="card" style="border-color:#f5c518;">
-          <div class="card-row"><span>🎫 Jalur Premium</span><span style="color:#f5c518;">Belum aktif</span></div>
-          <p style="font-size:11px; color:var(--text-dim); margin:4px 0 8px;">Buka sekali untuk selamanya, langsung klaim semua reward Premium dari level 1 sampai level kamu sekarang.</p>
-          <button class="action-btn" id="btn-unlock-premium">🔓 Buka Premium — 💎${PassSystem.PREMIUM_UNLOCK_COST_KREDIT} Kredit</button>
+        <div class="pass-upsell">
+          <div class="pass-upsell-icon">${Icons.svg('ticket')}</div>
+          <div class="pass-upsell-text">
+            <b>BUKA JALUR PREMIUM</b>
+            <span>Sekali bayar, aktif selamanya. Klaim mundur semua reward premium sampai levelmu sekarang.</span>
+          </div>
+          <button class="action-btn pass-upsell-btn" id="btn-unlock-premium">${Icons.svg('gem')} ${PassSystem.PREMIUM_UNLOCK_COST_KREDIT} Kredit</button>
         </div>
       ` : ''}
-      ${claimableCount > 0 ? `<button class="action-btn" id="btn-claim-all-pass">🎁 Klaim Semua (${claimableCount})</button>` : ''}
-      <div class="pass-track-header">
-        <div class="pass-row-level"></div>
-        <div class="pass-row-tracks"><span>FREE</span><span>PREMIUM</span></div>
-      </div>
-      ${rows}
+      <div class="pass-roadmap-label">JALUR REWARD</div>
+      <div class="pass-roadmap" id="pass-roadmap">${nodes}</div>
+      ${renderPassDetail(sel, progress)}
+      <div class="pass-spacer"></div>
+      ${claimableCount > 0 ? `
+        <div class="pass-stickybar">
+          <button class="action-btn" id="btn-claim-all-pass">${Icons.svg('gift')} Klaim Semua (${claimableCount})</button>
+        </div>
+      ` : ''}
     `;
   }
 
@@ -1008,6 +1081,18 @@ const Panels = (function () {
           Renderer.renderHUD();
         });
       });
+
+      // v0.3.9: tap node roadmap → ganti detail level
+      panel.querySelectorAll('[data-pass-node]').forEach(node => {
+        node.addEventListener('click', () => {
+          selectedPassLevel = parseInt(node.dataset.passNode, 10);
+          refreshPassPanel();
+          requestAnimationFrame(() => {
+            const el = document.querySelector(`[data-pass-node="${selectedPassLevel}"]`);
+            if (el) el.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+          });
+        });
+      });
     };
 
     if (existingPanel) {
@@ -1021,8 +1106,19 @@ const Panels = (function () {
   }
 
   function openPassOverlay() {
+    // v0.3.9: mulai dari level progres saat ini
+    if (window.PassSystem) {
+      try { selectedPassLevel = PassSystem.getProgress().level; } catch (e) { selectedPassLevel = null; }
+    }
     const ovId = OverlayManager.open(renderPassOverlay(), { closeOnBackdrop: true });
     bindPassEvents(ovId);
+    // Scroll roadmap ke node level aktif
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = document.querySelector(`[data-pass-node="${selectedPassLevel}"]`);
+        if (el) el.scrollIntoView({ block: 'nearest', inline: 'center' });
+      });
+    });
   }
 
   // =========================================================

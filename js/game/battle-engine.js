@@ -543,6 +543,8 @@ function checkBattleEnd(){
 function endBattle(result){
   // v0.3.8: SFX hasil battle
   if (window.AudioManager) AudioManager.sfx(result === 'win' ? 'victory' : result === 'lose' ? 'defeat' : 'flee');
+  // v0.3.9: kembali ke BGM utama
+  if (window.AudioManager) AudioManager.playBgm('main');
   const modal = document.getElementById('modal');
   const title = document.getElementById('modalTitle');
   const desc = document.getElementById('modalDesc');

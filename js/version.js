@@ -4,7 +4,7 @@
  * setelah X mencapai 9, lanjut ke v0.1.0, lalu v0.1.1, dst.
  * Update angka ini manual tiap kali ada rilis baru.
  */
-const APP_VERSION = '0.3.8';
+const APP_VERSION = '0.3.9';
 window.APP_VERSION = APP_VERSION;
 
 // v0.3.4-hotfix: label versi di layar login selalu mengikuti APP_VERSION,

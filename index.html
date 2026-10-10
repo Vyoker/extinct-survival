@@ -55,6 +55,26 @@
     <button id="btn-prolog-continue" class="btn btn-primary prolog-continue-btn">LANJUTKAN ▶</button>
   </div>
 
+  <!-- ===================== SCREEN: SPLASH ===================== -->
+  <!-- v0.3.9: layar loading dengan progress bertahap + cek cloud save -->
+  <div id="screen-splash" class="screen">
+    <div class="splash-inner">
+      <div class="splash-logo"><svg class="xicon"><use href="#xi-skull"/></svg></div>
+      <div class="splash-title">EXTINCT SURVIVAL</div>
+      <div class="splash-version" id="splash-version"></div>
+      <div class="splash-bar-track"><div id="splash-bar-fill" class="splash-bar-fill"></div></div>
+      <div id="splash-status" class="splash-status">Menyiapkan...</div>
+      <div id="splash-cloud-box" class="splash-cloud hidden">
+        <div class="splash-cloud-title"><svg class="xicon"><use href="#xi-cloud"/></svg> Simpanan cloud lebih baru</div>
+        <div id="splash-cloud-desc" class="splash-cloud-desc"></div>
+        <div class="splash-cloud-btns">
+          <button id="splash-cloud-restore" class="btn btn-primary">Pulihkan dari Cloud</button>
+          <button id="splash-cloud-local" class="btn">Tetap Data Lokal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ===================== SCREEN: GAME ===================== -->
   <div id="screen-game" class="screen">
 
