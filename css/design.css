@@ -586,27 +586,6 @@ html, body {
 }
 
 /* ============ v0.3.8: AUDIO ============ */
-.hud-audio-btn {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(20, 17, 12, 0.85);
-  border: 1px solid var(--ds-line-strong);
-  border-radius: 8px;
-  color: var(--ds-gold);
-  cursor: pointer;
-  padding: 0;
-}
-.hud-audio-btn .xicon { width: 20px; height: 20px; }
-.hud-audio-btn.muted { color: var(--text-dim); opacity: 0.6; }
-.hud-audio-btn:active { transform: scale(0.92); }
-#hud-top { position: relative; }
-
 .audio-settings { padding: 6px 4px; min-width: 260px; }
 .audio-settings .panel-title { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
 .audio-settings .panel-title .xicon { width: 22px; height: 22px; }

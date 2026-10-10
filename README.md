@@ -52,7 +52,7 @@ Termux + Acode maupun di-deploy sebagai situs statis di Netlify.
     buatan Suno (dikompres 128kbps), mulai otomatis saat masuk game
     dengan fade-in, jeda saat tab disembunyikan.
   - Volume BGM & SFX terpisah + mute, tersimpan di localStorage;
-    tombol mute di HUD + panel pengaturan via Menu → Audio.
+    pengaturan via Menu → Audio (pill speaker).
   - Hook battle: suara senjata jarak dekat/jauh, hit/crit/miss,
     victory/defeat di `battle-engine.js`; SFX level-up, craft,
     topup approved, klaim mail.

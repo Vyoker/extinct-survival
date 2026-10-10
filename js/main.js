@@ -9,11 +9,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     Notifications.init();
     // v0.3.8: sistem audio (SFX + BGM)
-    if (window.AudioManager) {
-      AudioManager.init();
-      const btnMute = document.getElementById('btn-audio-mute');
-      if (btnMute) btnMute.addEventListener('click', () => AudioManager.toggleMute());
-    }
+    if (window.AudioManager) AudioManager.init();
 
     const btnStart = document.getElementById('btn-start-game');
     const btnContinue = document.getElementById('btn-continue-game');
