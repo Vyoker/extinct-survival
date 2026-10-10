@@ -123,6 +123,7 @@ const Mail = (function () {
       });
       if (window.Events) {
         Events.emit('player:updated');
+        if (window.AudioManager) AudioManager.sfx('coin'); // v0.3.8
         Events.emit('notify', { message: 'Mail diklaim! +' + k.toLocaleString('id-ID') + ' Kredit masuk.' });
       }
       var fresh = await fetchMails();

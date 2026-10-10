@@ -241,6 +241,7 @@ const Topup = (function () {
         GameState.save();
         clearPending();
         Events.emit('player:updated');
+        if (window.AudioManager) AudioManager.sfx('coin'); // v0.3.8
         Events.emit('notify', { message: `Topup berhasil! +${data.kredit} Kredit masuk.` });
         OverlayManager.close(currentOverlayId);
         return;

@@ -4,7 +4,7 @@
 
 **20 tahun pasca *The Great Collapse* — bertahan hidup di reruntuhan Nusantara.**
 
-`v0.3.7` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
+`v0.3.8` · WebView Android (HTML5) · Vanilla JS, no framework · 🇮🇩 ID / 🇬🇧 EN
 
 </div>
 
@@ -40,7 +40,25 @@ Termux + Acode maupun di-deploy sebagai situs statis di Netlify.
 | 💳 **Top Up** | QRIS statis + verifikasi manual, backend Netlify Functions & Blobs |
 | ☁️ **Cloud Save** | Simpan & pulihkan progres via kode rahasia, backend Netlify Blobs |
 
-## 🆕 Rilis Terbaru — `v0.3.7`
+## 🆕 Rilis Terbaru — `v0.3.8`
+
+- **Sistem audio penuh (SFX + BGM)** — modul baru `js/game/audio.js`
+  (`AudioManager`):
+  - 19 SFX disintesis real-time via Web Audio API (tanpa file, 0 KB):
+    klik/tab UI, buka-tutup, error, koin, heal, level-up, ayunan,
+    tembakan, kena, crit, meleset, menang, kalah, kabur, craft,
+    mail, skill.
+  - BGM loop `assets/audio/bgm-main.mp3` — "Ashes of the Archipelago"
+    buatan Suno (dikompres 128kbps), mulai otomatis saat masuk game
+    dengan fade-in, jeda saat tab disembunyikan.
+  - Volume BGM & SFX terpisah + mute, tersimpan di localStorage;
+    tombol mute di HUD + panel pengaturan via Menu → Audio.
+  - Hook battle: suara senjata jarak dekat/jauh, hit/crit/miss,
+    victory/defeat di `battle-engine.js`; SFX level-up, craft,
+    topup approved, klaim mail.
+  - AudioContext dibuka saat gesture pertama (aturan autoplay browser).
+
+## Rilis `v0.3.7`
 
 - **Endpoint monitoring publik** `watch-pending` — mengembalikan
   hanya agregat (jumlah pending/paid + lama menunggu terlama), tanpa

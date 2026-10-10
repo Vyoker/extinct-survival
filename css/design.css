@@ -584,3 +584,35 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* ============ v0.3.8: AUDIO ============ */
+.hud-audio-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 17, 12, 0.85);
+  border: 1px solid var(--ds-line-strong);
+  border-radius: 8px;
+  color: var(--ds-gold);
+  cursor: pointer;
+  padding: 0;
+}
+.hud-audio-btn .xicon { width: 20px; height: 20px; }
+.hud-audio-btn.muted { color: var(--text-dim); opacity: 0.6; }
+.hud-audio-btn:active { transform: scale(0.92); }
+#hud-top { position: relative; }
+
+.audio-settings { padding: 6px 4px; min-width: 260px; }
+.audio-settings .panel-title { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.audio-settings .panel-title .xicon { width: 22px; height: 22px; }
+.audio-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.audio-row label { flex: 0 0 118px; font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.audio-row input[type="range"] { flex: 1; accent-color: var(--ds-gold); height: 28px; }
+.audio-row span { flex: 0 0 40px; text-align: right; font-size: 12px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+.audio-row .btn { flex: 1; }
+.audio-hint { font-size: 11px; color: var(--text-dim); line-height: 1.6; margin-top: 4px; }

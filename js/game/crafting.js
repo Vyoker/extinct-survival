@@ -47,6 +47,7 @@ const Crafting = (function () {
     }
 
     Inventory.addItem(itemId, qtyResult);
+    if (window.AudioManager) AudioManager.sfx('craft'); // v0.3.8
     Events.emit('notify', {
       message: qtyResult > 1
         ? `🔨 Berhasil membuat ${qtyResult}x ${def.name} (bonus Crafting Bonus)!`

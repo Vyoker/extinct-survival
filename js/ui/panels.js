@@ -772,7 +772,8 @@ const Panels = (function () {
     { id: 'spin', iconName: 'wheel', action: 'locked', title: 'Spin Wheel (terkunci)' },
     { id: 'mall', iconName: 'gem', action: 'toast-mall', title: 'Item Mall (segera)' },
     { id: 'faction', iconName: 'flag', action: 'faction', title: 'Faksi' },
-    { id: 'cloud', iconName: 'cloud', action: 'cloud', title: 'Simpan Online' }
+    { id: 'cloud', iconName: 'cloud', action: 'cloud', title: 'Simpan Online' },
+    { id: 'audio', iconName: 'volume', action: 'audio', title: 'Pengaturan Audio' }
   ];
 
   let menuFlyoutOpen = false;
@@ -876,6 +877,12 @@ const Panels = (function () {
       case 'toast-mall':
         Events.emit('notify', { message: 'Fitur Item Mall masih tahap pengembangan.' });
         break;
+      case 'audio': {
+        // v0.3.8: pengaturan volume BGM/SFX + mute
+        if (window.AudioManager) AudioManager.openSettings();
+        else Events.emit('notify', { message: 'Modul audio belum termuat.', type: 'error' });
+        break;
+      }
     }
   }
 

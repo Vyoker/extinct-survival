@@ -35,6 +35,8 @@ const Icons = (function () {
     backpack: '<path d="M8.5 8V6.5a3.5 3.5 0 0 1 7 0V8"/><path d="M5.5 8h13l-1 12h-11l-1-12z"/><path d="M9.5 12.5h5V17h-5z"/>',
     medal: '<circle cx="12" cy="9" r="5"/><path d="M9.2 13.4 7.5 21l4.5-2.6L16.5 21l-1.7-7.6"/>',
     menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    volume: '<path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M15.5 9.2a4 4 0 0 1 0 5.6M18 6.8a7.4 7.4 0 0 1 0 10.4"/>',
+    volumeX: '<path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z"/><path d="M15.5 9.5l5 5M20.5 9.5l-5 5"/>',
     x: '<path d="M6 6l12 12M18 6 6 18"/>',
     check: '<path d="m4.5 12.5 5 5 10-11"/>',
     chevronRight: '<path d="m9 5 7 7-7 7"/>',

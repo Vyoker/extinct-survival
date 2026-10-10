@@ -8,6 +8,12 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     Notifications.init();
+    // v0.3.8: sistem audio (SFX + BGM)
+    if (window.AudioManager) {
+      AudioManager.init();
+      const btnMute = document.getElementById('btn-audio-mute');
+      if (btnMute) btnMute.addEventListener('click', () => AudioManager.toggleMute());
+    }
 
     const btnStart = document.getElementById('btn-start-game');
     const btnContinue = document.getElementById('btn-continue-game');
@@ -108,6 +114,9 @@
 
     Player.startLoop();
     GameState.startAutosave();
+
+    // v0.3.8: mulai BGM (gesture user dari tombol tadi = izin autoplay)
+    if (window.AudioManager) AudioManager.playBgm();
 
     // Ticker 1 detik untuk update countdown cooldown (Scavenge/Travel)
     setInterval(() => Panels.tick(), 1000);

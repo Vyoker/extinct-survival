@@ -350,6 +350,9 @@ function tryAttackUnit(target){
   state.pendingAction = null;
   render(); // segarkan AP/ammo dulu; damage diterapkan saat animasi menyentuh target
 
+  // v0.3.8: SFX ayunan/tebakan sesuai jenis senjata
+  if (window.AudioManager) AudioManager.sfx(w && w.range > 1 ? 'shoot' : 'swing');
+
   animateAttack(p.id, target.id, ()=>{
     const tileEl = findUnitTileEl(target.id);
     if(roll<=hitChance){
@@ -357,6 +360,7 @@ function tryAttackUnit(target){
       dmg = Math.max(1, Math.round(dmg - target.armor*0.3));
       const isCrit = dmg >= w.dmgMax - 1 && w.dmgMax > w.dmgMin;
       target.hp -= dmg;
+      if (window.AudioManager) AudioManager.sfx(isCrit ? 'crit' : 'hit');
       spawnFloatText(tileEl, '-'+dmg, false, isCrit);
       if(target.hp<=0){
         target.hp = 0;
@@ -364,6 +368,7 @@ function tryAttackUnit(target){
         showBanner((target.name)+' tumbang!');
       }
     } else {
+      if (window.AudioManager) AudioManager.sfx('miss'); // v0.3.8
       spawnFloatText(tileEl, 'Meleset', true, false);
     }
     render();
@@ -501,10 +506,12 @@ function enemyAct(e){
     if(best){ e.x=best.x; e.y=best.y; render(); checkHazard(e); } // render dulu supaya lunge & efek hazard tepat posisi
   }
   if(dist(e,p)<=1 && p.alive){
+    if (window.AudioManager) AudioManager.sfx('swing'); // v0.3.8
     animateAttack(e.id, p.id, ()=>{
       const dmg = Math.round(rand(e.dmgMin,e.dmgMax));
       const realDmg = Math.max(1, Math.round(dmg - p.armor*0.3));
       p.hp -= realDmg;
+      if (window.AudioManager) AudioManager.sfx('hit'); // v0.3.8
       const el = findUnitTileEl(p.id);
       spawnFloatText(el, '-'+realDmg, false, false);
       render();
@@ -534,6 +541,8 @@ function checkBattleEnd(){
 }
 
 function endBattle(result){
+  // v0.3.8: SFX hasil battle
+  if (window.AudioManager) AudioManager.sfx(result === 'win' ? 'victory' : result === 'lose' ? 'defeat' : 'flee');
   const modal = document.getElementById('modal');
   const title = document.getElementById('modalTitle');
   const desc = document.getElementById('modalDesc');

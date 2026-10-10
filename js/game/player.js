@@ -45,6 +45,7 @@ const Player = (function () {
       p.expToNext = calcExpToNext(p.level);
       p.maxEnergy += 2;
       p.attributePoints += 5;
+      if (window.AudioManager) AudioManager.sfx('levelup'); // v0.3.8
       Events.emit('notify', { message: `🎉 Level Up! Sekarang level ${p.level} (+5 Attribute Point)` });
     }
     if (p.level >= MAX_LEVEL) {
