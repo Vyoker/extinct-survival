@@ -401,15 +401,21 @@ const Panels = (function () {
 
   // Blok paperdoll (figur karakter + 6 slot equipment di kiri/kanan).
   // Dipakai di Dashboard (Home) — fokus tunggal tempat pemain kelola equipment.
+  // v0.4.0: figur ikut berubah mengikuti armor yang dipakai — kalau armor
+  // punya "figureImg" (mis. Zirah Elite Pass), gambar itu yang tampil
+  // sebagai avatar, bukan paperdoll default.
   function renderPaperdollBlock(p) {
     const leftSlots = PAPERDOLL_ORDER.slice(0, 3).map(slot => renderEquipSlotNode(slot, p)).join('');
     const rightSlots = PAPERDOLL_ORDER.slice(3, 6).map(slot => renderEquipSlotNode(slot, p)).join('');
+    const chestEq = p.equipment && p.equipment.chest;
+    const chestDef = chestEq && chestEq.itemId ? ItemDB.get(chestEq.itemId) : null;
+    const figureSrc = (chestDef && chestDef.figureImg) ? chestDef.figureImg : 'assets/images/character/paperdoll.webp';
     return `
       <div class="paperdoll-bg">
         <div class="paperdoll">
           <div class="paperdoll-col">${leftSlots}</div>
           <div class="paperdoll-figure">
-            <img src="assets/images/character/paperdoll.webp" alt="Karakter"
+            <img src="${figureSrc}" alt="Karakter"
                  onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
             <span class="paperdoll-figure-fallback">🧍</span>
           </div>

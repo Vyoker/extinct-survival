@@ -684,11 +684,15 @@ html, body {
 .splash-cloud-btns .btn { flex: 1; }
 
 /* ============ v0.3.9: ELITE PASS REDESIGN ============ */
+/* v0.4.0: hero pakai background poster Elite Pass (Monas) + gradient gelap
+   supaya teks LV tetap terbaca. */
 .pass-hero {
   border-radius: 14px;
   padding: 16px 14px 13px;
   margin-bottom: 12px;
   background:
+    linear-gradient(180deg, rgba(8, 6, 4, 0.62), rgba(8, 6, 4, 0.9)),
+    url('../assets/images/elite-pass-bg.jpg') center 22% / cover no-repeat,
     radial-gradient(ellipse 90% 70% at 50% 0%, rgba(232, 194, 106, 0.13), transparent 70%),
     linear-gradient(180deg, rgba(30, 25, 16, 0.97), rgba(17, 15, 10, 0.97));
   border: 1px solid var(--ds-line-strong);

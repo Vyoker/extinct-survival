@@ -548,7 +548,7 @@
     },
     "description": "Senjata puncak Elite Pass, cuma didapat pemain yang menuntaskan jalur premium sampai level maksimal.",
     "craftable": false,
-    "icon": "pass_mythic_blade.png"
+    "icon": "elite_parang.jpg"
   },
   {
     "id": "pass_mythic_armor",
@@ -562,6 +562,7 @@
     },
     "description": "Zirah eksklusif Elite Pass, lambang pemain yang benar-benar menuntaskan seluruh jalur premium.",
     "craftable": false,
-    "icon": "pass_mythic_armor.png"
+    "icon": "elite_armor.jpg",
+    "figureImg": "assets/images/items/elite_armor.jpg"
   }
 ]
