@@ -949,3 +949,43 @@ html, body {
   z-index: 1;
   animation: scav-pop 0.45s 0.16s cubic-bezier(0.2,1.6,0.4,1) backwards;
 }
+
+/* v0.4.1: reveal 3 kolom hasil scavenge */
+.scav-result-row {
+  display: flex;
+  gap: 10px;
+  z-index: 1;
+  width: 100%;
+  max-width: 340px;
+}
+.scav-result-col {
+  flex: 1;
+  min-width: 0;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--ds-line-strong);
+  border-radius: 10px;
+  padding: 10px 6px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: scav-col-in 0.42s cubic-bezier(0.2, 1.4, 0.4, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes scav-col-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+.scav-result-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  margin-bottom: 5px;
+}
+.scav-result-val {
+  font-size: 13px;
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.scav-gold { color: #e8c26a; }
+.scav-exp { color: #b39df7; }

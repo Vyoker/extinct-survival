@@ -8,6 +8,7 @@ const Panels = (function () {
   // Sub-view lokal untuk tab Jelajah (tidak disimpan di gameState,
   // kecuali battle yang persist lewat gameState.combat).
   let explorationView = 'menu'; // 'menu' | 'travel' | 'hunting'
+  let scavSequenceActive = false; // v0.4.1: true selama animasi scavenge berjalan
 
   // =========================================================
   // DASHBOARD
@@ -247,7 +248,7 @@ const Panels = (function () {
   // (energy/cooldown/loot) tetap milik Exploration.scavenge().
   // =========================================================
   const SCAV_SEARCH_MS = 1700;
-  const SCAV_REVEAL_MS = 1600;
+  const SCAV_REVEAL_MS = 2600; // v0.4.1: lebih lama — biarkan 3 kolom terisi penuh dulu
   const SCAV_STATUS_TEXTS = [
     'Menggeledah reruntuhan…',
     'Memeriksa puing-puing…',
@@ -273,6 +274,8 @@ const Panels = (function () {
       </div>`;
   }
 
+  // v0.4.1: reveal 3 kolom — ITEM | RUPIAH | EXP — terisi berurutan
+  // dengan animasi stagger, lalu ditahan sampai selesai baru tutup.
   function renderScavReveal(loot) {
     const def = loot.itemId ? ItemDB.get(loot.itemId) : null;
     const rcolor = def && def.rarity && window.Rarity ? Rarity.getColor(def.rarity) : '#e8c26a';
@@ -280,12 +283,24 @@ const Panels = (function () {
     const qtyTxt = loot.qty > 1 ? ` ×${loot.qty}` : '';
     return `
       <div class="scav-scene" id="scav-scene">
+        <div class="scav-loot-tag">DITEMUKAN</div>
         <div class="scav-loot-pop" style="--rc:${rcolor};">
           <img src="${iconSrc}" alt="${def ? def.name : ''}" onerror="this.onerror=null;this.src='assets/images/items/_placeholder.png';">
         </div>
-        <div class="scav-loot-name" style="color:${rcolor};">${def ? def.name : '???'}${qtyTxt}</div>
-        <div class="scav-loot-sub">+Rp ${loot.rupiah} &nbsp;•&nbsp; +${loot.exp} EXP</div>
-        <div class="scav-loot-tag">DITEMUKAN</div>
+        <div class="scav-result-row">
+          <div class="scav-result-col" style="--d:0.05s;">
+            <div class="scav-result-label">ITEM</div>
+            <div class="scav-result-val" style="color:${rcolor};">${def ? def.name : '???'}${qtyTxt}</div>
+          </div>
+          <div class="scav-result-col" style="--d:0.32s;">
+            <div class="scav-result-label">RUPIAH</div>
+            <div class="scav-result-val scav-gold">+Rp ${loot.rupiah}</div>
+          </div>
+          <div class="scav-result-col" style="--d:0.59s;">
+            <div class="scav-result-label">EXP</div>
+            <div class="scav-result-val scav-exp">+${loot.exp}</div>
+          </div>
+        </div>
       </div>`;
   }
 
@@ -299,6 +314,7 @@ const Panels = (function () {
       return;
     }
     if (window.AudioManager) AudioManager.sfx('open');
+    scavSequenceActive = true; // kunci tick() 1-detik selama animasi
     main.innerHTML = renderScavScene();
     requestAnimationFrame(() => requestAnimationFrame(() => {
       const fill = document.getElementById('scav-progress-fill');
@@ -313,16 +329,17 @@ const Panels = (function () {
     }, 560);
     setTimeout(() => {
       clearInterval(statusTimer);
-      const sceneGone = !document.getElementById('scav-scene');
       // Logika scavenge jalan di titik ini supaya toast "selesai"
       // sinkron dengan momen reveal.
       const loot = Exploration.scavenge();
-      if (sceneGone) return; // user pindah layar: loot tetap masuk, UI tidak diganggu
-      if (!loot) { renderExploration(); return; }
+      const alive = !!document.getElementById('scav-scene');
+      if (!alive) { scavSequenceActive = false; return; } // user pindah layar: loot tetap masuk
+      if (!loot) { scavSequenceActive = false; renderExploration(); return; }
       if (window.AudioManager) AudioManager.sfx('coin');
       main.innerHTML = renderScavReveal(loot);
       Renderer.renderHUD();
       setTimeout(() => {
+        scavSequenceActive = false;
         if (!document.getElementById('scav-scene')) return;
         renderExploration();
       }, SCAV_REVEAL_MS);
@@ -1971,6 +1988,7 @@ const Panels = (function () {
   // Selalu re-render saat berada di menu ini (murah, DOM kecil) supaya
   // transisi "cooldown baru saja habis" ikut tertangkap tepat waktu.
   function tick() {
+    if (scavSequenceActive) return; // v0.4.1: jangan ganggu animasi scavenge
     if (currentNavPanel === 'exploration' && explorationView === 'menu') {
       tickRefresh = true;
       renderExploration();
