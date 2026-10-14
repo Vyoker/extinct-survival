@@ -818,3 +818,134 @@ html, body {
 }
 .pass-stickybar .action-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .pass-stickybar .xicon { width: 17px; height: 17px; }
+
+/* ============ v0.4.1: SCAVENGE SEQUENCE ============ */
+.scav-scene {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 34px 18px 26px;
+  background:
+    radial-gradient(ellipse 120% 90% at 50% 110%, rgba(232, 194, 106, 0.07), transparent 60%),
+    repeating-linear-gradient(115deg, rgba(255,255,255,0.022) 0 14px, transparent 14px 28px),
+    linear-gradient(180deg, #171310 0%, #0d0b09 70%, #080706 100%);
+  border: 1px solid var(--ds-line-strong);
+  box-shadow: inset 0 0 60px rgba(0,0,0,0.7);
+}
+/* Berkas cahaya menyapu puing */
+.scav-beam {
+  position: absolute;
+  top: -12%;
+  left: 50%;
+  width: 120px;
+  height: 130%;
+  transform-origin: top center;
+  background: linear-gradient(180deg, rgba(255,236,180,0.20), rgba(255,236,180,0.03) 75%, transparent);
+  clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%);
+  filter: blur(6px);
+  animation: scav-sweep 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes scav-sweep {
+  0%, 100% { transform: translateX(-50%) rotate(-24deg); }
+  50% { transform: translateX(-50%) rotate(24deg); }
+}
+/* Debu melayang */
+.scav-dust { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.scav-dust-p {
+  position: absolute;
+  bottom: 12%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(232, 194, 106, 0.5);
+  filter: blur(1px);
+  animation: scav-dust-rise linear infinite;
+}
+@keyframes scav-dust-rise {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 0.8; }
+  100% { transform: translateY(-190px); opacity: 0; }
+}
+/* Tumpukan puing */
+.scav-piles { display: flex; gap: 18px; z-index: 1; }
+.scav-pile {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 800;
+  color: rgba(232,194,106,0.5);
+  background: linear-gradient(180deg, #241d15, #14100c);
+  border: 1px dashed rgba(232,194,106,0.35);
+  animation: scav-pile-pulse 1.3s ease-in-out infinite;
+}
+.scav-pile:nth-child(2) { animation-delay: 0.22s; }
+.scav-pile:nth-child(3) { animation-delay: 0.44s; }
+@keyframes scav-pile-pulse {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.75; }
+  50% { transform: translateY(-7px) scale(1.06); opacity: 1; }
+}
+.scav-status { font-size: 13px; color: var(--text-dim); letter-spacing: 0.5px; z-index: 1; min-height: 18px; }
+.scav-progress {
+  width: 82%;
+  max-width: 320px;
+  height: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(232,194,106,0.25);
+}
+.scav-progress-fill {
+  width: 0;
+  height: 100%;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(-55deg, rgba(255,255,255,0.22) 0 10px, transparent 10px 20px),
+    linear-gradient(90deg, #8a6a2c, #e8c26a);
+  animation: scav-stripes 0.7s linear infinite;
+  transition: width 1.55s linear;
+}
+@keyframes scav-stripes { to { background-position: 28px 0, 0 0; } }
+/* Fase reveal loot */
+.scav-loot-pop {
+  width: 110px;
+  height: 110px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 35%, #2b2318, #12100c 75%);
+  border: 2px solid var(--rc, #e8c26a);
+  box-shadow: 0 0 28px var(--rc, #e8c26a), inset 0 0 18px rgba(0,0,0,0.6);
+  animation: scav-pop 0.45s cubic-bezier(0.2, 1.6, 0.4, 1);
+  z-index: 1;
+}
+.scav-loot-pop img { width: 76px; height: 76px; object-fit: contain; }
+@keyframes scav-pop {
+  0% { transform: scale(0.3); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.scav-loot-name { font-size: 17px; font-weight: 800; z-index: 1; animation: scav-pop 0.45s 0.08s cubic-bezier(0.2,1.6,0.4,1) backwards; }
+.scav-loot-sub { font-size: 13px; color: var(--text-dim); z-index: 1; }
+.scav-loot-tag {
+  font-size: 10px;
+  letter-spacing: 4px;
+  font-weight: 800;
+  color: #0d0b06;
+  background: linear-gradient(180deg, #f5d67b, #d9a83f);
+  padding: 5px 14px 5px 18px;
+  border-radius: 20px;
+  z-index: 1;
+  animation: scav-pop 0.45s 0.16s cubic-bezier(0.2,1.6,0.4,1) backwards;
+}

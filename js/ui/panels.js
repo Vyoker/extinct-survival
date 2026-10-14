@@ -218,8 +218,7 @@ const Panels = (function () {
     const btnScavenge = main.querySelector('#btn-do-scavenge');
     if (btnScavenge) {
       btnScavenge.addEventListener('click', () => {
-        Exploration.scavenge();
-        renderExploration();
+        startScavengeSequence(); // v0.4.1: dengan animasi visual
       });
     }
 
@@ -238,6 +237,96 @@ const Panels = (function () {
         renderExploration();
       });
     }
+  }
+
+  // =========================================================
+  // v0.4.1: SCAVENGE SEQUENCE — animasi visual saat scavenge
+  // biar tidak flat: fase "menggeledah" (berkas cahaya menyapu,
+  // debu melayang, tumpukan puing berdenyut, progress bar) lalu
+  // fase reveal loot (ikon pop + glow rarity). Logika game
+  // (energy/cooldown/loot) tetap milik Exploration.scavenge().
+  // =========================================================
+  const SCAV_SEARCH_MS = 1700;
+  const SCAV_REVEAL_MS = 1600;
+  const SCAV_STATUS_TEXTS = [
+    'Menggeledah reruntuhan…',
+    'Memeriksa puing-puing…',
+    'Mengais sisa peradaban…',
+    'Menyisir sudut gelap…'
+  ];
+
+  function renderScavScene() {
+    const dust = Array.from({ length: 10 }, (_, i) =>
+      `<span class="scav-dust-p" style="left:${8 + (i * 9) % 84}%;animation-delay:${(i * 0.33).toFixed(2)}s;animation-duration:${(2.2 + (i % 4) * 0.5).toFixed(2)}s;"></span>`
+    ).join('');
+    return `
+      <div class="scav-scene" id="scav-scene">
+        <div class="scav-beam"></div>
+        <div class="scav-dust">${dust}</div>
+        <div class="scav-piles">
+          <div class="scav-pile"><span>?</span></div>
+          <div class="scav-pile"><span>?</span></div>
+          <div class="scav-pile"><span>?</span></div>
+        </div>
+        <div class="scav-status" id="scav-status">${SCAV_STATUS_TEXTS[0]}</div>
+        <div class="scav-progress"><div class="scav-progress-fill" id="scav-progress-fill"></div></div>
+      </div>`;
+  }
+
+  function renderScavReveal(loot) {
+    const def = loot.itemId ? ItemDB.get(loot.itemId) : null;
+    const rcolor = def && def.rarity && window.Rarity ? Rarity.getColor(def.rarity) : '#e8c26a';
+    const iconSrc = def && def.icon ? `assets/images/items/${def.icon}` : 'assets/images/items/_placeholder.png';
+    const qtyTxt = loot.qty > 1 ? ` ×${loot.qty}` : '';
+    return `
+      <div class="scav-scene" id="scav-scene">
+        <div class="scav-loot-pop" style="--rc:${rcolor};">
+          <img src="${iconSrc}" alt="${def ? def.name : ''}" onerror="this.onerror=null;this.src='assets/images/items/_placeholder.png';">
+        </div>
+        <div class="scav-loot-name" style="color:${rcolor};">${def ? def.name : '???'}${qtyTxt}</div>
+        <div class="scav-loot-sub">+Rp ${loot.rupiah} &nbsp;•&nbsp; +${loot.exp} EXP</div>
+        <div class="scav-loot-tag">DITEMUKAN</div>
+      </div>`;
+  }
+
+  function startScavengeSequence() {
+    const main = document.getElementById('main-panel');
+    // Validasi dulu tanpa efek samping; kalau gagal (cooldown/energy),
+    // panggil scavenge() asli supaya notifikasi error-nya tetap muncul.
+    if (!Exploration.canScavenge()) {
+      Exploration.scavenge();
+      renderExploration();
+      return;
+    }
+    if (window.AudioManager) AudioManager.sfx('open');
+    main.innerHTML = renderScavScene();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const fill = document.getElementById('scav-progress-fill');
+      if (fill) fill.style.width = '100%';
+    }));
+    let si = 0;
+    const statusTimer = setInterval(() => {
+      const el = document.getElementById('scav-status');
+      if (!el) { clearInterval(statusTimer); return; }
+      si = (si + 1) % SCAV_STATUS_TEXTS.length;
+      el.textContent = SCAV_STATUS_TEXTS[si];
+    }, 560);
+    setTimeout(() => {
+      clearInterval(statusTimer);
+      const sceneGone = !document.getElementById('scav-scene');
+      // Logika scavenge jalan di titik ini supaya toast "selesai"
+      // sinkron dengan momen reveal.
+      const loot = Exploration.scavenge();
+      if (sceneGone) return; // user pindah layar: loot tetap masuk, UI tidak diganggu
+      if (!loot) { renderExploration(); return; }
+      if (window.AudioManager) AudioManager.sfx('coin');
+      main.innerHTML = renderScavReveal(loot);
+      Renderer.renderHUD();
+      setTimeout(() => {
+        if (!document.getElementById('scav-scene')) return;
+        renderExploration();
+      }, SCAV_REVEAL_MS);
+    }, SCAV_SEARCH_MS);
   }
 
   // =========================================================
