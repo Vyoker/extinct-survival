@@ -250,6 +250,12 @@
   padding: 0;
 }
 #enemyStrip .eIcon .xicon { width: 24px; height: 24px; }
+/* v0.4.2: ikon musuh dari aset gambar (webp bulat transparan) */
+#enemyStrip .eIcon .eIcoWrap { width: 100%; height: 100%; display: block; }
+#enemyStrip .eIcon .eIcoImg { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+#screen-battle-tactical .unitTok .eIcoWrap { position: absolute; inset: 0; display: block; }
+#screen-battle-tactical .unitTok .eIcoImg { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+#screen-battle-tactical .unitTok .eIcoFallback .xicon { width: 62%; height: 62%; }
 #enemyStrip .eBody { flex: 1; min-width: 0; }
 #enemyStrip .eName {
   font-size: 10px; font-weight: 800; color: #e8c26a;

@@ -176,7 +176,7 @@ function renderEnemyStrip(){
     card.className = 'eCard'+(!u.alive?' dead':'')+(state.pendingAction && u.alive && inAttackRange(u) ? ' targetable':'')+(state.actingUnitId===u.id?' acting':'');
     const ic = (n)=> window.Icons ? Icons.svg(n) : '';
     card.innerHTML = `
-      <div class="eIcon">${window.Icons ? Icons.fromEmoji(u.icon) : u.icon}</div>
+      <div class="eIcon">${(window.BattleBridge && BattleBridge.enemyIconHtml) ? BattleBridge.enemyIconHtml(u.iconImg, u.icon) : (window.Icons ? Icons.fromEmoji(u.icon) : u.icon)}</div>
       <div class="eBody">
         <div class="eName">${u.name}</div>
         <div class="eHpTrack"><div class="eHpFill" style="width:${Math.max(0,u.hp/u.maxHp*100)}%"></div></div>
@@ -244,7 +244,10 @@ function renderBoard(){
     if(u){
       const tok = document.createElement('div');
       tok.className = 'unitTok '+(u.isPlayer?'playerTok':'enemyTok')+(state.selectedTargetId===u.id?' selectedTarget':'')+(state.actingUnitId===u.id?' actingUnit':'');
-      tok.innerHTML = window.Icons ? Icons.fromEmoji(u.icon) : u.icon;
+      // v0.4.2: token musuh memakai gambar aset bila ada (fallback ikon template).
+      tok.innerHTML = (!u.isPlayer && window.BattleBridge && BattleBridge.enemyIconHtml)
+        ? BattleBridge.enemyIconHtml(u.iconImg, u.icon)
+        : (window.Icons ? Icons.fromEmoji(u.icon) : u.icon);
       const hp = document.createElement('div');
       hp.className='miniHp';
       hp.innerHTML = `<i style="width:${Math.max(0,u.hp/u.maxHp*100)}%"></i>`;

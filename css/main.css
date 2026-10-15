@@ -383,6 +383,17 @@ html, body {
   align-items: center;
   gap: 8px;
 }
+/* v0.4.2: thumbnail ikon musuh di daftar Hunting */
+.huntIcon {
+  width: 44px; height: 44px; flex: 0 0 auto;
+  border-radius: 50%; overflow: hidden;
+  border: 2px solid var(--border-color);
+  background: radial-gradient(circle at 35% 30%, #3d3626, #14110a);
+  display: flex; align-items: center; justify-content: center;
+}
+.huntIcon .eIcoWrap { width: 100%; height: 100%; display: block; }
+.huntIcon .eIcoImg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.huntIcon .xicon { width: 24px; height: 24px; }
 .action-btn.secondary {
   border-color: var(--border-color);
   color: var(--text-dim);

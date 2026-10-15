@@ -55,12 +55,37 @@ const BattleBridge = (function () {
     };
   }
 
+  // v0.4.2: ikon musuh dari aset gambar (webp bulat transparan di
+  // assets/images/enemies/<id>.webp); fallback ke ikon template bila
+  // file belum ada (mis. bandit_jakarta, anjing_liar).
+  function enemyIconHtml(iconImg, icon) {
+    const fallback = window.Icons ? Icons.fromEmoji(icon) : icon;
+    if (!iconImg) return '<span class="eIcoFallback">' + fallback + '</span>';
+    return '<span class="eIcoWrap"><img class="eIcoImg" src="' + iconImg +
+      '" alt="" data-fb="' + encodeURIComponent(fallback) + '"></span>';
+  }
+
+  // Tangkap img ikon musuh yang gagal dimuat (file belum ada) lalu ganti
+  // dengan ikon fallback. Didaftarkan sekali di sini supaya berlaku untuk
+  // battle screen maupun daftar Hunting (panels.js).
+  document.addEventListener('error', function (ev) {
+    const t = ev.target;
+    if (t && t.tagName === 'IMG' && t.classList && t.classList.contains('eIcoImg')) {
+      const wrap = t.parentNode;
+      const s = document.createElement('span');
+      s.className = 'eIcoFallback';
+      try { s.innerHTML = decodeURIComponent(t.getAttribute('data-fb') || ''); } catch (e) { /* abaikan */ }
+      if (wrap && wrap.parentNode) wrap.replaceWith(s);
+    }
+  }, true);
+
   function buildEnemiesConfig(enemyDef) {
     // Satu musuh per battle (konsisten dengan alur Hunting: pilih 1 target).
     return [{
       id: enemyDef.id,
       name: enemyDef.name,
       icon: enemyDef.icon || '👤',
+      iconImg: 'assets/images/enemies/' + enemyDef.id + '.webp',
       hp: enemyDef.hp,
       maxHp: enemyDef.hp,
       dmgMin: enemyDef.damageMin,
@@ -177,7 +202,7 @@ const BattleBridge = (function () {
     });
   }
 
-  return { startHunt, recoverInterruptedBattle };
+  return { startHunt, recoverInterruptedBattle, enemyIconHtml };
 })();
 
 window.BattleBridge = BattleBridge;

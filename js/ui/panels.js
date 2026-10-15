@@ -390,15 +390,21 @@ const Panels = (function () {
     const loc = Exploration.getCurrentLocation();
     const enemies = (loc && loc.enemies) || [];
 
-    const rows = enemies.map(en => `
+    const rows = enemies.map(en => {
+      // v0.4.2: thumbnail ikon musuh dari aset gambar (fallback ikon template).
+      const iconHtml = (window.BattleBridge && BattleBridge.enemyIconHtml)
+        ? BattleBridge.enemyIconHtml('assets/images/enemies/' + en.id + '.webp', en.icon)
+        : (window.Icons ? Icons.fromEmoji(en.icon) : en.icon);
+      return `
       <div class="card travel-row">
-        <div>
+        <div class="huntIcon">${iconHtml}</div>
+        <div style="flex:1;min-width:0;">
           <div class="location-name" style="font-size:13px;">${en.name}</div>
           <p class="location-desc" style="margin:2px 0 0;">HP ${en.hp} • Damage ${en.damageMin}-${en.damageMax}</p>
         </div>
         <button class="mini-btn" data-hunt-target="${en.id}">Buru</button>
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
 
     return `
       <h2 class="panel-title">${Icons.svg('bow')} Hunting - ${loc ? loc.name : ''}</h2>
