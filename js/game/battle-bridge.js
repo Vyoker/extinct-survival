@@ -47,6 +47,13 @@ const BattleBridge = (function () {
     return {
       name: p.name,
       icon: '🧑',
+      // v0.4.3: token pemain memakai avatar yang sedang dipakai — figureImg
+      // dari armor chest yang terpasang; kalau default, pakai paperdoll.
+      avatarImg: (function () {
+        const chestEq = p.equipment && p.equipment.chest;
+        const chestDef = (chestEq && chestEq.itemId && window.ItemDB) ? ItemDB.get(chestEq.itemId) : null;
+        return (chestDef && chestDef.figureImg) ? chestDef.figureImg : 'assets/images/character/paperdoll.webp';
+      })(),
       hp: Math.max(1, p.survival.health),
       maxHp: 100,
       armor: Math.round(derived.defensePct), // sinkron dgn Defense% (cap 70)

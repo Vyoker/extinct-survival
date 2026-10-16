@@ -245,8 +245,11 @@ function renderBoard(){
       const tok = document.createElement('div');
       tok.className = 'unitTok '+(u.isPlayer?'playerTok':'enemyTok')+(state.selectedTargetId===u.id?' selectedTarget':'')+(state.actingUnitId===u.id?' actingUnit':'');
       // v0.4.2: token musuh memakai gambar aset bila ada (fallback ikon template).
-      tok.innerHTML = (!u.isPlayer && window.BattleBridge && BattleBridge.enemyIconHtml)
-        ? BattleBridge.enemyIconHtml(u.iconImg, u.icon)
+      // v0.4.3: token pemain memakai avatar yang sedang dipakai (avatarImg),
+      // fallback ke ikon default bila gambar gagal dimuat.
+      const useImg = u.isPlayer ? u.avatarImg : u.iconImg;
+      tok.innerHTML = (useImg && window.BattleBridge && BattleBridge.enemyIconHtml)
+        ? BattleBridge.enemyIconHtml(useImg, u.icon)
         : (window.Icons ? Icons.fromEmoji(u.icon) : u.icon);
       const hp = document.createElement('div');
       hp.className='miniHp';
