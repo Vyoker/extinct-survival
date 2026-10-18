@@ -29,14 +29,12 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.4.4
+## Rilis Terbaru — v0.4.5
 
-- Token pemain di battle taktis kini tampil sebagai headshot (kepala),
-  otomatis mengikuti avatar yang sedang dipakai — termasuk saat
-  memakai set armor yang mengubah tampilan karakter.
-- Avatar di dashboard kini beranimasi dan terasa hidup: efek napas,
-  bayangan tanah yang bergerak, cahaya lembut, dan partikel bara api
-  yang melayang di sekitar figur.
+- Persiapan build Google Play Store: pembelian kredit via Google Play
+  Billing otomatis aktif saat game dijalankan di aplikasi Play Store
+  (kredit masuk instan tanpa verifikasi manual); di luar itu top up
+  QRIS manual tetap berjalan seperti biasa.
 
 ## Teknologi
 

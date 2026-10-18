@@ -402,6 +402,13 @@ const Topup = (function () {
   // ENTRY POINT
   // =========================================================
   function open() {
+    // v0.4.5: di dalam wrapper Play Store (bridge NativeBilling tersedia),
+    // alihkan ke alur Google Play Billing — QRIS tidak boleh tampil di build Play.
+    if (window.PlayBilling && PlayBilling.isAvailable()) {
+      PlayBilling.open();
+      return;
+    }
+
     const pending = loadPending();
 
     currentOverlayId = OverlayManager.open(
