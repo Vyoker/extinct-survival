@@ -29,7 +29,12 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.4.5
+## Rilis Terbaru — v0.4.6
+
+- Splash screen baru: artwork reruntuhan Nusantara full-screen dengan
+  kredit developer VyokerDEV (nama akun developer di Google Play Store).
+
+## v0.4.5
 
 - Persiapan build Google Play Store: pembelian kredit via Google Play
   Billing otomatis aktif saat game dijalankan di aplikasi Play Store

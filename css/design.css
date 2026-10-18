@@ -597,52 +597,47 @@ html, body {
 .audio-hint { font-size: 11px; color: var(--text-dim); line-height: 1.6; margin-top: 4px; }
 
 /* ============ v0.3.9: SPLASH SCREEN ============ */
+/* v0.4.6: artwork splash full-bleed, panel loading menempel di bawah */
 #screen-splash {
-  align-items: center;
-  justify-content: center;
-  background:
-    radial-gradient(ellipse 80% 55% at 50% 38%, rgba(120, 72, 20, 0.16), transparent 70%),
-    linear-gradient(180deg, #12100b 0%, #0b0a07 60%, #060604 100%);
+  position: relative;
+  align-items: stretch;
+  justify-content: flex-end;
+  overflow: hidden;
+  background: #0b0a07 url('../assets/images/splash-art.jpg') center/cover no-repeat;
+}
+/* Scrim: gelapkan bawah supaya progress terbaca, sedikit redup di atas */
+#screen-splash::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6,5,3,0.45) 0%, transparent 30%, transparent 55%, rgba(6,5,3,0.82) 100%);
+  pointer-events: none;
 }
 .splash-inner {
-  width: min(340px, 86vw);
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 18px 26px calc(22px + env(safe-area-inset-bottom, 0px));
   text-align: center;
+  background: linear-gradient(180deg, transparent 0%, rgba(6,5,3,0.55) 55%, rgba(6,5,3,0.88) 100%);
   animation: splash-rise 0.6s var(--ds-ease);
 }
 @keyframes splash-rise {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.splash-logo .xicon {
-  width: 64px;
-  height: 64px;
-  color: var(--ds-gold);
-  filter: drop-shadow(0 0 18px rgba(232, 194, 106, 0.35));
-  animation: splash-pulse 2.2s ease-in-out infinite;
-}
-@keyframes splash-pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.06); opacity: 0.88; }
-}
-.splash-title {
-  margin-top: 10px;
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: 4px;
-  color: var(--ds-gold);
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
-}
 .splash-version {
-  margin-top: 4px;
   font-size: 11px;
-  letter-spacing: 2px;
-  color: var(--text-dim);
+  letter-spacing: 3px;
+  color: var(--ds-gold);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
 }
 .splash-bar-track {
-  margin: 22px 0 10px;
+  margin: 12px auto 10px;
+  max-width: 340px;
   height: 10px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.55);
   border: 1px solid var(--ds-line-strong);
   overflow: hidden;
 }
@@ -656,9 +651,22 @@ html, body {
 }
 .splash-status {
   font-size: 12px;
-  color: var(--text-dim);
+  color: #d8d2c4;
   letter-spacing: 0.4px;
   min-height: 18px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+}
+/* v0.4.6: kredit developer (nama akun Google Play) */
+.splash-dev {
+  margin-top: 10px;
+  font-size: 10.5px;
+  letter-spacing: 1.5px;
+  color: rgba(216, 210, 196, 0.75);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+}
+.splash-dev span {
+  color: var(--ds-gold);
+  font-weight: 700;
 }
 .splash-cloud {
   margin-top: 18px;
