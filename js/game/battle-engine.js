@@ -247,9 +247,13 @@ function renderBoard(){
       // v0.4.2: token musuh memakai gambar aset bila ada (fallback ikon template).
       // v0.4.3: token pemain memakai avatar yang sedang dipakai (avatarImg),
       // fallback ke ikon default bila gambar gagal dimuat.
+      // v0.4.4: token pemain di-crop headshot (kepala saja) via playerIconHtml.
       const useImg = u.isPlayer ? u.avatarImg : u.iconImg;
-      tok.innerHTML = (useImg && window.BattleBridge && BattleBridge.enemyIconHtml)
-        ? BattleBridge.enemyIconHtml(useImg, u.icon)
+      const iconFn = (u.isPlayer && window.BattleBridge && BattleBridge.playerIconHtml)
+        ? BattleBridge.playerIconHtml
+        : ((window.BattleBridge && BattleBridge.enemyIconHtml) ? BattleBridge.enemyIconHtml : null);
+      tok.innerHTML = (useImg && iconFn)
+        ? iconFn(useImg, u.icon)
         : (window.Icons ? Icons.fromEmoji(u.icon) : u.icon);
       const hp = document.createElement('div');
       hp.className='miniHp';

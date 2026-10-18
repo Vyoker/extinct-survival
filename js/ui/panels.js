@@ -171,6 +171,32 @@ const Panels = (function () {
 
     const factionCard = main.querySelector('#dash-faction-card');
     if (factionCard) factionCard.addEventListener('click', () => openFactionOverlay());
+
+    startAvatarEmbers(main);
+  }
+
+  // v0.4.4: partikel bara/debu yang melayang di sekitar avatar dashboard
+  // supaya figur 2D terasa "hidup". Berhenti otomatis saat panel diganti.
+  let avatarEmberTimer = null;
+  function startAvatarEmbers(root) {
+    if (avatarEmberTimer) { clearInterval(avatarEmberTimer); avatarEmberTimer = null; }
+    const layer = root && root.querySelector ? root.querySelector('.paperdoll-figure.avatarAlive .avatar-embers') : null;
+    if (!layer) return;
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    avatarEmberTimer = setInterval(() => {
+      if (!layer.isConnected) { clearInterval(avatarEmberTimer); avatarEmberTimer = null; return; }
+      if (document.hidden) return; // hemat baterai saat tab tidak aktif
+      const dot = document.createElement('span');
+      dot.className = 'avatar-ember-dot';
+      const size = rnd(3, 6);
+      dot.style.width = size + 'px';
+      dot.style.height = size + 'px';
+      dot.style.left = rnd(18, 82) + '%';
+      dot.style.setProperty('--ember-dx', Math.round(rnd(-22, 22)) + 'px');
+      dot.style.animationDuration = rnd(2.2, 4.2).toFixed(2) + 's';
+      dot.addEventListener('animationend', () => dot.remove());
+      layer.appendChild(dot);
+    }, 650);
   }
 
   // =========================================================
@@ -526,10 +552,13 @@ const Panels = (function () {
       <div class="paperdoll-bg">
         <div class="paperdoll">
           <div class="paperdoll-col">${leftSlots}</div>
-          <div class="paperdoll-figure">
+          <div class="paperdoll-figure avatarAlive">
+            <div class="avatar-glow"></div>
             <img src="${figureSrc}" alt="Karakter"
-                 onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
+                 onerror="this.onerror=null;this.style.display='none';this.parentNode.querySelector('.paperdoll-figure-fallback').style.display='flex';">
             <span class="paperdoll-figure-fallback">🧍</span>
+            <div class="avatar-shadow"></div>
+            <div class="avatar-embers"></div>
           </div>
           <div class="paperdoll-col">${rightSlots}</div>
         </div>

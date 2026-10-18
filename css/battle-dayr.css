@@ -255,6 +255,9 @@
 #enemyStrip .eIcon .eIcoImg { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
 #screen-battle-tactical .unitTok .eIcoWrap { position: absolute; inset: 0; display: block; }
 #screen-battle-tactical .unitTok .eIcoImg { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+/* v0.4.4: token pemain di-crop headshot — object-position ke atas supaya
+   yang tampil di lingkaran adalah kepala/wajah dari gambar full-body. */
+#screen-battle-tactical .unitTok.playerTok .eIcoWrap.playerHeadWrap .eIcoImg { object-position: 50% 0%; }
 #screen-battle-tactical .unitTok .eIcoFallback .xicon { width: 62%; height: 62%; }
 #enemyStrip .eBody { flex: 1; min-width: 0; }
 #enemyStrip .eName {

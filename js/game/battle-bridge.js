@@ -72,6 +72,17 @@ const BattleBridge = (function () {
       '" alt="" data-fb="' + encodeURIComponent(fallback) + '"></span>';
   }
 
+  // v0.4.4: ikon token pemain di-crop headshot (bagian kepala saja) dari
+  // gambar avatar yang sedang dipakai (figureImg armor / paperdoll default).
+  // CSS .playerHeadWrap memaksa object-position ke atas sehingga yang tampil
+  // di token bulat adalah wajah, bukan seluruh badan.
+  function playerIconHtml(avatarImg, icon) {
+    const fallback = window.Icons ? Icons.fromEmoji(icon) : icon;
+    if (!avatarImg) return '<span class="eIcoFallback">' + fallback + '</span>';
+    return '<span class="eIcoWrap playerHeadWrap"><img class="eIcoImg" src="' + avatarImg +
+      '" alt="" data-fb="' + encodeURIComponent(fallback) + '"></span>';
+  }
+
   // Tangkap img ikon musuh yang gagal dimuat (file belum ada) lalu ganti
   // dengan ikon fallback. Didaftarkan sekali di sini supaya berlaku untuk
   // battle screen maupun daftar Hunting (panels.js).
@@ -209,7 +220,7 @@ const BattleBridge = (function () {
     });
   }
 
-  return { startHunt, recoverInterruptedBattle, enemyIconHtml };
+  return { startHunt, recoverInterruptedBattle, enemyIconHtml, playerIconHtml };
 })();
 
 window.BattleBridge = BattleBridge;

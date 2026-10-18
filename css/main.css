@@ -625,6 +625,59 @@ html, body {
   object-position: center bottom;
 }
 .paperdoll-figure-fallback { display: none; }
+
+/* ---------- v0.4.4: avatar "hidup" di dashboard (idle animation) ---------- */
+/* Lapisan cahaya lembut di belakang figur, berdenyut perlahan. */
+.avatar-glow {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 60% 55% at 50% 45%, rgba(255,170,80,0.22), rgba(255,120,40,0.06) 60%, transparent 75%);
+  animation: avatarGlow 3.4s ease-in-out infinite;
+}
+/* Napas: figur mengembang-mengempis halus, bertumpu di kaki. */
+.paperdoll-figure.avatarAlive img {
+  position: relative; z-index: 2;
+  transform-origin: 50% 100%;
+  animation: avatarBreathe 3.4s ease-in-out infinite;
+}
+/* Bayangan tanah di bawah kaki, menyusut saat figur "menghirup". */
+.avatar-shadow {
+  position: absolute; left: 50%; bottom: 4%; z-index: 1; pointer-events: none;
+  width: 56%; height: 7%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, transparent 70%);
+  animation: avatarShadow 3.4s ease-in-out infinite;
+}
+/* Wadah partikel bara api/debu yang melayang di sekitar figur. */
+.avatar-embers {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none; overflow: hidden;
+}
+.avatar-ember-dot {
+  position: absolute; bottom: 8%;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: radial-gradient(circle, #ffd9a0 0%, #ff9a3c 60%, transparent 100%);
+  opacity: 0;
+  animation: emberRise linear forwards;
+}
+@keyframes avatarBreathe {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  50%      { transform: translateY(-1.6%) scale(1.008, 1.022); }
+}
+@keyframes avatarGlow {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+@keyframes avatarShadow {
+  0%, 100% { transform: translateX(-50%) scaleX(1); opacity: 0.85; }
+  50%      { transform: translateX(-50%) scaleX(0.9); opacity: 0.6; }
+}
+@keyframes emberRise {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  12%  { opacity: 0.9; }
+  100% { transform: translateY(-64px) translateX(var(--ember-dx, 0px)); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .paperdoll-figure.avatarAlive img, .avatar-glow, .avatar-shadow, .avatar-ember-dot { animation: none; }
+}
 .paperdoll .equip-slot-cell { aspect-ratio: 1; }
 
 /* Mini popup (dipicu dari klik grid icon, ukurannya kecil bukan fullscreen) */

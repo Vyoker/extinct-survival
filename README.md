@@ -29,13 +29,14 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.4.2
+## Rilis Terbaru — v0.4.4
 
-- Ikon musuh di battle kini memakai artwork khusus bergaya gritty
-  (potret bulat transparan), menggantikan ikon generik sebelumnya.
-  Tampil di panel musuh, token papan taktis, dan daftar Hunting.
-- Musuh yang artwork-nya belum tersedia otomatis memakai ikon lama —
-  tidak ada tampilan yang rusak.
+- Token pemain di battle taktis kini tampil sebagai headshot (kepala),
+  otomatis mengikuti avatar yang sedang dipakai — termasuk saat
+  memakai set armor yang mengubah tampilan karakter.
+- Avatar di dashboard kini beranimasi dan terasa hidup: efek napas,
+  bayangan tanah yang bergerak, cahaya lembut, dan partikel bara api
+  yang melayang di sekitar figur.
 
 ## Teknologi
 
