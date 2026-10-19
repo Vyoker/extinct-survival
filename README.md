@@ -29,7 +29,15 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.4.7
+## Rilis Terbaru — v0.4.8
+
+- Crafting diperluas: 20 resep baru, total 24. Termasuk 6 senjata baru
+  (Kapak Batu hingga Parang Baja Tempa), 7 armor baru (Zirah Bulu
+  Beruang, Perisai Anti Huru-Hara), 5 consumable baru (Tapal Herbal,
+  Penawar Bisa, Ransum Lapangan), dan 2 material olahan (Logam Tempa,
+  Kulit Samak) yang menjadi bahan peralatan tier Rare.
+
+## v0.4.7
 
 - Cerita utama baru: arc "Jejak Proyek Fajar" — 8 chapter lanjutan dari
   prolog, satu chapter per wilayah, dari sinyal misterius di Jakarta

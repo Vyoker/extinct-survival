@@ -559,5 +559,345 @@
   "craftable": false,
   "icon": "elite_armor.jpg",
   "figureImg": "assets/images/items/elite_armor.jpg"
+ },
+ {
+  "id": "stone_axe",
+  "name": "Kapak Batu",
+  "type": "weapon",
+  "rarity": "common",
+  "stats": {
+   "damage": 10,
+   "durability": 70
+  },
+  "description": "Kapak primitif dari batu asah dan gagang kayu. Kasar, tapi cukup untuk membelah kayu dan tengkorak.",
+  "craftable": true,
+  "recipe": {
+   "stone": 3,
+   "wood_plank": 1,
+   "rope": 1
+  },
+  "icon": "stone_axe.webp"
+ },
+ {
+  "id": "bone_dagger",
+  "name": "Belati Tulang",
+  "type": "weapon",
+  "rarity": "uncommon",
+  "stats": {
+   "damage": 18,
+   "durability": 80
+  },
+  "description": "Belati yang diasah dari tulang paha binatang buas. Ringan, senyap, dan mematikan.",
+  "craftable": true,
+  "recipe": {
+   "bone": 3,
+   "rope": 1
+  },
+  "icon": "bone_dagger.webp"
+ },
+ {
+  "id": "wolf_fang_blade",
+  "name": "Pisau Taring Serigala",
+  "type": "weapon",
+  "rarity": "uncommon",
+  "stats": {
+   "damage": 22,
+   "durability": 90
+  },
+  "description": "Taring serigala liar yang dirangkai jadi pisau. Setiap goresannya membawa dendam rimba.",
+  "craftable": true,
+  "recipe": {
+   "wolf_fang": 3,
+   "wood_plank": 2
+  },
+  "icon": "wolf_fang_blade.webp"
+ },
+ {
+  "id": "scrap_sword",
+  "name": "Pedang Besi Tua",
+  "type": "weapon",
+  "rarity": "uncommon",
+  "stats": {
+   "damage": 20,
+   "durability": 100
+  },
+  "description": "Pedang tempaan darurat dari besi rongsokan. Berat, tapi ayunannya menghancurkan.",
+  "craftable": true,
+  "recipe": {
+   "scrap_metal": 6,
+   "wood_plank": 2
+  },
+  "icon": "scrap_sword.webp"
+ },
+ {
+  "id": "venom_dagger",
+  "name": "Belati Bisa Ular",
+  "type": "weapon",
+  "rarity": "rare",
+  "stats": {
+   "damage": 30,
+   "durability": 110
+  },
+  "description": "Bilah logam tempa beralur bisa ular. Luka kecil darinya bisa jadi luka terakhir.",
+  "craftable": true,
+  "recipe": {
+   "snake_skin": 2,
+   "snake_venom": 2,
+   "refined_metal": 2
+  },
+  "icon": "venom_dagger.webp"
+ },
+ {
+  "id": "reinforced_machete",
+  "name": "Parang Baja Tempa",
+  "type": "weapon",
+  "rarity": "rare",
+  "stats": {
+   "damage": 33,
+   "durability": 150
+  },
+  "description": "Parang yang ditempa ulang dari logam tempa pilihan. Senjata andalan para penyintas veteran.",
+  "craftable": true,
+  "recipe": {
+   "refined_metal": 4,
+   "spare_parts": 3,
+   "rope": 2
+  },
+  "icon": "reinforced_machete.webp"
+ },
+ {
+  "id": "bone_chestguard",
+  "name": "Pelindung Dada Tulang",
+  "type": "armor",
+  "slot": "chest",
+  "rarity": "uncommon",
+  "stats": {
+   "defense": 12,
+   "durability": 70
+  },
+  "description": "Rangkaian tulang yang diikat tali, melindungi dada dari cakaran dan tusukan.",
+  "craftable": true,
+  "recipe": {
+   "bone": 4,
+   "rope": 2
+  },
+  "icon": "bone_chestguard.webp"
+ },
+ {
+  "id": "wolf_fur_cloak",
+  "name": "Jubah Bulu Serigala",
+  "type": "armor",
+  "slot": "chest",
+  "rarity": "uncommon",
+  "stats": {
+   "defense": 14,
+   "durability": 75
+  },
+  "description": "Jubah hangat dari bulu serigala. Melindungi dari dingin malam dan gigitan binatang.",
+  "craftable": true,
+  "recipe": {
+   "wolf_fur": 3,
+   "rope": 2
+  },
+  "icon": "wolf_fur_cloak.webp"
+ },
+ {
+  "id": "scrap_greaves",
+  "name": "Pelindung Kaki Seng",
+  "type": "armor",
+  "slot": "legs",
+  "rarity": "uncommon",
+  "stats": {
+   "defense": 10,
+   "durability": 70
+  },
+  "description": "Lempengan seng yang dibentuk melindungi kaki. Berisik, tapi menyelamatkan nyawa.",
+  "craftable": true,
+  "recipe": {
+   "scrap_metal": 5,
+   "rope": 1
+  },
+  "icon": "scrap_greaves.webp"
+ },
+ {
+  "id": "snakeskin_grips",
+  "name": "Sarung Tangan Kulit Ular",
+  "type": "armor",
+  "slot": "accessory",
+  "rarity": "rare",
+  "stats": {
+   "defense": 14,
+   "durability": 80
+  },
+  "description": "Sarung tangan dari kulit samak bermotif ular. Cengkeraman mantap, perlindungan solid.",
+  "craftable": true,
+  "recipe": {
+   "treated_leather": 3,
+   "rope": 1
+  },
+  "icon": "snakeskin_grips.webp"
+ },
+ {
+  "id": "reinforced_helmet",
+  "name": "Helm Baja Tempa",
+  "type": "armor",
+  "slot": "head",
+  "rarity": "rare",
+  "stats": {
+   "defense": 18,
+   "durability": 110
+  },
+  "description": "Helm tempur dari logam tempa. Satu-satunya yang berdiri antara kepalamu dan pentungan bandit.",
+  "craftable": true,
+  "recipe": {
+   "refined_metal": 3,
+   "spare_parts": 2
+  },
+  "icon": "reinforced_helmet.webp"
+ },
+ {
+  "id": "bear_fur_armor",
+  "name": "Zirah Bulu Beruang",
+  "type": "armor",
+  "slot": "chest",
+  "rarity": "rare",
+  "stats": {
+   "defense": 22,
+   "durability": 120
+  },
+  "description": "Zirah tebal dari bulu beruang madu berlapis kulit samak. Hangat dan nyaris tak tertembus.",
+  "craftable": true,
+  "recipe": {
+   "bear_fur": 4,
+   "treated_leather": 2,
+   "rope": 2
+  },
+  "icon": "bear_fur_armor.webp"
+ },
+ {
+  "id": "riot_shield",
+  "name": "Perisai Anti Huru-Hara",
+  "type": "armor",
+  "slot": "offhand",
+  "rarity": "rare",
+  "stats": {
+   "defense": 35,
+   "durability": 130
+  },
+  "description": "Perisai polisi yang dipulung dari reruntuhan. Dinding berjalan bagi pemiliknya.",
+  "craftable": true,
+  "recipe": {
+   "scrap_metal": 12,
+   "spare_parts": 4
+  },
+  "icon": "riot_shield.webp"
+ },
+ {
+  "id": "herbal_poultice",
+  "name": "Tapal Herbal",
+  "type": "consumable",
+  "rarity": "uncommon",
+  "stats": {
+   "health": 40
+  },
+  "description": "Ramuan herbal yang ditumbuk dan ditempelkan ke luka. Menyembuhkan lebih cepat dari perban biasa.",
+  "craftable": true,
+  "recipe": {
+   "herbs": 5
+  },
+  "icon": "herbal_poultice.webp"
+ },
+ {
+  "id": "venom_antidote",
+  "name": "Penawar Bisa",
+  "type": "consumable",
+  "rarity": "rare",
+  "stats": {
+   "health": 25,
+   "sanity": 5
+  },
+  "description": "Cairan pahit dari racikan bisa ular dan herbal. Menetralkan racun dan menenangkan saraf.",
+  "craftable": true,
+  "recipe": {
+   "snake_venom": 1,
+   "herbs": 4
+  },
+  "icon": "venom_antidote.webp"
+ },
+ {
+  "id": "field_ration",
+  "name": "Ransum Lapangan",
+  "type": "consumable",
+  "rarity": "uncommon",
+  "stats": {
+   "hunger": 40,
+   "thirst": 10
+  },
+  "description": "Paket makanan kaleng dan air yang dikemas ulang untuk perjalanan jauh.",
+  "craftable": true,
+  "recipe": {
+   "canned_food_01": 2,
+   "water_bottle_01": 1
+  },
+  "icon": "field_ration.webp"
+ },
+ {
+  "id": "sturdy_bandage",
+  "name": "Perban Kuat",
+  "type": "consumable",
+  "rarity": "uncommon",
+  "stats": {
+   "health": 30
+  },
+  "description": "Perban biasa yang diperkuat lapisan herbal. Menutup luka dalam sekalipun.",
+  "craftable": true,
+  "recipe": {
+   "bandage_01": 1,
+   "herbs": 3
+  },
+  "icon": "sturdy_bandage.webp"
+ },
+ {
+  "id": "hunter_stew",
+  "name": "Semur Pemburu",
+  "type": "consumable",
+  "rarity": "rare",
+  "stats": {
+   "hunger": 60,
+   "health": 20
+  },
+  "description": "Semur kental racikan pemburu rimba. Mengenyangkan dan memulihkan tenaga yang terkuras.",
+  "craftable": true,
+  "recipe": {
+   "canned_food_01": 2,
+   "herbs": 4,
+   "water_bottle_01": 2
+  },
+  "icon": "hunter_stew.webp"
+ },
+ {
+  "id": "refined_metal",
+  "name": "Logam Tempa",
+  "type": "material",
+  "rarity": "uncommon",
+  "description": "Besi rongsokan yang dilebur dan ditempa ulang. Bahan dasar peralatan kelas atas.",
+  "craftable": true,
+  "recipe": {
+   "scrap_metal": 5
+  },
+  "icon": "refined_metal.webp"
+ },
+ {
+  "id": "treated_leather",
+  "name": "Kulit Samak",
+  "type": "material",
+  "rarity": "uncommon",
+  "description": "Kulit yang disamak dengan ramuan herbal. Lentur, kuat, dan tahan air.",
+  "craftable": true,
+  "recipe": {
+   "snake_skin": 2,
+   "herbs": 2
+  },
+  "icon": "treated_leather.webp"
  }
 ]
