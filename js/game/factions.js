@@ -128,6 +128,30 @@ const FactionSystem = (function () {
     return { name: current.name, rep, next, progressPct };
   }
 
+  // v0.4.9: misi "contract faction" — syarat wajib sebelum bisa join
+  // faksi, berlaku juga untuk anggota lama (tanpa grandfathering).
+  function getContractQuestId(factionId) {
+    const def = window.FactionDB ? FactionDB.get(factionId) : null;
+    return def ? def.contractQuestId : null;
+  }
+
+  function getContractTitle(factionId) {
+    const qid = getContractQuestId(factionId);
+    const q = qid && window.QuestSystem ? QuestSystem.getQuestDef(qid) : null;
+    return q ? q.title : 'Kontrak Faksi';
+  }
+
+  function isContractCompleted(factionId) {
+    const qid = getContractQuestId(factionId);
+    if (!qid) return true; // faksi tanpa kontrak = lolos
+    if (!window.QuestSystem) return false;
+    return QuestSystem.isCompleted(qid);
+  }
+
+  function contractBlockReason(factionId) {
+    return `Selesaikan dulu Kontrak "${getContractTitle(factionId)}" di menu Misi sebelum bisa bergabung dengan faksi ini.`;
+  }
+
   function joinFaction(factionId) {
     if (!window.FactionDB || !FactionDB.get(factionId)) {
       Events.emit('notify', { message: 'Faksi tidak ditemukan.', type: 'error' });
@@ -137,6 +161,11 @@ const FactionSystem = (function () {
     const p = getPlayer();
     if (p.faction === factionId) {
       Events.emit('notify', { message: 'Kamu sudah jadi anggota faksi ini.', type: 'error' });
+      return false;
+    }
+    // v0.4.9: wajib selesaikan misi kontrak dulu
+    if (!isContractCompleted(factionId)) {
+      Events.emit('notify', { message: contractBlockReason(factionId), type: 'error' });
       return false;
     }
     p.faction = factionId;
@@ -163,6 +192,7 @@ const FactionSystem = (function () {
     ensureShape();
     const p = getPlayer();
     if (!p.faction) return;
+    if (!isContractCompleted(p.faction)) return; // v0.4.9: kontrak wajib
     const entry = ensureFactionEntry(p.faction);
     entry.reputation += SCAVENGE_REP;
     entry.coins += SCAVENGE_COIN;
@@ -174,6 +204,7 @@ const FactionSystem = (function () {
     ensureShape();
     const p = getPlayer();
     if (!p.faction) return;
+    if (!isContractCompleted(p.faction)) return; // v0.4.9: kontrak wajib
     const entry = ensureFactionEntry(p.faction);
     const repGain = Math.max(5, Math.round((expReward || 10) / 3));
     const coinGain = Math.max(3, Math.round((expReward || 10) / 5));
@@ -197,6 +228,10 @@ const FactionSystem = (function () {
     if (!def || !def.faction) return { ok: false, reason: 'Item tidak ditemukan.' };
     const factionId = getCurrentFactionId();
     if (factionId !== def.faction) return { ok: false, reason: 'Kamu bukan anggota faksi ini.' };
+    // v0.4.9: anggota lama yang belum selesaikan kontrak tidak bisa belanja
+    if (!isContractCompleted(factionId)) {
+      return { ok: false, reason: `Selesaikan dulu Kontrak "${getContractTitle(factionId)}" di menu Misi untuk membuka Faction Shop.` };
+    }
 
     const gate = RARITY_GATE[def.rarity] || { minRep: 0, price: 50 };
     const rep = getReputation(factionId);
@@ -231,6 +266,7 @@ const FactionSystem = (function () {
 
   return {
     getCurrentFactionId, getReputation, getCoins, getRankInfo,
+    getContractQuestId, getContractTitle, isContractCompleted,
     joinFaction, leaveFaction,
     grantScavengeProgress, grantHuntProgress,
     getFactionShopCatalog, canBuyFactionItem, buyFactionItem,

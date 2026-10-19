@@ -61,6 +61,7 @@ const QuestSystem = (function () {
 
   const MAX_ACTIVE_MAIN = 1;
   const MAX_ACTIVE_SIDE = 5;
+  const MAX_ACTIVE_CONTRACT = 5; // v0.4.9: kontrak faksi, 1 per faksi
 
   function getPlayer() {
     return GameState.get().player;
@@ -135,14 +136,17 @@ const QuestSystem = (function () {
     if (isCompleted(questId)) return { ok: false, reason: 'Misi ini sudah selesai.' };
     if (!prereqSatisfied(quest)) return { ok: false, reason: 'Misi sebelumnya belum diselesaikan.' };
 
-    const cap = quest.category === 'main' ? MAX_ACTIVE_MAIN : MAX_ACTIVE_SIDE;
+    const cap = quest.category === 'main' ? MAX_ACTIVE_MAIN
+      : quest.category === 'contract' ? MAX_ACTIVE_CONTRACT : MAX_ACTIVE_SIDE;
     const activeCount = getAcceptedQuestsByCategory(quest.category).length;
     if (activeCount >= cap) {
+      const label = quest.category === 'main' ? 'main quest'
+        : quest.category === 'contract' ? 'misi kontrak' : 'side quest';
       return {
         ok: false,
         reason: quest.category === 'main'
           ? 'Selesaikan main quest yang aktif dulu sebelum ambil yang baru.'
-          : `Maksimal ${MAX_ACTIVE_SIDE} side quest aktif bersamaan. Selesaikan salah satu dulu.`
+          : `Maksimal ${cap} ${label} aktif bersamaan. Selesaikan salah satu dulu.`
       };
     }
     return { ok: true };
@@ -301,7 +305,7 @@ const QuestSystem = (function () {
     canAccept, acceptQuest, abandonQuest,
     getObjectiveProgress, isQuestComplete, isAccepted, isCompleted,
     registerKill, claimQuest, ensureShape,
-    MAX_ACTIVE_MAIN, MAX_ACTIVE_SIDE
+    MAX_ACTIVE_MAIN, MAX_ACTIVE_SIDE, MAX_ACTIVE_CONTRACT
   };
 })();
 

@@ -1282,12 +1282,31 @@ const Panels = (function () {
     const factionId = FactionSystem.getCurrentFactionId();
     const allFactions = Object.values(FactionDB.all());
 
+    // v0.4.9: status misi kontrak per faksi
+    function contractStatusLine(f) {
+      if (!window.QuestSystem || !f.contractQuestId) return '';
+      const title = FactionSystem.getContractTitle(f.id);
+      if (QuestSystem.isCompleted(f.contractQuestId)) {
+        return `<p class="location-desc" style="margin:4px 0 0; color:#22c55e;">Kontrak selesai — syarat gabung terpenuhi.</p>`;
+      }
+      if (QuestSystem.isAccepted(f.contractQuestId)) {
+        return `<p class="location-desc" style="margin:4px 0 0; color:var(--accent-orange);">Kontrak "${title}" berjalan — selesaikan di menu Misi.</p>`;
+      }
+      return `<p class="location-desc" style="margin:4px 0 0; color:var(--text-dim);">Syarat gabung: selesaikan Kontrak "${title}" (tab Kontrak Faksi di menu Misi).</p>`;
+    }
+
     let currentCardHtml = '';
     if (factionId) {
       const f = FactionDB.get(factionId);
       const rank = FactionSystem.getRankInfo(factionId);
       const coins = FactionSystem.getCoins(factionId);
+      // v0.4.9: peringatan untuk anggota lama yang belum selesaikan kontrak
+      const contractWarn = FactionSystem.isContractCompleted(factionId) ? '' : `
+        <div class="card" style="border-color:#e0522e; margin-bottom:8px;">
+          <p style="font-size:11px; line-height:1.6; margin:0;">Keanggotaan dibekukan: selesaikan Kontrak "${FactionSystem.getContractTitle(factionId)}" di menu Misi untuk membuka Faction Shop dan progres reputasi.</p>
+        </div>`;
       currentCardHtml = `
+        ${contractWarn}
         <div class="card" style="border-color:${f.color};">
           <div class="card-row"><span>${f.icon} Faksi Kamu</span><span style="color:${f.color}; font-weight:bold;">${f.name}</span></div>
           <div class="card-row"><span>Rank</span><span>${rank.name}${rank.next ? ` (${rank.rep}/${rank.next.minRep})` : ' (MAX)'}</span></div>
@@ -1315,6 +1334,7 @@ const Panels = (function () {
         <div>
           <div class="location-name" style="font-size:13px; color:${f.color};">${f.icon} ${f.name}</div>
           <p class="location-desc" style="margin:2px 0 0;">${f.theme} — ${f.description}</p>
+          ${contractStatusLine(f)}
         </div>
         <button class="mini-btn" data-join-faction="${f.id}">${factionId ? 'Pindah' : 'Gabung'}</button>
       </div>
@@ -1561,7 +1581,7 @@ const Panels = (function () {
   // detail item Tas / Shop) berisi objective, hadiah, dan tombol aksi
   // (Ambil / Klaim / Batalkan tergantung status misi itu).
   // =========================================================
-  let questTab = 'main'; // 'main' | 'side'
+  let questTab = 'main'; // 'main' | 'side' | 'contract' (v0.4.9)
 
   function renderQuestRow(quest, statusLabel, statusColor) {
     return `
@@ -1592,8 +1612,11 @@ const Panels = (function () {
       renderQuestRow(q, 'Belum diambil — tap untuk lihat detail', 'var(--text-dim)')
     ).join('');
 
+    const tabLabel = questTab === 'main' ? 'utama' : questTab === 'contract' ? 'kontrak faksi' : 'sampingan';
+    const tabCap = questTab === 'main' ? QuestSystem.MAX_ACTIVE_MAIN
+      : questTab === 'contract' ? QuestSystem.MAX_ACTIVE_CONTRACT : QuestSystem.MAX_ACTIVE_SIDE;
     const emptyMsg = (accepted.length === 0 && available.length === 0)
-      ? `<p style="font-size:12px; color:var(--text-dim); text-align:center; padding:14px 0;">Tidak ada misi ${questTab === 'main' ? 'utama' : 'sampingan'} saat ini.</p>`
+      ? `<p style="font-size:12px; color:var(--text-dim); text-align:center; padding:14px 0;">Tidak ada misi ${tabLabel} saat ini.</p>`
       : '';
 
     return `
@@ -1604,9 +1627,10 @@ const Panels = (function () {
       <div class="segmented-tabs">
         <div class="segmented-tab ${questTab === 'main' ? 'active' : ''}" id="quest-tab-main">Main Quest</div>
         <div class="segmented-tab ${questTab === 'side' ? 'active' : ''}" id="quest-tab-side">Side Quest</div>
+        <div class="segmented-tab ${questTab === 'contract' ? 'active' : ''}" id="quest-tab-contract">Kontrak Faksi</div>
       </div>
       ${emptyMsg}
-      ${accepted.length > 0 ? `<div style="color:var(--accent-orange); font-size:11px; margin:10px 0 6px;">SEDANG DIAMBIL (${accepted.length}${questTab === 'main' ? '/' + QuestSystem.MAX_ACTIVE_MAIN : '/' + QuestSystem.MAX_ACTIVE_SIDE})</div>${acceptedRows}` : ''}
+      ${accepted.length > 0 ? `<div style="color:var(--accent-orange); font-size:11px; margin:10px 0 6px;">SEDANG DIAMBIL (${accepted.length}/${tabCap})</div>${acceptedRows}` : ''}
       ${available.length > 0 ? `<div style="color:var(--accent-orange); font-size:11px; margin:10px 0 6px;">TERSEDIA</div>${availableRows}` : ''}
     `;
   }
@@ -1629,8 +1653,10 @@ const Panels = (function () {
 
       const mainTab = panel.querySelector('#quest-tab-main');
       const sideTab = panel.querySelector('#quest-tab-side');
+      const contractTab = panel.querySelector('#quest-tab-contract');
       if (mainTab) mainTab.addEventListener('click', () => { questTab = 'main'; refreshQuestListPanel(); });
       if (sideTab) sideTab.addEventListener('click', () => { questTab = 'side'; refreshQuestListPanel(); });
+      if (contractTab) contractTab.addEventListener('click', () => { questTab = 'contract'; refreshQuestListPanel(); });
 
       panel.querySelectorAll('[data-quest-row]').forEach(row => {
         row.addEventListener('click', () => openQuestDetail(row.dataset.questRow));

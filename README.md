@@ -29,7 +29,14 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.4.8
+## Rilis Terbaru — v0.4.9
+
+- Contract Faction: setiap faksi kini punya 1 misi kontrak wajib yang
+  harus diselesaikan sebelum bisa bergabung (berlaku juga untuk anggota
+  lama — Faction Shop dan progres reputasi dibekukan sampai kontrak
+  selesai). Daftar kontrak ada di tab "Kontrak Faksi" pada menu Misi.
+
+## v0.4.8
 
 - Crafting diperluas: 20 resep baru, total 24. Termasuk 6 senjata baru
   (Kapak Batu hingga Parang Baja Tempa), 7 armor baru (Zirah Bulu
