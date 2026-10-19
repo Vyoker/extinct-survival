@@ -29,7 +29,15 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.4.6
+## Rilis Terbaru — v0.4.7
+
+- Cerita utama baru: arc "Jejak Proyek Fajar" — 8 chapter lanjutan dari
+  prolog, satu chapter per wilayah, dari sinyal misterius di Jakarta
+  Ruins hingga fasilitas rahasia di jantung Kalimantan Wilds.
+- 7 misi sampingan baru, 2 per wilayah (Jakarta, Surabaya, Bandung,
+  Bali, Kalimantan). Total misi kini 20: 10 misi utama + 10 sampingan.
+
+## v0.4.6
 
 - Splash screen baru: artwork reruntuhan Nusantara full-screen dengan
   kredit developer VyokerDEV (nama akun developer di Google Play Store).
