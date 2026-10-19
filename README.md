@@ -29,7 +29,13 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.4.9
+## Rilis Terbaru — v0.5.0
+
+- Sistem misi faksi: 3 misi harian acak untuk faksi aktif, reset setiap
+  hari. Hadiahnya reputasi dan Koin Faksi. Daftar misi ada di panel
+  Faksi, di bawah kartu faksimu.
+
+## v0.4.9
 
 - Contract Faction: setiap faksi kini punya 1 misi kontrak wajib yang
   harus diselesaikan sebelum bisa bergabung (berlaku juga untuk anggota

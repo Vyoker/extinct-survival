@@ -149,6 +149,7 @@ const BattleBridge = (function () {
         }
 
         if (window.QuestSystem) QuestSystem.registerKill(e.id);
+        if (window.FactionMissions) FactionMissions.registerKill(e.id); // v0.5.0
         if (window.FactionSystem) FactionSystem.grantHuntProgress(e.expReward);
       });
 

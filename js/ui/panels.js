@@ -1329,6 +1329,35 @@ const Panels = (function () {
     }
 
     const otherFactions = allFactions.filter(f => f.id !== factionId);
+
+    // v0.5.0: misi harian faksi aktif — 3 misi acak, reset tiap hari
+    let dailyHtml = '';
+    if (factionId && window.FactionMissions && FactionSystem.isContractCompleted(factionId)) {
+      const dailyMissions = FactionMissions.getTodayMissions();
+      const dailyRows = dailyMissions.map(m => {
+        const objLines = m.progress.map(o =>
+          `<div class="card-row" style="font-size:11px;"><span>${o.name}</span><span style="color:${o.done ? '#22c55e' : 'var(--text-dim)'};">${o.have}/${o.target}</span></div>`
+        ).join('');
+        const r = m.tpl.rewards || {};
+        const rewardTxt = `+${r.rep || 0} reputasi, +${r.coins || 0} Koin Faksi${r.exp ? `, +${r.exp} exp` : ''}${r.rupiah ? `, Rp${r.rupiah}` : ''}`;
+        const action = m.claimed
+          ? `<span style="font-size:11px; color:#22c55e;">Sudah diklaim</span>`
+          : m.complete
+            ? `<button class="mini-btn" data-claim-daily="${m.tpl.id}">Klaim</button>`
+            : `<span style="font-size:11px; color:var(--text-dim);">Belum selesai</span>`;
+        return `
+          <div class="card" style="margin-bottom:8px;">
+            <div class="location-name" style="font-size:13px;">${m.tpl.title}</div>
+            <p class="location-desc" style="margin:2px 0 6px;">${m.tpl.description}</p>
+            ${objLines}
+            <div class="card-row" style="font-size:11px; margin-top:6px;"><span>Hadiah: ${rewardTxt}</span>${action}</div>
+          </div>`;
+      }).join('');
+      dailyHtml = `
+        <div style="color:var(--accent-orange); font-size:11px; margin:10px 0 6px;">MISI HARIAN — RESET SETIAP HARI</div>
+        ${dailyRows}`;
+    }
+
     const listRows = otherFactions.map(f => `
       <div class="card travel-row">
         <div>
@@ -1346,6 +1375,7 @@ const Panels = (function () {
         <button class="overlay-close-btn" id="ov-close-faction">✕</button>
       </div>
       ${currentCardHtml}
+      ${dailyHtml}
       <div style="color:var(--accent-orange); font-size:11px; margin:10px 0 6px;">${factionId ? 'FAKSI LAIN' : 'PILIH FAKSI'}</div>
       ${listRows}
     `;
@@ -1385,6 +1415,15 @@ const Panels = (function () {
         btn.addEventListener('click', () => {
           FactionSystem.joinFaction(btn.dataset.joinFaction);
           refreshFactionListPanel();
+        });
+      });
+
+      // v0.5.0: klaim misi harian faksi
+      panel.querySelectorAll('[data-claim-daily]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (window.FactionMissions && FactionMissions.claimMission(btn.dataset.claimDaily)) {
+            refreshFactionListPanel();
+          }
         });
       });
     };

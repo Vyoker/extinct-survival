@@ -113,6 +113,7 @@
         ['Memuat data lokasi...', async () => { await LocationDB.load(); }],
         ['Memuat data misi...', async () => { await QuestDB.load(); }],
         ['Memuat data faksi...', async () => { await FactionDB.load(); }],
+        ['Memuat misi harian faksi...', async () => { if (window.FactionMissions) await FactionMissions.load(); }],
         ['Memuat data pass...', async () => { await PassDB.load(); }]
       ];
       for (let i = 0; i < stages.length; i++) {
