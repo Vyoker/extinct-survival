@@ -29,7 +29,38 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.5.0
+## Rilis Terbaru — v0.5.4
+
+- Balance pass untuk paket konten v0.4.7-v0.5.3: damage kelima BOSS
+  diturunkan ke rentang yang adil untuk pertarungan jarak dekat
+  (sebelumnya terlalu mematikan untuk HP pemain), dan dua target misi
+  harian faksi yang terlalu berat dilonggarkan. Ekonomi reputasi &
+  Koin Faksi, kurva exp, biaya crafting, dan hadiah misi sudah dicek
+  dan dinyatakan seimbang tanpa perubahan.
+
+## v0.5.3
+
+- 10 musuh baru: setiap wilayah kini punya 1 musuh elit tier Epic dan
+  1 BOSS tier Mythic (level 91-100) — dari Tiran Jakarta, Raja Pasar
+  Gelap, dan Inti Pertahanan Bunker, sampai Penjaga Agung Enclave dan
+  Behemoth Rimba. Total musuh Hunting kini 19.
+
+## v0.5.2
+
+- Scaling level musuh: semua musuh Hunting kini punya level 1-100.
+  Statistik digenerate dari stat dasar level 1 dan naik 50% per level.
+  Ikon musuh di daftar Hunting berwarna mengikuti tier levelnya —
+  putih (lemah) hingga merah (sangat kuat) dengan label BOSS untuk
+  tier tertinggi.
+
+## v0.5.1
+
+- Item langka baru di setiap faksi: 2 item eksklusif per faksi (total
+  10), 1 Epic untuk anggota rank Elite dan 1 Legendary untuk rank
+  Legenda — di antaranya Tombak Pusaran Air, Helm Api Abadi, Kapak
+  Raksasa Bonex, dan Topeng Hantu Suci. Tersedia di Faction Shop.
+
+## v0.5.0
 
 - Sistem misi faksi: 3 misi harian acak untuk faksi aktif, reset setiap
   hari. Hadiahnya reputasi dan Koin Faksi. Daftar misi ada di panel

@@ -899,5 +899,170 @@
    "herbs": 2
   },
   "icon": "treated_leather.webp"
+ },
+ {
+  "id": "bluetiger_vortex_spear",
+  "name": "Tombak Pusaran Air",
+  "type": "weapon",
+  "rarity": "epic",
+  "faction": "blue_tiger",
+  "stats": {
+   "damage": 50,
+   "durability": 140
+  },
+  "shopMinRep": 700,
+  "shopPrice": 400,
+  "description": "Tombak pusaka Blue Tiger yang berputar seperti pusaran air saat diayunkan. Hanya untuk anggota rank Elite ke atas.",
+  "craftable": false,
+  "icon": "bluetiger_vortex_spear.webp"
+ },
+ {
+  "id": "bluetiger_king_crown",
+  "name": "Mahkota Raja Harimau",
+  "type": "armor",
+  "slot": "head",
+  "rarity": "legendary",
+  "faction": "blue_tiger",
+  "stats": {
+   "defense": 30,
+   "durability": 160
+  },
+  "shopMinRep": 1500,
+  "shopPrice": 900,
+  "description": "Mahkota dari taring harimau purba. Legenda Blue Tiger mengatakan pemakainya mewarisi insting sang raja rimba.",
+  "craftable": false,
+  "icon": "bluetiger_king_crown.webp"
+ },
+ {
+  "id": "mojang_harmony_blade",
+  "name": "Pedang Harmoni",
+  "type": "weapon",
+  "rarity": "epic",
+  "faction": "mojang_beauty",
+  "stats": {
+   "damage": 48,
+   "durability": 150
+  },
+  "shopMinRep": 700,
+  "shopPrice": 400,
+  "description": "Pedang seimbang sempurna dari Mojang Beauty. Tidak berat di tangan, tidak ringan di medan perang.",
+  "craftable": false,
+  "icon": "mojang_harmony_blade.webp"
+ },
+ {
+  "id": "mojang_woven_greaves",
+  "name": "Pelindung Tenun Mojang",
+  "type": "armor",
+  "slot": "legs",
+  "rarity": "legendary",
+  "faction": "mojang_beauty",
+  "stats": {
+   "defense": 25,
+   "durability": 150
+  },
+  "shopMinRep": 1500,
+  "shopPrice": 900,
+  "description": "Pelindung kaki dari tenunan legendaris Mojang Beauty, ditenun selama seratus hari oleh para penenun terbaik faksi.",
+  "craftable": false,
+  "icon": "mojang_woven_greaves.webp"
+ },
+ {
+  "id": "seafire_flame_sword",
+  "name": "Pedang Api Menyala",
+  "type": "weapon",
+  "rarity": "epic",
+  "faction": "seafire",
+  "stats": {
+   "damage": 55,
+   "durability": 130
+  },
+  "shopMinRep": 700,
+  "shopPrice": 400,
+  "description": "Bilahnya membara seperti api yang membakar dunia lama. Warisan para pembakar pertama Seafire.",
+  "craftable": false,
+  "icon": "seafire_flame_sword.webp"
+ },
+ {
+  "id": "seafire_eternal_helm",
+  "name": "Helm Api Abadi",
+  "type": "armor",
+  "slot": "head",
+  "rarity": "legendary",
+  "faction": "seafire",
+  "stats": {
+   "defense": 32,
+   "durability": 170
+  },
+  "shopMinRep": 1500,
+  "shopPrice": 900,
+  "description": "Helm yang ditempa di bara abadi Seafire. Konon apinya tidak pernah padam sejak hari The Great Collapse.",
+  "craftable": false,
+  "icon": "seafire_eternal_helm.webp"
+ },
+ {
+  "id": "vikingbonex_giant_axe",
+  "name": "Kapak Raksasa Bonex",
+  "type": "weapon",
+  "rarity": "epic",
+  "faction": "viking_bonex",
+  "stats": {
+   "damage": 60,
+   "durability": 140
+  },
+  "shopMinRep": 700,
+  "shopPrice": 400,
+  "description": "Kapak perang seukuran manusia kecil. Hanya yang terkuat di Viking Bonex yang sanggup mengayunkannya.",
+  "craftable": false,
+  "icon": "vikingbonex_giant_axe.webp"
+ },
+ {
+  "id": "vikingbonex_giant_belt",
+  "name": "Sabuk Raksasa Bonex",
+  "type": "armor",
+  "slot": "legs",
+  "rarity": "legendary",
+  "faction": "viking_bonex",
+  "stats": {
+   "defense": 30,
+   "durability": 180
+  },
+  "shopMinRep": 1500,
+  "shopPrice": 900,
+  "description": "Sabuk perang dari kulit dan tulang raksasa rimba. Simbol kekuatan tertinggi di Viking Bonex.",
+  "craftable": false,
+  "icon": "vikingbonex_giant_belt.webp"
+ },
+ {
+  "id": "whiteghost_phantom_dagger",
+  "name": "Belati Hantu Putih",
+  "type": "weapon",
+  "rarity": "epic",
+  "faction": "white_ghost",
+  "stats": {
+   "damage": 52,
+   "durability": 150
+  },
+  "shopMinRep": 700,
+  "shopPrice": 400,
+  "description": "Belati yang bergerak tanpa suara, seperti hantu yang menembus kabut. Senjata para pembersih White Ghost.",
+  "craftable": false,
+  "icon": "whiteghost_phantom_dagger.webp"
+ },
+ {
+  "id": "whiteghost_sacred_mask",
+  "name": "Topeng Hantu Suci",
+  "type": "armor",
+  "slot": "head",
+  "rarity": "legendary",
+  "faction": "white_ghost",
+  "stats": {
+   "defense": 28,
+   "durability": 160
+  },
+  "shopMinRep": 1500,
+  "shopPrice": 900,
+  "description": "Topeng putih tanpa cela milik penjaga tertinggi White Ghost. Di baliknya, tidak ada yang tahu wajah aslinya.",
+  "craftable": false,
+  "icon": "whiteghost_sacred_mask.webp"
  }
 ]

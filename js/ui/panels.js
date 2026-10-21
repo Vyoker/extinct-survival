@@ -421,11 +421,14 @@ const Panels = (function () {
       const iconHtml = (window.BattleBridge && BattleBridge.enemyIconHtml)
         ? BattleBridge.enemyIconHtml('assets/images/enemies/' + en.id + '.webp', en.icon)
         : (window.Icons ? Icons.fromEmoji(en.icon) : en.icon);
+      // v0.5.2: warna ikon + badge level mengikuti tier rarity dari level musuh
+      const tier = en.tier || { color: '#f5f5f5', isBoss: false };
+      const bossTag = tier.isBoss ? ' <span style="color:#ff3b3b; font-weight:bold; font-size:11px; letter-spacing:1px;">BOSS</span>' : '';
       return `
       <div class="card travel-row">
-        <div class="huntIcon">${iconHtml}</div>
+        <div class="huntIcon" style="border-color:${tier.color}; box-shadow:0 0 10px ${tier.color}55;">${iconHtml}</div>
         <div style="flex:1;min-width:0;">
-          <div class="location-name" style="font-size:13px;">${en.name}</div>
+          <div class="location-name" style="font-size:13px;">${en.name} <span style="color:${tier.color}; font-size:11px; font-weight:bold;">Lv ${en.level || 1}</span>${bossTag}</div>
           <p class="location-desc" style="margin:2px 0 0;">HP ${en.hp} • Damage ${en.damageMin}-${en.damageMax}</p>
         </div>
         <button class="mini-btn" data-hunt-target="${en.id}">Buru</button>

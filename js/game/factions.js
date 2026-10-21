@@ -213,12 +213,22 @@ const FactionSystem = (function () {
   }
 
   // Semua item eksklusif 1 faksi (def.faction === factionId)
+  // v0.5.1: item bisa override gate via def.shopMinRep / def.shopPrice
+  // (dipakai untuk item langka: Epic di rank Elite, Legendary di Legenda)
+  function shopGateFor(def) {
+    const gate = RARITY_GATE[def.rarity] || { minRep: 0, price: 50 };
+    return {
+      price: def.shopPrice || gate.price,
+      minRep: def.shopMinRep || gate.minRep
+    };
+  }
+
   function getFactionShopCatalog(factionId) {
     if (!window.ItemDB) return [];
     return Object.values(ItemDB.all())
       .filter(def => def.faction === factionId)
       .map(def => {
-        const gate = RARITY_GATE[def.rarity] || { minRep: 0, price: 50 };
+        const gate = shopGateFor(def);
         return { def, price: gate.price, minRep: gate.minRep };
       });
   }
@@ -233,7 +243,7 @@ const FactionSystem = (function () {
       return { ok: false, reason: `Selesaikan dulu Kontrak "${getContractTitle(factionId)}" di menu Misi untuk membuka Faction Shop.` };
     }
 
-    const gate = RARITY_GATE[def.rarity] || { minRep: 0, price: 50 };
+    const gate = shopGateFor(def);
     const rep = getReputation(factionId);
     if (rep < gate.minRep) {
       return { ok: false, reason: `Butuh reputasi minimal ${gate.minRep} (sekarang ${rep}).` };
