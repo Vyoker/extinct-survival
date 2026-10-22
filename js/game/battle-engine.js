@@ -114,6 +114,47 @@ function bfsReachable(unit, maxSteps){
   return result;
 }
 
+/* v0.5.9: jalur BFS dari unit ke petak tujuan (daftar langkah,
+   tidak termasuk petak awal) — dipakai animasi gerak smooth.
+   Aturan rintangan sama persis dengan bfsReachable. */
+function bfsPath(unit, tx, ty, maxSteps){
+  const startK = key(unit.x, unit.y);
+  const targetK = key(tx, ty);
+  if(startK === targetK) return [];
+  const visited = new Map([[startK, 0]]);
+  const parent = new Map();
+  const queue = [{x:unit.x, y:unit.y}];
+  while(queue.length){
+    const cur = queue.shift();
+    const curCost = visited.get(key(cur.x,cur.y));
+    if(curCost >= maxSteps) continue;
+    const neigh = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+    for(const [dx,dy] of neigh){
+      const nx=cur.x+dx, ny=cur.y+dy;
+      if(nx<0||ny<0||nx>=state.cols||ny>=state.rows) continue;
+      const t = tileAt(nx,ny);
+      if(!t || BLOCKING.includes(t.type)) continue;
+      if(unitAt(nx,ny,unit.id)) continue;
+      const nk = key(nx,ny);
+      if(visited.has(nk)) continue;
+      visited.set(nk, curCost+1);
+      parent.set(nk, key(cur.x,cur.y));
+      if(nk === targetK){
+        const path = [];
+        let k = nk;
+        while(k !== startK){
+          const parts = k.split(',');
+          path.unshift({x:Number(parts[0]), y:Number(parts[1])});
+          k = parent.get(k);
+        }
+        return path;
+      }
+      queue.push({x:nx,y:ny});
+    }
+  }
+  return null;
+}
+
 function hasLineOfSight(a,b){
   // simple bresenham check for blocking tiles between a and b
   let x0=a.x,y0=a.y,x1=b.x,y1=b.y;
@@ -159,8 +200,9 @@ function renderTop(){
   for(let i=0;i<p.maxAp;i++){
     const d = document.createElement('div');
     d.className = 'pip'+(i<p.ap?' filled':'');
-    // Pip AP ala Day R: ikon jam pasir (bukan kotak polos)
-    d.innerHTML = window.Icons ? Icons.svg('hourglass') : '';
+    // v0.5.9: ikon stamina = bulat kuning polos dengan garis tegas
+    // (keputusan user; menggantikan ikon jam pasir/petir).
+    d.innerHTML = '<span class="apDot"></span>';
     pipsEl.appendChild(d);
   }
   const tag = document.getElementById('turnTag');
@@ -298,7 +340,7 @@ function renderActions(){
       : (window.Icons ? Icons.svg(w.iconName || Icons.iconName(w.icon)) : w.icon);
     const ic = (n)=> window.Icons ? Icons.svg(n) : '';
     btn.innerHTML = `
-      <div class="apBadge">${ic('hourglass')}${w.apCost}</div>
+      <div class="apBadge"><span class="apDot sm"></span>${w.apCost}</div>
       <div class="actBody">
         <div class="actIcon">${wIcon}</div>
         <div class="actMeta">
@@ -322,17 +364,26 @@ function renderActions(){
 /* ---------------- INTERACTION ---------------- */
 
 function onTileClick(t){
-  if(state.turn!=='player') return;
+  if(state.turn!=='player' || state.moving) return;
   const p = state.units[0];
 
   if(state.pendingAction==='move'){
     const reach = bfsReachable(p,p.ap).find(c=>c.x===t.x && c.y===t.y);
     if(!reach) return;
+    const path = bfsPath(p, t.x, t.y, p.ap);
     p.ap -= reach.cost;
-    p.x = t.x; p.y = t.y;
     state.pendingAction = null;
-    render();
-    checkHazard(p);
+    if(!path || !path.length){ render(); checkHazard(p); return; }
+    // Segarkan panel atas & aksi (AP berkurang, hint hilang) tanpa
+    // menyentuh papan, lalu token meluncur smooth mengikuti jalur.
+    renderTop();
+    renderActions();
+    state.moving = true;
+    animateUnitPath(p, path, 120, ()=>{
+      state.moving = false;
+      render();
+      checkHazard(p);
+    });
     return;
   }
   if(state.pendingAction && state.pendingAction!=='move'){
@@ -424,6 +475,58 @@ function animateAttack(attackerId, targetId, onHit){
   }, 140);
 }
 
+/* ---------------- ANIMASI GERAK (v0.5.9) ----------------
+   Token meluncur mulus petak demi petak mengikuti jalur BFS
+   (bukan lagi teleport). Memakai Web Animations pada token yang
+   sudah ada di DOM; posisi logis unit baru diperbarui di akhir,
+   lalu pemanggil me-render ulang papan. Perangkat tanpa WAAPI
+   atau mode reduced-motion: posisi langsung diperbarui. */
+const REDUCED_MOTION = typeof window !== 'undefined' && window.matchMedia
+  && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function animateUnitPath(unit, path, stepMs, done){
+  const finish = ()=>{ if(typeof done === 'function') done(); };
+  if(!path || !path.length){ finish(); return; }
+  const last = path[path.length-1];
+  const fromTile = findUnitTileEl(unit.id);
+  const tok = fromTile ? fromTile.querySelector('.unitTok') : null;
+  if(!tok || typeof tok.animate !== 'function' || REDUCED_MOTION){
+    unit.x = last.x; unit.y = last.y;
+    finish();
+    return;
+  }
+  const board = document.getElementById('board');
+  const startRect = fromTile.getBoundingClientRect();
+  tok.style.zIndex = '6';
+  let cx = 0, cy = 0, i = 0;
+  function step(){
+    if(i >= path.length){
+      unit.x = last.x; unit.y = last.y;
+      tok.style.zIndex = '';
+      finish();
+      return;
+    }
+    const cell = path[i];
+    const cellEl = board.children[cell.y*state.cols + cell.x];
+    if(!cellEl){ unit.x = last.x; unit.y = last.y; tok.style.zIndex=''; finish(); return; }
+    const r = cellEl.getBoundingClientRect();
+    const nx = r.left - startRect.left;
+    const ny = r.top - startRect.top;
+    const anim = tok.animate(
+      [{ transform: 'translate('+cx+'px, '+cy+'px)' }, { transform: 'translate('+nx+'px, '+ny+'px)' }],
+      { duration: stepMs, easing: 'ease-in-out', fill: 'forwards' }
+    );
+    cx = nx; cy = ny; i++;
+    let advanced = false;
+    const next = ()=>{ if(advanced) return; advanced = true; step(); };
+    if(anim && anim.finished && typeof anim.finished.then === 'function'){
+      anim.finished.then(next).catch(next);
+    }
+    setTimeout(next, stepMs + 80); // jaring pengaman bila finished tak terpicu
+  }
+  step();
+}
+
 function checkHazard(unit){
   const t = tileAt(unit.x,unit.y);
   if(t && t.type===TILE.HAZARD){
@@ -463,7 +566,7 @@ function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
 /* ---------------- END TURN / AI ---------------- */
 
 document.getElementById('endTurnBtn').onclick = ()=>{
-  if(state.turn!=='player') return;
+  if(!state || state.turn!=='player' || state.moving) return;
   state.pendingAction = null;
   state.turn = 'enemy';
   render();
@@ -471,6 +574,7 @@ document.getElementById('endTurnBtn').onclick = ()=>{
 };
 
 document.getElementById('fleeBtn').onclick = ()=>{
+  if(!state || state.moving) return;
   const p = state.units[0];
   const t = tileAt(p.x,p.y);
   if(state.turn!=='player' || !t || t.type!==TILE.EXIT) return;
@@ -489,44 +593,66 @@ function runEnemyTurn(){
     state.actingUnitId = e.id;
     render();
     setTimeout(()=>{
-      enemyAct(e);
-      render();
-      setTimeout(()=>{
+      enemyAct(e, ()=>{
+        render();
         i++;
         state.actingUnitId = null;
-        step();
-      }, 450);
+        setTimeout(step, 250);
+      });
     }, 350);
   }
   step();
 }
 
-function enemyAct(e){
-  if(!e.alive) return;
+function enemyAct(e, done){
+  const finish = ()=>{ if(typeof done === 'function') done(); };
+  if(!e.alive){ finish(); return; }
   const p = state.units[0];
-  if(!p.alive) return;
+  if(!p.alive){ finish(); return; }
+
+  function attackPhase(){
+    if(dist(e,p)<=1 && p.alive){
+      if (window.AudioManager) AudioManager.sfx('swing'); // v0.3.8
+      animateAttack(e.id, p.id, ()=>{
+        const dmg = Math.round(rand(e.dmgMin,e.dmgMax));
+        const realDmg = Math.max(1, Math.round(dmg - p.armor*0.3));
+        p.hp -= realDmg;
+        if (window.AudioManager) AudioManager.sfx('hit'); // v0.3.8
+        const el = findUnitTileEl(p.id);
+        spawnFloatText(el, '-'+realDmg, false, false);
+        render();
+        finish();
+      });
+    } else {
+      finish();
+    }
+  }
+
   const d = dist(e,p);
   if(d>1){
-    const path = bfsReachable(e, e.moveRange);
+    const reach = bfsReachable(e, e.moveRange);
     let best=null, bestD=d;
-    path.forEach(c=>{
+    reach.forEach(c=>{
       const nd = Math.max(Math.abs(c.x-p.x), Math.abs(c.y-p.y));
       if(nd<bestD){ bestD=nd; best=c; }
     });
-    if(best){ e.x=best.x; e.y=best.y; render(); checkHazard(e); } // render dulu supaya lunge & efek hazard tepat posisi
+    if(best){
+      // v0.5.9: musuh juga meluncur smooth mengikuti jalurnya.
+      const path = bfsPath(e, best.x, best.y, e.moveRange);
+      if(path && path.length){
+        state.moving = true;
+        animateUnitPath(e, path, 110, ()=>{
+          state.moving = false;
+          render(); // render dulu supaya lunge & efek hazard tepat posisi
+          checkHazard(e);
+          attackPhase();
+        });
+        return;
+      }
+      e.x=best.x; e.y=best.y; render(); checkHazard(e);
+    }
   }
-  if(dist(e,p)<=1 && p.alive){
-    if (window.AudioManager) AudioManager.sfx('swing'); // v0.3.8
-    animateAttack(e.id, p.id, ()=>{
-      const dmg = Math.round(rand(e.dmgMin,e.dmgMax));
-      const realDmg = Math.max(1, Math.round(dmg - p.armor*0.3));
-      p.hp -= realDmg;
-      if (window.AudioManager) AudioManager.sfx('hit'); // v0.3.8
-      const el = findUnitTileEl(p.id);
-      spawnFloatText(el, '-'+realDmg, false, false);
-      render();
-    });
-  }
+  attackPhase();
 }
 
 function finishEnemyTurn(){
@@ -619,6 +745,7 @@ function start(config){
     cols, rows, tiles,
     units:[player, ...enemies],
     turn:'player',
+    moving:false,
     pendingAction:null,
     selectedTargetId:null,
     actingUnitId:null,

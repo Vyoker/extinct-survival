@@ -102,10 +102,16 @@ const PlayBilling = (function () {
   function priceLabel(pkg) {
     const sku = resolveSku(pkg);
     if (skuPriceMap[sku]) return skuPriceMap[sku];
-    return formatRupiah(pkg.priceRupiah);
+    return formatRupiah(pkg.playPriceRupiah || pkg.priceRupiah);
   }
 
   function renderScreen(packages, isTestMode) {
+    // Tampilan Play memakai tangga kredit & label bonus Play (playKredit/
+    // playBonusLabel dari packages.js), bukan tangga QRIS.
+    packages = packages.map(p => Object.assign({}, p, {
+      kredit: typeof p.playKredit === 'number' ? p.playKredit : p.kredit,
+      bonusLabel: typeof p.playBonusLabel === 'string' ? p.playBonusLabel : p.bonusLabel
+    }));
     return `
       <div class="overlay-header">
         <span class="overlay-title">${IC('card')} Top Up Kredit</span>

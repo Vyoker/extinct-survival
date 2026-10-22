@@ -110,15 +110,29 @@
 #battle-side .barFill.arm { background: linear-gradient(180deg, #7ec4ef, #3d7fb0); }
 #battle-side .barVal { font-size: 11px; font-weight: 800; color: #d8cfae; min-width: 40px; text-align: right; }
 
-#battle-side #apPips { display: flex; gap: 4px; margin-top: 6px; }
+#battle-side #apPips { display: flex; gap: 5px; margin-top: 6px; }
 #battle-side .pip {
-  width: 16px; height: 18px;
+  width: 16px; height: 16px;
   background: none; border: none; border-radius: 0;
-  color: #4a4232;
-  transition: color 0.2s ease, transform 0.2s ease;
+  display: flex; align-items: center; justify-content: center;
 }
-#battle-side .pip .xicon { width: 100%; height: 100%; }
-#battle-side .pip.filled { color: #f5b942; filter: drop-shadow(0 0 3px rgba(245,185,66,0.7)); }
+/* v0.5.9: ikon stamina — bulat kuning polos, garis tegas (outline
+   tebal gelap) sesuai tema survival. Pip kosong: lingkaran hollow
+   dengan garis yang sama. */
+.apDot {
+  display: inline-block;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 2px solid #14100a;
+  background: rgba(20, 16, 10, 0.35);
+  box-sizing: border-box;
+  flex: 0 0 auto;
+}
+.pip.filled .apDot {
+  background: #ffd21f;
+  box-shadow: 0 0 5px rgba(255, 210, 31, 0.65);
+}
+.apDot.sm { width: 8px; height: 8px; border-width: 1.5px; background: #ffd21f; }
 
 #battle-side #turnTag {
   text-align: center;

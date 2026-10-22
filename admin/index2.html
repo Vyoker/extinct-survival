@@ -105,6 +105,31 @@
   .mc-code { font-family: 'Courier New', monospace; color: var(--orange); }
   .badge.sent { background: rgba(245,197,24,0.15); color: var(--yellow); }
   .badge.received { background: rgba(74,222,128,0.15); color: var(--green); }
+
+  /* v0.5.6: monitoring pemain online */
+  .online-card { background: var(--glass); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 16px; }
+  .online-title { font-size: 13px; font-weight: bold; color: var(--text); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+  .online-count { color: var(--green); }
+  .online-item { border-top: 1px solid var(--border); padding: 8px 0; font-size: 11px; color: var(--dim); }
+  .online-item .row { display: flex; justify-content: space-between; padding: 1px 0; }
+  .online-item b { color: var(--text); font-weight: normal; }
+  .online-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-right: 6px; box-shadow: 0 0 6px rgba(74,222,128,0.8); }
+  .online-dot.off { background: var(--dim); box-shadow: none; }
+  .badge.online { background: rgba(74,222,128,0.15); color: var(--green); }
+  .badge.offline { background: rgba(138,127,112,0.15); color: var(--dim); }
+
+  /* v0.5.7: moderasi chat global */
+  .chat-card { background: var(--glass); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 16px; }
+  .chat-item { border-top: 1px solid var(--border); padding: 8px 0; font-size: 11px; color: var(--dim); }
+  .chat-item .row { display: flex; justify-content: space-between; gap: 8px; padding: 1px 0; }
+  .chat-item b { color: var(--text); font-weight: normal; }
+  .chat-text { color: var(--text); font-size: 12px; line-height: 1.5; word-break: break-word; padding: 2px 0; }
+  .chat-actions { display: flex; gap: 6px; margin-top: 6px; }
+  .chat-actions button { padding: 5px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; border: 1px solid var(--border); background: var(--bg2); color: var(--dim); }
+  .chat-actions .btn-del { border-color: var(--red); color: var(--red); }
+  .chat-actions .btn-ban { border-color: var(--yellow); color: var(--yellow); }
+  .badge.adminchat { background: rgba(245,197,24,0.15); color: var(--yellow); }
+  .badge.banned { background: rgba(192,57,43,0.15); color: var(--red); }
 </style>
 </head>
 <body>
@@ -130,6 +155,21 @@
       <div class="stat-box"><div class="num" id="stat-pending">-</div><div class="lbl">Pending</div></div>
       <div class="stat-box"><div class="num" id="stat-approved">-</div><div class="lbl">Approved hari ini</div></div>
       <div class="stat-box"><div class="num" id="stat-kredit">-</div><div class="lbl">💎 Terkirim hari ini</div></div>
+    </div>
+
+    <div class="online-card">
+      <div class="online-title"><span>Pemain Online</span><span class="online-count" id="online-count">-</span></div>
+      <p class="manual-hint">Pemain dengan heartbeat aktif dalam <b>2 menit</b> terakhir dianggap online. Daftar di bawah juga menampilkan yang terlihat 24 jam terakhir.</p>
+      <div id="online-list"><div class="empty-state">Memuat data pemain...</div></div>
+    </div>
+
+    <div class="chat-card">
+      <div class="online-title"><span>Chat Global — Moderasi</span><span class="online-count" id="chat-count">-</span></div>
+      <p class="manual-hint">50 pesan terakhir. <b>Hapus</b> pesan bermasalah, <b>Ban</b> memblokir pemain itu dari chat (berdasarkan ID perangkatnya).</p>
+      <div id="chat-list"><div class="empty-state">Memuat chat...</div></div>
+      <div class="chat-actions" style="margin-top:10px;">
+        <button class="btn-del" id="btn-chat-clear">Bersihkan Semua Pesan</button>
+      </div>
     </div>
 
     <div class="manual-card">
@@ -240,6 +280,99 @@
         if (String(e.message).indexOf('Unauthorized') !== -1) logout();
       });
     loadCreditLog();
+    loadPresence();
+    loadChatAdmin();
+  }
+
+  // v0.5.7: moderasi chat global
+  function loadChatAdmin() {
+    apiCall('/admin-chat')
+      .then(function (d) { renderChatAdmin(d); })
+      .catch(function () { /* abaikan, bukan fatal */ });
+  }
+
+  function renderChatAdmin(d) {
+    const msgs = d.messages || [];
+    const banned = d.banned || [];
+    document.getElementById('chat-count').textContent = msgs.length + ' pesan' + (banned.length ? ' • ' + banned.length + ' ter-ban' : '');
+    const el = document.getElementById('chat-list');
+    if (msgs.length === 0) {
+      el.innerHTML = '<div class="empty-state">Belum ada pesan chat.</div>';
+      return;
+    }
+    el.innerHTML = msgs.slice().reverse().map(function (m) {
+      const isBanned = banned.indexOf(m.pid) !== -1;
+      return (
+        '<div class="chat-item">' +
+          '<div class="row"><span><b>' + esc(m.name) + '</b> <span style="color:var(--dim);">Lv.' + m.level + '</span>' +
+          (m.role === 'admin' ? ' <span class="badge adminchat">ADMIN</span>' : '') +
+          (isBanned ? ' <span class="badge banned">TER-BAN</span>' : '') + '</span>' +
+          '<span>' + fmtTime(m.ts) + '</span></div>' +
+          '<div class="chat-text">' + esc(m.text) + '</div>' +
+          '<div class="chat-actions">' +
+            '<button class="btn-del" data-chat-del="' + m.id + '">Hapus</button>' +
+            (isBanned
+              ? '<button data-chat-unban="' + esc(m.pid) + '">Cabut Ban</button>'
+              : '<button class="btn-ban" data-chat-ban="' + esc(m.pid) + '">Ban Pemain</button>') +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+    el.querySelectorAll('[data-chat-del]').forEach(function (btn) {
+      btn.addEventListener('click', function () { chatAdminAction({ action: 'delete', id: btn.dataset.chatDel }); });
+    });
+    el.querySelectorAll('[data-chat-ban]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (confirm('Ban pemain ini dari chat global?')) chatAdminAction({ action: 'ban', pid: btn.dataset.chatBan });
+      });
+    });
+    el.querySelectorAll('[data-chat-unban]').forEach(function (btn) {
+      btn.addEventListener('click', function () { chatAdminAction({ action: 'unban', pid: btn.dataset.chatUnban }); });
+    });
+  }
+
+  function chatAdminAction(body) {
+    apiCall('/admin-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(loadChatAdmin).catch(function (e) { alert('Gagal moderasi: ' + e.message); });
+  }
+
+  // v0.5.6: monitoring pemain online
+  function esc(s) { return String(s == null ? '' : s).replace(/</g, '&lt;'); }
+  function agoText(sec) {
+    if (sec < 60) return sec + ' dtk lalu';
+    if (sec < 3600) return Math.floor(sec / 60) + ' mnt lalu';
+    return Math.floor(sec / 3600) + ' jam lalu';
+  }
+
+  function loadPresence() {
+    apiCall('/admin-presence')
+      .then(function (d) { renderPresence(d); })
+      .catch(function () { /* abaikan, bukan fatal */ });
+  }
+
+  function renderPresence(d) {
+    document.getElementById('online-count').textContent = (d.onlineCount || 0) + ' online';
+    const el = document.getElementById('online-list');
+    const players = d.players || [];
+    if (players.length === 0) {
+      el.innerHTML = '<div class="empty-state">Belum ada pemain yang tercatat 24 jam terakhir.</div>';
+      return;
+    }
+    el.innerHTML = players.map(function (pl) {
+      return (
+        '<div class="online-item">' +
+          '<div class="row"><span><span class="online-dot' + (pl.online ? '' : ' off') + '"></span><b>' + esc(pl.name) + '</b></span>' +
+          '<span class="badge ' + (pl.online ? 'online' : 'offline') + '">' + (pl.online ? 'ONLINE' : 'OFFLINE') + '</span></div>' +
+          '<div class="row"><span>Level</span><b>Lv.' + pl.level + (pl.appVersion ? ' • v' + esc(pl.appVersion) : '') + '</b></div>' +
+          '<div class="row"><span>Lokasi</span><b>' + esc(pl.location || '-') + '</b></div>' +
+          (pl.faction ? '<div class="row"><span>Faksi</span><b>' + esc(pl.faction) + '</b></div>' : '') +
+          '<div class="row"><span>Terakhir aktif</span><b>' + agoText(pl.agoSec) + ' (' + fmtTime(pl.lastSeen) + ')</b></div>' +
+        '</div>'
+      );
+    }).join('');
   }
 
   // v0.3.3: kirim kredit manual
@@ -382,6 +515,9 @@
   document.getElementById('input-password').addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
   document.getElementById('btn-logout').addEventListener('click', logout);
   document.getElementById('btn-mc-send').addEventListener('click', sendManualCredit);
+  document.getElementById('btn-chat-clear').addEventListener('click', function () {
+    if (confirm('Hapus SEMUA pesan chat global?')) chatAdminAction({ action: 'clear' });
+  });
   document.querySelectorAll('.tab-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });

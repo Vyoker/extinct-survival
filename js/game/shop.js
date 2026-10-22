@@ -63,6 +63,13 @@ const Shop = (function () {
   }
 
   function sell(itemId, qty = 1) {
+    // v0.5.5: jual massal — jumlah dinormalkan ke bilangan bulat >= 1,
+    // nilai tidak valid (0/negatif/NaN/desimal liar) ditolak aman.
+    qty = Math.floor(Number(qty));
+    if (!Number.isFinite(qty) || qty < 1) {
+      Events.emit('notify', { message: 'Jumlah jual tidak valid.', type: 'error' });
+      return false;
+    }
     const p = getPlayer();
     if (!Inventory.hasItem(itemId, qty)) {
       Events.emit('notify', { message: 'Jumlah item tidak cukup untuk dijual.', type: 'error' });

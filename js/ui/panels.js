@@ -918,6 +918,8 @@ const Panels = (function () {
     { id: 'shop', iconName: 'store', action: 'shop', title: 'Shop' },
     { id: 'topup', iconName: 'card', action: 'topup', title: 'Top Up' },
     { id: 'mail', iconName: 'mail', action: 'mail', title: 'Mail' },
+    { id: 'chat', iconName: 'chat', action: 'chat', title: 'Chat Global' },
+    { id: 'friends', iconName: 'userPlus', action: 'friends', title: 'Teman' },
     { id: 'quest', iconName: 'target', action: 'quest', title: 'Misi' },
     { id: 'spin', iconName: 'wheel', action: 'locked', title: 'Spin Wheel (terkunci)' },
     { id: 'mall', iconName: 'gem', action: 'toast-mall', title: 'Item Mall (segera)' },
@@ -1014,6 +1016,18 @@ const Panels = (function () {
         // v0.3.5: inbox kiriman admin — klaim manual ala game umumnya.
         if (window.Mail) Mail.open();
         else Events.emit('notify', { message: 'Modul mail belum termuat.', type: 'error' });
+        break;
+      }
+      case 'chat': {
+        // v0.5.7: chat global antar pemain.
+        if (window.GlobalChat) GlobalChat.open();
+        else Events.emit('notify', { message: 'Modul chat belum termuat.', type: 'error' });
+        break;
+      }
+      case 'friends': {
+        // v0.5.8: pertemanan antar pemain.
+        if (window.Friends) Friends.open();
+        else Events.emit('notify', { message: 'Modul teman belum termuat.', type: 'error' });
         break;
       }
       case 'locked':
@@ -2004,8 +2018,25 @@ const Panels = (function () {
             <button class="overlay-close-btn" id="sp-close">✕</button>
           </div>
           <p style="font-size:11px; color:var(--text-dim); line-height:1.5;">${def.description}</p>
+          ${qty > 0 ? `
+          <div class="sell-qty-box">
+            <div class="sell-qty-head">
+              <span>Jumlah dijual</span>
+              <button type="button" class="sell-max-btn" id="sp-sell-max">MAX</button>
+            </div>
+            <div class="sell-qty-controls">
+              <button type="button" class="sell-step-btn" id="sp-sell-minus" aria-label="Kurangi jumlah">−</button>
+              <input type="range" id="sp-sell-range" min="1" max="${qty}" step="1" value="1" aria-label="Geser jumlah jual">
+              <button type="button" class="sell-step-btn" id="sp-sell-plus" aria-label="Tambah jumlah">+</button>
+            </div>
+            <div class="sell-qty-row">
+              <input type="number" id="sp-sell-input" min="1" max="${qty}" step="1" value="1" inputmode="numeric" aria-label="Input jumlah jual">
+              <span class="sell-qty-of">dari ${qty} item</span>
+            </div>
+            <div class="card-row sell-total-row"><span>Total terima</span><span id="sp-sell-total">Rp ${sellPrice.toLocaleString('id-ID')}</span></div>
+          </div>` : ''}
           <div class="mini-popup-actions">
-            <button class="action-btn secondary" id="sp-sell" ${qty > 0 ? '' : 'disabled'}>Jual 1</button>
+            <button class="action-btn secondary" id="sp-sell" ${qty > 0 ? '' : 'disabled'}>Jual 1 — Rp ${sellPrice.toLocaleString('id-ID')}</button>
           </div>
         </div>
       `;
@@ -2030,13 +2061,61 @@ const Panels = (function () {
         Renderer.renderHUD();
       });
 
+      // v0.5.5: pemilih jumlah jual massal — slider, input angka, tombol
+      // - / + dan MAX semuanya sinkron; total harga update langsung.
       const sellBtn = panel.querySelector('#sp-sell');
-      if (sellBtn) sellBtn.addEventListener('click', () => {
-        Shop.sell(itemId, 1);
-        OverlayManager.close(popId);
-        refreshShopPanel();
-        Renderer.renderHUD();
-      });
+      if (sellBtn) {
+        const ownedEntry = Inventory.getInventory().find(e => e.itemId === itemId);
+        const ownedQty = ownedEntry ? ownedEntry.qty : 0;
+        const sellPrice = Shop.getSellPrice(itemId);
+        const rangeEl = panel.querySelector('#sp-sell-range');
+        const inputEl = panel.querySelector('#sp-sell-input');
+        const totalEl = panel.querySelector('#sp-sell-total');
+        const minusBtn = panel.querySelector('#sp-sell-minus');
+        const plusBtn = panel.querySelector('#sp-sell-plus');
+        const maxBtn = panel.querySelector('#sp-sell-max');
+        let sellQty = ownedQty > 0 ? 1 : 0;
+
+        const renderSellQty = () => {
+          const total = sellPrice * sellQty;
+          if (rangeEl) rangeEl.value = sellQty;
+          if (inputEl && document.activeElement !== inputEl) inputEl.value = sellQty;
+          if (totalEl) totalEl.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+          sellBtn.textContent = `Jual ${sellQty} — Rp ${total.toLocaleString('id-ID')}`;
+          if (minusBtn) minusBtn.disabled = sellQty <= 1;
+          if (plusBtn) plusBtn.disabled = sellQty >= ownedQty;
+          if (maxBtn) maxBtn.disabled = sellQty >= ownedQty;
+          if (rangeEl) rangeEl.disabled = ownedQty <= 1;
+        };
+        const setSellQty = (value) => {
+          const parsed = Math.floor(Number(value));
+          if (!Number.isFinite(parsed)) return;
+          sellQty = Math.max(1, Math.min(ownedQty, parsed));
+          renderSellQty();
+        };
+
+        if (rangeEl) rangeEl.addEventListener('input', () => setSellQty(rangeEl.value));
+        if (inputEl) {
+          inputEl.addEventListener('input', () => {
+            if (inputEl.value === '') return; // biarkan kosong saat mengetik, dikunci saat change/blur
+            setSellQty(inputEl.value);
+          });
+          inputEl.addEventListener('change', () => { setSellQty(inputEl.value); inputEl.value = sellQty; });
+        }
+        if (minusBtn) minusBtn.addEventListener('click', () => setSellQty(sellQty - 1));
+        if (plusBtn) plusBtn.addEventListener('click', () => setSellQty(sellQty + 1));
+        if (maxBtn) maxBtn.addEventListener('click', () => setSellQty(ownedQty));
+        renderSellQty();
+
+        sellBtn.addEventListener('click', () => {
+          const ok = Shop.sell(itemId, sellQty);
+          if (ok) {
+            OverlayManager.close(popId);
+            refreshShopPanel();
+            Renderer.renderHUD();
+          }
+        });
+      }
     });
   }
 

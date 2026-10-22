@@ -35,8 +35,11 @@
   .barFill.arm{background:linear-gradient(#7ec4ef,#3d7fb0);}
   .barVal{font-size:10px; color:#eee; width:34px; text-align:right; flex:0 0 auto;}
   #apPips{display:flex; gap:2px; flex:0 0 auto;}
-  .pip{width:11px; height:14px; border-radius:2px; background:#3a3120; border:1px solid #000;}
-  .pip.filled{background:radial-gradient(circle at 35% 30%,#ffd77a,#c98a1f); border-color:#7a5a12;}
+  .pip{width:14px; height:14px; display:flex; align-items:center; justify-content:center;}
+  /* v0.5.9: ikon stamina — bulat kuning polos garis tegas */
+  .apDot{display:inline-block; width:11px; height:11px; border-radius:50%; border:2px solid #14100a; background:rgba(20,16,10,.35); box-sizing:border-box;}
+  .pip.filled .apDot{background:#ffd21f;}
+  .apDot.sm{width:8px; height:8px; border-width:1.5px; background:#ffd21f;}
   #turnTag{
     flex:0 0 auto; font-size:10px; padding:4px 8px; border-radius:6px; font-weight:bold;
     background:#25321c; color:var(--green); border:1px solid #3f5a28; white-space:nowrap;

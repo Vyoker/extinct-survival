@@ -124,6 +124,45 @@ html, body {
   font-size: 13px;
   margin-bottom: 6px;
 }
+
+/* v0.5.6: chip pemain online di HUD + daftar pemain online */
+.online-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--bg-tertiary); border: 1px solid var(--border-color);
+  color: var(--text-primary); border-radius: 20px;
+  padding: 3px 10px; font-size: 11px; cursor: pointer;
+}
+.online-chip:active { border-color: #22c55e; }
+.online-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #22c55e; flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.8);
+}
+.online-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.online-row-main { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.online-row-side { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+.online-level { font-size: 12px; font-weight: bold; color: var(--accent-orange); }
+.online-ago { font-size: 10px; color: var(--text-dim); }
+.online-you { font-size: 10px; color: #22c55e; font-weight: bold; }
+
+/* v0.5.7: chat global */
+.chat-note { font-size: 10px; color: var(--text-dim); line-height: 1.6; margin: 0 0 10px; }
+.chat-messages { max-height: 46vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 10px; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-glass); }
+.chat-msg { border-bottom: 1px solid var(--border-color); padding-bottom: 7px; }
+.chat-msg:last-child { border-bottom: none; padding-bottom: 0; }
+.chat-msg-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.chat-msg-name { font-size: 12px; font-weight: bold; color: var(--text-primary); }
+.chat-msg-name.is-admin { color: var(--ds-gold, #e8c26a); }
+.chat-badge-admin { display: inline-block; background: linear-gradient(180deg, #f5b942, #d98a1f); color: #241703; font-size: 8px; font-weight: 800; letter-spacing: 0.6px; padding: 1px 5px; border-radius: 4px; vertical-align: 2px; }
+.chat-msg-time { font-size: 9px; color: var(--text-dim); flex-shrink: 0; }
+.chat-msg-text { font-size: 12px; color: var(--text-primary); line-height: 1.5; margin: 2px 0 0; word-break: break-word; }
+.chat-status { font-size: 11px; min-height: 15px; margin-top: 6px; color: var(--text-dim); }
+.chat-input-row { display: flex; gap: 6px; margin-top: 4px; }
+.chat-input-row input { flex: 1; min-width: 0; padding: 9px 10px; background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 8px; font-size: 13px; }
+.chat-input-row .action-btn { margin-top: 0; flex-shrink: 0; min-width: 74px; }
+.chat-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+.chat-foot #chat-counter { font-size: 10px; color: var(--text-dim); }
+.chat-admin-toggle { background: none; border: none; color: var(--text-dim); font-size: 10px; cursor: pointer; padding: 4px; text-decoration: underline; }
 .hamburger-btn {
   background: none;
   border: 1px solid var(--border-color);
@@ -704,6 +743,22 @@ html, body {
 .mini-popup-actions { display: flex; gap: 6px; margin-top: 10px; }
 .mini-popup-actions .action-btn { margin-top: 0; flex: 1; }
 
+/* v0.5.5: pemilih jumlah jual massal di popup Shop */
+.sell-qty-box { margin-top: 10px; padding: 10px; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-glass); }
+.sell-qty-head { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-dim); margin-bottom: 8px; }
+.sell-max-btn { background: var(--bg-tertiary); border: 1px solid var(--accent-orange); color: var(--accent-orange); border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: bold; cursor: pointer; }
+.sell-max-btn:active { background: var(--accent-orange); color: #0a0a0a; }
+.sell-max-btn:disabled { opacity: 0.35; }
+.sell-qty-controls { display: flex; align-items: center; gap: 8px; }
+.sell-qty-controls input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent-orange); height: 28px; cursor: pointer; }
+.sell-step-btn { width: 32px; height: 32px; flex-shrink: 0; background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 8px; font-size: 16px; line-height: 1; cursor: pointer; }
+.sell-step-btn:active { background: var(--accent-orange); color: #0a0a0a; }
+.sell-step-btn:disabled { opacity: 0.35; }
+.sell-qty-row { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+.sell-qty-row input[type="number"] { width: 76px; padding: 6px 8px; background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 6px; font-size: 13px; text-align: center; }
+.sell-qty-of { font-size: 11px; color: var(--text-dim); }
+.sell-total-row { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-color); font-weight: bold; }
+
 /* Tab segmented (Beli/Jual di Shop) */
 .segmented-tabs {
   display: flex;
@@ -758,6 +813,14 @@ html, body {
   white-space: nowrap;
 }
 .mini-btn:active { background: var(--accent-orange); color: #0a0a0a; }
+.mini-btn.danger { border-color: var(--accent-red); color: var(--accent-red); }
+.mini-btn.danger:active { background: var(--accent-red); color: #fff; }
+
+/* v0.5.8: panel teman */
+.online-dot.is-off { background: var(--text-dim); box-shadow: none; }
+.friend-actions { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; }
+.friend-section { color: var(--accent-orange); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; margin: 14px 0 7px; }
+.friend-state { font-size: 10px; color: var(--text-dim); white-space: nowrap; padding: 4px 2px; }
 
 /* ---------- OVERLAY MANAGER ---------- */
 .overlay-backdrop {

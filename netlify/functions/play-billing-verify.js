@@ -169,6 +169,9 @@ exports.handler = async (event) => {
     return json(400, { error: 'SKU tidak cocok dengan paket.' });
   }
 
+  // Pembelian Play memakai tangga kredit Play (playKredit), bukan tangga QRIS.
+  const grantKredit = typeof pkg.playKredit === 'number' ? pkg.playKredit : pkg.kredit;
+
   const store = getPlayBillingStore();
   const grantKey = 'grant:' + purchaseToken;
 
@@ -186,12 +189,12 @@ exports.handler = async (event) => {
       packageId: pkg.id,
       sku,
       orderId: orderId || null,
-      kredit: pkg.kredit,
+      kredit: grantKredit,
       testMode,
       grantedAt: new Date().toISOString()
     });
 
-    return json(200, { ok: true, status: 'granted', kredit: pkg.kredit, testMode });
+    return json(200, { ok: true, status: 'granted', kredit: grantKredit, testMode });
   } catch (e) {
     console.error('[play-billing-verify]', e.message);
     return json(400, { error: e.message || 'Verifikasi pembelian gagal.' });

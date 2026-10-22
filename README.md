@@ -29,77 +29,13 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.5.4
+## Rilis Terbaru — v0.5.9
 
-- Balance pass untuk paket konten v0.4.7-v0.5.3: damage kelima BOSS
-  diturunkan ke rentang yang adil untuk pertarungan jarak dekat
-  (sebelumnya terlalu mematikan untuk HP pemain), dan dua target misi
-  harian faksi yang terlalu berat dilonggarkan. Ekonomi reputasi &
-  Koin Faksi, kurva exp, biaya crafting, dan hadiah misi sudah dicek
-  dan dinyatakan seimbang tanpa perubahan.
-
-## v0.5.3
-
-- 10 musuh baru: setiap wilayah kini punya 1 musuh elit tier Epic dan
-  1 BOSS tier Mythic (level 91-100) — dari Tiran Jakarta, Raja Pasar
-  Gelap, dan Inti Pertahanan Bunker, sampai Penjaga Agung Enclave dan
-  Behemoth Rimba. Total musuh Hunting kini 19.
-
-## v0.5.2
-
-- Scaling level musuh: semua musuh Hunting kini punya level 1-100.
-  Statistik digenerate dari stat dasar level 1 dan naik 50% per level.
-  Ikon musuh di daftar Hunting berwarna mengikuti tier levelnya —
-  putih (lemah) hingga merah (sangat kuat) dengan label BOSS untuk
-  tier tertinggi.
-
-## v0.5.1
-
-- Item langka baru di setiap faksi: 2 item eksklusif per faksi (total
-  10), 1 Epic untuk anggota rank Elite dan 1 Legendary untuk rank
-  Legenda — di antaranya Tombak Pusaran Air, Helm Api Abadi, Kapak
-  Raksasa Bonex, dan Topeng Hantu Suci. Tersedia di Faction Shop.
-
-## v0.5.0
-
-- Sistem misi faksi: 3 misi harian acak untuk faksi aktif, reset setiap
-  hari. Hadiahnya reputasi dan Koin Faksi. Daftar misi ada di panel
-  Faksi, di bawah kartu faksimu.
-
-## v0.4.9
-
-- Contract Faction: setiap faksi kini punya 1 misi kontrak wajib yang
-  harus diselesaikan sebelum bisa bergabung (berlaku juga untuk anggota
-  lama — Faction Shop dan progres reputasi dibekukan sampai kontrak
-  selesai). Daftar kontrak ada di tab "Kontrak Faksi" pada menu Misi.
-
-## v0.4.8
-
-- Crafting diperluas: 20 resep baru, total 24. Termasuk 6 senjata baru
-  (Kapak Batu hingga Parang Baja Tempa), 7 armor baru (Zirah Bulu
-  Beruang, Perisai Anti Huru-Hara), 5 consumable baru (Tapal Herbal,
-  Penawar Bisa, Ransum Lapangan), dan 2 material olahan (Logam Tempa,
-  Kulit Samak) yang menjadi bahan peralatan tier Rare.
-
-## v0.4.7
-
-- Cerita utama baru: arc "Jejak Proyek Fajar" — 8 chapter lanjutan dari
-  prolog, satu chapter per wilayah, dari sinyal misterius di Jakarta
-  Ruins hingga fasilitas rahasia di jantung Kalimantan Wilds.
-- 7 misi sampingan baru, 2 per wilayah (Jakarta, Surabaya, Bandung,
-  Bali, Kalimantan). Total misi kini 20: 10 misi utama + 10 sampingan.
-
-## v0.4.6
-
-- Splash screen baru: artwork reruntuhan Nusantara full-screen dengan
-  kredit developer VyokerDEV (nama akun developer di Google Play Store).
-
-## v0.4.5
-
-- Persiapan build Google Play Store: pembelian kredit via Google Play
-  Billing otomatis aktif saat game dijalankan di aplikasi Play Store
-  (kredit masuk instan tanpa verifikasi manual); di luar itu top up
-  QRIS manual tetap berjalan seperti biasa.
+- Battle System v3: token karakter kini bergerak mulus dari petak
+  ke petak mengikuti jalur terpendek saat kamu memilih "Pindah"
+  (sebelumnya langsung berpindah tempat) — musuh pun bergerak
+  dengan cara yang sama di gilirannya. Ikon stamina (AP) di battle
+  kini berupa bulatan kuning polos dengan garis tegas.
 
 ## Teknologi
 
