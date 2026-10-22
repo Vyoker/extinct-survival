@@ -157,9 +157,17 @@ html, body {
 .chat-msg-time { font-size: 9px; color: var(--text-dim); flex-shrink: 0; }
 .chat-msg-text { font-size: 12px; color: var(--text-primary); line-height: 1.5; margin: 2px 0 0; word-break: break-word; }
 .chat-status { font-size: 11px; min-height: 15px; margin-top: 6px; color: var(--text-dim); }
-.chat-input-row { display: flex; gap: 6px; margin-top: 4px; }
-.chat-input-row input { flex: 1; min-width: 0; padding: 9px 10px; background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 8px; font-size: 13px; }
-.chat-input-row .action-btn { margin-top: 0; flex-shrink: 0; min-width: 74px; }
+/* v0.6.0: layout baris chat standar — input melebar penuh, tombol
+   di sampingnya ramping. PERBAIKAN BUG: .action-btn global memakai
+   width:100% yang menghimpit input sampai sekecil pil; di dalam
+   baris ini lebarnya wajib auto. */
+.chat-input-row { display: flex; gap: 6px; margin-top: 4px; align-items: stretch; }
+.chat-input-row input { flex: 1 1 auto; width: auto; min-width: 0; padding: 9px 10px; background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 8px; font-size: 13px; font-family: inherit; }
+.chat-input-row .action-btn { width: auto; margin-top: 0; flex: 0 0 auto; min-width: 0; padding: 9px 14px; }
+.chat-send-btn { flex: 0 0 auto; width: 44px; min-height: 38px; display: flex; align-items: center; justify-content: center; background: var(--accent-orange); color: #14100a; border: none; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer; transition: transform 0.12s ease, opacity 0.2s ease; }
+.chat-send-btn:active { transform: scale(0.94); }
+.chat-send-btn:disabled { opacity: 0.55; cursor: default; }
+.chat-send-btn .xicon { width: 19px; height: 19px; margin: 0; }
 .chat-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
 .chat-foot #chat-counter { font-size: 10px; color: var(--text-dim); }
 .chat-admin-toggle { background: none; border: none; color: var(--text-dim); font-size: 10px; cursor: pointer; padding: 4px; text-decoration: underline; }

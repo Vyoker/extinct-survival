@@ -1986,20 +1986,38 @@ const Panels = (function () {
     if (shopTab === 'buy') {
       const entry = Shop.getCatalog().find(e => e.itemId === itemId);
       const price = entry ? entry.price : 0;
-      const canAfford = p.currency.rupiah >= price;
+      // v0.6.0: beli massal — jumlah maksimum dibatasi saldo Rupiah.
+      const maxQty = price > 0 ? Math.floor(p.currency.rupiah / price) : 0;
       return `
         <div class="mini-popup-panel">
           <div class="mini-popup-header">
             <div class="mini-popup-icon">${iconImgHtml(def.icon, def.name)}</div>
             <div class="mini-popup-titles">
               <div class="mini-popup-name rarity-${def.rarity}">${def.name}</div>
-              <div class="mini-popup-sub">Harga: Rp ${price.toLocaleString('id-ID')}</div>
+              <div class="mini-popup-sub">Harga: Rp ${price.toLocaleString('id-ID')} • Saldo: Rp ${p.currency.rupiah.toLocaleString('id-ID')}</div>
             </div>
             <button class="overlay-close-btn" id="sp-close">✕</button>
           </div>
           <p style="font-size:11px; color:var(--text-dim); line-height:1.5;">${def.description}</p>
+          ${maxQty > 0 ? `
+          <div class="sell-qty-box">
+            <div class="sell-qty-head">
+              <span>Jumlah dibeli</span>
+              <button type="button" class="sell-max-btn" id="sp-buy-max">MAX</button>
+            </div>
+            <div class="sell-qty-controls">
+              <button type="button" class="sell-step-btn" id="sp-buy-minus" aria-label="Kurangi jumlah">−</button>
+              <input type="range" id="sp-buy-range" min="1" max="${maxQty}" step="1" value="1" aria-label="Geser jumlah beli">
+              <button type="button" class="sell-step-btn" id="sp-buy-plus" aria-label="Tambah jumlah">+</button>
+            </div>
+            <div class="sell-qty-row">
+              <input type="number" id="sp-buy-input" min="1" max="${maxQty}" step="1" value="1" inputmode="numeric" aria-label="Input jumlah beli">
+              <span class="sell-qty-of">maks ${maxQty} dari saldo</span>
+            </div>
+            <div class="card-row sell-total-row"><span>Total bayar</span><span id="sp-buy-total">Rp ${price.toLocaleString('id-ID')}</span></div>
+          </div>` : '<p style="font-size:11px; color:var(--accent-red);">Rupiah tidak cukup untuk membeli item ini.</p>'}
           <div class="mini-popup-actions">
-            <button class="action-btn" id="sp-buy" ${canAfford ? '' : 'disabled'}>Beli 1</button>
+            <button class="action-btn" id="sp-buy" ${maxQty > 0 ? '' : 'disabled'}>Beli 1 — Rp ${price.toLocaleString('id-ID')}</button>
           </div>
         </div>
       `;
@@ -2053,13 +2071,62 @@ const Panels = (function () {
       const closeBtn = panel.querySelector('#sp-close');
       if (closeBtn) closeBtn.addEventListener('click', () => OverlayManager.close(popId));
 
+      // v0.6.0: pemilih jumlah beli massal — pola yang sama dengan
+      // jual massal v0.5.5 (slider, input, -/+, MAX; total live).
       const buyBtn = panel.querySelector('#sp-buy');
-      if (buyBtn) buyBtn.addEventListener('click', () => {
-        Shop.buy(itemId, 1);
-        OverlayManager.close(popId);
-        refreshShopPanel();
-        Renderer.renderHUD();
-      });
+      if (buyBtn) {
+        const buyEntry = Shop.getCatalog().find(e => e.itemId === itemId);
+        const buyPrice = buyEntry ? buyEntry.price : 0;
+        const buySaldo = GameState.get().player.currency.rupiah;
+        const buyMaxQty = buyPrice > 0 ? Math.floor(buySaldo / buyPrice) : 0;
+        const bRange = panel.querySelector('#sp-buy-range');
+        const bInput = panel.querySelector('#sp-buy-input');
+        const bTotal = panel.querySelector('#sp-buy-total');
+        const bMinus = panel.querySelector('#sp-buy-minus');
+        const bPlus = panel.querySelector('#sp-buy-plus');
+        const bMax = panel.querySelector('#sp-buy-max');
+        let buyQty = buyMaxQty > 0 ? 1 : 0;
+
+        const renderBuyQty = () => {
+          const total = buyPrice * buyQty;
+          if (bRange) bRange.value = buyQty;
+          if (bInput && document.activeElement !== bInput) bInput.value = buyQty;
+          if (bTotal) bTotal.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+          buyBtn.textContent = `Beli ${buyQty} — Rp ${total.toLocaleString('id-ID')}`;
+          if (bMinus) bMinus.disabled = buyQty <= 1;
+          if (bPlus) bPlus.disabled = buyQty >= buyMaxQty;
+          if (bMax) bMax.disabled = buyQty >= buyMaxQty;
+          if (bRange) bRange.disabled = buyMaxQty <= 1;
+        };
+        const setBuyQty = (value) => {
+          const parsed = Math.floor(Number(value));
+          if (!Number.isFinite(parsed)) return;
+          buyQty = Math.max(1, Math.min(buyMaxQty, parsed));
+          renderBuyQty();
+        };
+
+        if (bRange) bRange.addEventListener('input', () => setBuyQty(bRange.value));
+        if (bInput) {
+          bInput.addEventListener('input', () => {
+            if (bInput.value === '') return;
+            setBuyQty(bInput.value);
+          });
+          bInput.addEventListener('change', () => { setBuyQty(bInput.value); bInput.value = buyQty; });
+        }
+        if (bMinus) bMinus.addEventListener('click', () => setBuyQty(buyQty - 1));
+        if (bPlus) bPlus.addEventListener('click', () => setBuyQty(buyQty + 1));
+        if (bMax) bMax.addEventListener('click', () => setBuyQty(buyMaxQty));
+        renderBuyQty();
+
+        buyBtn.addEventListener('click', () => {
+          const ok = Shop.buy(itemId, buyQty);
+          if (ok) {
+            OverlayManager.close(popId);
+            refreshShopPanel();
+            Renderer.renderHUD();
+          }
+        });
+      }
 
       // v0.5.5: pemilih jumlah jual massal — slider, input angka, tombol
       // - / + dan MAX semuanya sinkron; total harga update langsung.

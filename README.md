@@ -29,13 +29,15 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.5.9
+## Rilis Terbaru — v0.6.0
 
-- Battle System v3: token karakter kini bergerak mulus dari petak
-  ke petak mengikuti jalur terpendek saat kamu memilih "Pindah"
-  (sebelumnya langsung berpindah tempat) — musuh pun bergerak
-  dengan cara yang sama di gilirannya. Ikon stamina (AP) di battle
-  kini berupa bulatan kuning polos dengan garis tegas.
+- Beli item di Shop kini bisa massal, sama seperti menjual: atur
+  jumlah dengan slider, ketik angka langsung, tombol kurang/tambah,
+  atau MAX sesuai saldo Rupiahmu. Total bayar tampil langsung dan
+  saldo Rupiahmu terlihat di popup pembelian.
+- Layout kolom Chat Global dan pencarian Teman diperbaiki mengikuti
+  layout chat pada umumnya: kolom ketik kini melebar penuh dan
+  tombol kirim menjadi tombol ikon panah yang ramping di sampingnya.
 
 ## Teknologi
 

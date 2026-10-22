@@ -38,6 +38,14 @@ const Shop = (function () {
     const entry = CATALOG.find(e => e.itemId === itemId);
     if (!entry) return false;
 
+    // v0.6.0: beli massal — jumlah dinormalkan seperti jual massal
+    // (dibulatkan ke bawah; 0/negatif/NaN ditolak aman).
+    qty = Math.floor(Number(qty));
+    if (!Number.isFinite(qty) || qty < 1) {
+      Events.emit('notify', { message: 'Jumlah beli tidak valid.', type: 'error' });
+      return false;
+    }
+
     const p = getPlayer();
     const totalPrice = entry.price * qty;
     if (p.currency.rupiah < totalPrice) {
@@ -45,8 +53,22 @@ const Shop = (function () {
       return false;
     }
 
+    // Item jenis baru butuh slot tas kosong; menumpuk ke item yang
+    // sudah dimiliki selalu boleh (aturan yang sama di Inventory).
+    // Dicek SEBELUM memotong saldo supaya tidak tertagih sia-sia.
+    const inv = Inventory.getInventory();
+    const alreadyOwned = inv.some(e => e.itemId === itemId);
+    if (!alreadyOwned) {
+      const maxSlots = window.Player ? Player.getDerivedStats().maxInventorySlots : 20;
+      if (inv.length >= maxSlots) {
+        Events.emit('notify', { message: `Tas penuh (${maxSlots} slot)! Alokasikan poin INT untuk nambah kapasitas.`, type: 'error' });
+        return false;
+      }
+    }
+
+    const added = Inventory.addItem(itemId, qty);
+    if (!added) return false; // saldo belum dipotong
     p.currency.rupiah -= totalPrice;
-    Inventory.addItem(itemId, qty);
     Events.emit('notify', { message: `Membeli ${qty}x item seharga Rp ${totalPrice}.` });
     Events.emit('player:updated');
     return true;

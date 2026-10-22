@@ -108,7 +108,7 @@ const GlobalChat = (function () {
       <div class="chat-status" id="chat-status"></div>
       <div class="chat-input-row">
         <input type="text" id="chat-input" maxlength="${MAX_LEN}" placeholder="Tulis pesan..." autocomplete="off">
-        <button class="action-btn" id="chat-send">Kirim</button>
+        <button class="chat-send-btn" id="chat-send" aria-label="Kirim pesan">${ic('send')}</button>
       </div>
       <div class="chat-foot">
         <span id="chat-counter">0/${MAX_LEN}</span>
@@ -147,10 +147,12 @@ const GlobalChat = (function () {
       if (!panel) { clearInterval(cooldownTimer); cooldownTimer = null; return; }
       var btn = panel.querySelector('#chat-send');
       if (remain > 0) {
-        if (btn) { btn.disabled = true; btn.textContent = 'Kirim (' + remain + ')'; }
+        // v0.6.0: tombol kirim ikon — selama cooldown tampilkan
+        // angka hitung mundurnya saja di tombol yang sama.
+        if (btn) { btn.disabled = true; btn.textContent = String(remain); }
       } else {
         clearInterval(cooldownTimer); cooldownTimer = null;
-        if (btn) { btn.disabled = false; btn.textContent = 'Kirim'; }
+        if (btn) { btn.disabled = false; btn.innerHTML = ic('send'); }
       }
     };
     tick();
