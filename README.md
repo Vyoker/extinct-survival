@@ -29,15 +29,30 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.6.0
+## Rilis Terbaru — v0.6.4
 
-- Beli item di Shop kini bisa massal, sama seperti menjual: atur
-  jumlah dengan slider, ketik angka langsung, tombol kurang/tambah,
-  atau MAX sesuai saldo Rupiahmu. Total bayar tampil langsung dan
-  saldo Rupiahmu terlihat di popup pembelian.
-- Layout kolom Chat Global dan pencarian Teman diperbaiki mengikuti
-  layout chat pada umumnya: kolom ketik kini melebar penuh dan
-  tombol kirim menjadi tombol ikon panah yang ramping di sampingnya.
+- **Battle System v4 — Defense kini bekerja sungguhan:** poin
+  Defense-mu adalah perisai aktif. Setiap damage yang masuk
+  mengurangi Defense dulu sampai habis; HP baru berkurang setelah
+  perisaimu pecah. Bilah Defense di layar battle dan bilah biru
+  mini di token karaktermu kini menurun sesuai damage yang
+  tertahan, dan popup "Perisai Hancur" muncul saat Defense habis.
+- **Popup MISS & CRITICAL di karakter:** serangan yang meleset kini
+  memunculkan popup "MISS" besar di karakter yang diserang, dan
+  serangan kritis memunculkan popup "CRITICAL" dengan damage 1,5x
+  lipat — peluang kritis mengikuti stat Critical karaktermu.
+  Serangan musuh sekarang juga bisa meleset dan kritis.
+- Fitur baru: **Barter** — kirim item langsung ke pemain lain yang
+  sedang online di wilayah yang sama denganmu. Pilih pemainnya,
+  pilih item dari tasmu, atur jumlahnya, kirim — item langsung
+  masuk ke tas penerima dan ia menerima pemberitahuan. Hanya item
+  yang bisa dikirim; Rupiah dan Kredit tidak bisa ditransfer.
+- Set Seafire kini tampil lengkap dengan artwork-nya: Golok Bara
+  Api, Baju Zirah Magma, dan Liontin Ember. Baju Zirah Magma
+  tampil sebagai figur karakter full body saat dipakai.
+- Semua musuh kini tampil dengan potretnya di battle dan daftar
+  hunting, termasuk para bos dan musuh baru — potret dibedakan
+  lewat warna lingkaran tier sesuai level musuh.
 
 ## Teknologi
 

@@ -156,6 +156,9 @@
       // v0.5.6: nyalakan penanda online (heartbeat 2 menit + chip HUD)
       if (window.Presence) Presence.start();
 
+      // v0.6.3: nyalakan polling klaim barter masuk (60 detik)
+      if (window.Barter) Barter.start();
+
       // v0.3.8: mulai BGM (gesture user dari tombol tadi = izin autoplay)
       if (window.AudioManager) AudioManager.playBgm();
 

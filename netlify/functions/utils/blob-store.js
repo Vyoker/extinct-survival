@@ -67,4 +67,16 @@ function getFriendsStore() {
   return getStore('friends');
 }
 
-module.exports = { getTopupStore, getCreditStore, getPlayBillingStore, getPresenceStore, getChatStore, getFriendsStore };
+// v0.6.3: store barter antar pemain.
+// Key: "inbox/<PID>.json" (kiriman menunggu diambil penerima),
+// "cd/<PID>.json" (cooldown pengirim).
+function getBarterStore() {
+  const siteID = process.env.BLOBS_SITE_ID;
+  const token = process.env.BLOBS_TOKEN;
+  if (siteID && token) {
+    return getStore({ name: 'barter', siteID, token });
+  }
+  return getStore('barter');
+}
+
+module.exports = { getTopupStore, getCreditStore, getPlayBillingStore, getPresenceStore, getChatStore, getFriendsStore, getBarterStore };

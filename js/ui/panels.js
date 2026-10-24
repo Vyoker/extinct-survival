@@ -920,6 +920,7 @@ const Panels = (function () {
     { id: 'mail', iconName: 'mail', action: 'mail', title: 'Mail' },
     { id: 'chat', iconName: 'chat', action: 'chat', title: 'Chat Global' },
     { id: 'friends', iconName: 'userPlus', action: 'friends', title: 'Teman' },
+    { id: 'barter', iconName: 'gift', action: 'barter', title: 'Barter' },
     { id: 'quest', iconName: 'target', action: 'quest', title: 'Misi' },
     { id: 'spin', iconName: 'wheel', action: 'locked', title: 'Spin Wheel (terkunci)' },
     { id: 'mall', iconName: 'gem', action: 'toast-mall', title: 'Item Mall (segera)' },
@@ -1028,6 +1029,12 @@ const Panels = (function () {
         // v0.5.8: pertemanan antar pemain.
         if (window.Friends) Friends.open();
         else Events.emit('notify', { message: 'Modul teman belum termuat.', type: 'error' });
+        break;
+      }
+      case 'barter': {
+        // v0.6.3: kirim item antar pemain (satu arah, sewilayah).
+        if (window.Barter) Barter.open();
+        else Events.emit('notify', { message: 'Modul barter belum termuat.', type: 'error' });
         break;
       }
       case 'locked':

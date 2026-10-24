@@ -433,8 +433,13 @@ html, body {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(255, 180, 60, 0.5);
   animation: ds-dmgFloat 0.9s ease-out forwards;
 }
-.dmgFloat.miss { color: #9fb3c8; font-size: 12px; font-style: normal; font-weight: 600; }
+.dmgFloat.miss { color: #e8f1fa; font-size: 16px; font-style: normal; font-weight: 800; letter-spacing: 1.5px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(160, 200, 240, 0.7); }
 .dmgFloat.crit { color: #ff5d5d; font-size: 19px; }
+.dmgFloat.critLabel { color: #ff4242; font-size: 15px; font-weight: 800; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 12px rgba(255, 60, 60, 0.8); }
+.dmgFloat.shield { color: #8fc7ff; font-size: 14px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85), 0 0 8px rgba(90, 160, 255, 0.55); }
+.dmgFloat.shieldbreak { color: #ffb84d; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+.miniDef { position: absolute; left: 6px; right: 6px; bottom: -12px; height: 3px; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; }
+.miniDef i { display: block; height: 100%; background: linear-gradient(90deg, #8fc7ff, #3f6f9f); transition: width 0.35s var(--ds-ease); }
 @keyframes ds-dmgFloat {
   0% { opacity: 0; transform: translate(-50%, 6px) scale(0.6); }
   18% { opacity: 1; transform: translate(-50%, 0) scale(1.15); }

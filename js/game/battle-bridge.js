@@ -56,7 +56,11 @@ const BattleBridge = (function () {
       })(),
       hp: Math.max(1, p.survival.health),
       maxHp: 100,
-      armor: Math.round(derived.defensePct), // sinkron dgn Defense% (cap 70)
+      // v0.6.4: armor = poin perisai Defense (dari Defense%, cap 70) —
+      // engine menggunakannya sebagai perisai aktif yang menyerap
+      // damage lebih dulu sebelum HP berkurang, per battle.
+      armor: Math.round(derived.defensePct),
+      critChance: Math.round(derived.critChance || 5), // v0.6.4
       maxAp: 6,
       weapons: [weaponEntry]
     };

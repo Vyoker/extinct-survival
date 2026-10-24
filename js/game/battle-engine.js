@@ -4,6 +4,16 @@
  * Grid tactical turn-based: unit HP/Armor/AP, gerak berbasis BFS,
  * jangkauan serang, AI musuh otomatis, animasi damage float.
  *
+ * v0.6.4 (Battle System v4):
+ * - Defense (armor) AKTIF sebagai perisai: damage mengurangi poin
+ *   Defense dulu sampai habis, sisa damage baru memotong HP.
+ *   Berlaku dua arah (serangan pemain & musuh) dan damage hazard.
+ * - Critical jadi lemparan peluang sungguhan (critChance pemain dari
+ *   stat karakter, musuh 10%): damage x1,5 + popup "CRITICAL" di
+ *   karakter yang kena. Serangan musuh kini juga bisa meleset.
+ * - Popup tempur di karakter: "MISS" saat serangan meleset,
+ *   "CRITICAL" saat kritis, "Perisai Hancur" saat Defense habis.
+ *
  * Hook integrasi tambahan (di luar file asli, utk nyambung ke game):
  *  - config.onWeaponUse(weapon): dipanggil tiap kali player berhasil
  *    menyerang (dipakai utk kurangi durability senjata asli)
@@ -301,6 +311,13 @@ function renderBoard(){
       hp.className='miniHp';
       hp.innerHTML = `<i style="width:${Math.max(0,u.hp/u.maxHp*100)}%"></i>`;
       tok.appendChild(hp);
+      // v0.6.4: bilah Defense mini di bawah bilah HP token
+      if(u.maxArmor > 0){
+        const df = document.createElement('div');
+        df.className='miniDef';
+        df.innerHTML = `<i style="width:${Math.max(0,u.armor/u.maxArmor*100)}%"></i>`;
+        tok.appendChild(df);
+      }
       el.appendChild(tok);
     }
     board.appendChild(el);
@@ -405,7 +422,7 @@ function tryAttackUnit(target){
   if(typeof state.onWeaponUse === 'function') state.onWeaponUse(w);
 
   const distance = dist(p,target);
-  const hitChance = clamp(92 - distance*4 - target.armor*0.4, 25, 97);
+  const hitChance = clamp(92 - distance*4, 25, 97);
   const roll = Math.random()*100;
 
   state.pendingAction = null;
@@ -415,24 +432,29 @@ function tryAttackUnit(target){
   if (window.AudioManager) AudioManager.sfx(w && w.range > 1 ? 'shoot' : 'swing');
 
   animateAttack(p.id, target.id, ()=>{
-    const tileEl = findUnitTileEl(target.id);
     if(roll<=hitChance){
+      // v0.6.4: critical = lemparan peluang dari stat critChance
+      const critChance = (typeof p.critChance === 'number') ? p.critChance : 5;
+      const isCrit = (Math.random()*100) < critChance;
       let dmg = Math.round(rand(w.dmgMin,w.dmgMax));
-      dmg = Math.max(1, Math.round(dmg - target.armor*0.3));
-      const isCrit = dmg >= w.dmgMax - 1 && w.dmgMax > w.dmgMin;
-      target.hp -= dmg;
+      if(isCrit) dmg = Math.round(dmg * 1.5);
+      // v0.6.4: Defense target menyerap damage sebelum HP
+      const res = applyDamage(target, dmg);
       if (window.AudioManager) AudioManager.sfx(isCrit ? 'crit' : 'hit');
-      spawnFloatText(tileEl, '-'+dmg, false, isCrit);
       if(target.hp<=0){
         target.hp = 0;
         target.alive = false;
         showBanner((target.name)+' tumbang!');
       }
+      // Render DULU, popup SESUDAHNYA: renderBoard membangun ulang
+      // papan dan akan menghapus popup yang sudah terlanjur dibuat.
+      render();
+      showHitFloats(findUnitTileEl(target.id), res, dmg, isCrit);
     } else {
       if (window.AudioManager) AudioManager.sfx('miss'); // v0.3.8
-      spawnFloatText(tileEl, 'Meleset', true, false);
+      render();
+      spawnFloatText(findUnitTileEl(target.id), 'MISS', 'miss');
     }
-    render();
     checkBattleEnd();
   });
 }
@@ -531,9 +553,11 @@ function checkHazard(unit){
   const t = tileAt(unit.x,unit.y);
   if(t && t.type===TILE.HAZARD){
     const dmg = Math.round(rand(2,5));
-    unit.hp -= dmg;
+    // v0.6.4: hazard juga ditahan Defense dulu, sama seperti serangan
+    const res = applyDamage(unit, dmg);
     const el = findUnitTileEl(unit.id);
-    spawnFloatText(el, '-'+dmg+' ☣', false);
+    if(res.hpDmg > 0) spawnFloatText(el, '-'+res.hpDmg+' ☣', '');
+    else if(res.absorbed > 0) spawnFloatText(el, '-'+dmg+' ☣', 'shield');
   }
 }
 
@@ -544,14 +568,62 @@ function findUnitTileEl(unitId){
   return document.getElementById('board').children[idx] || null;
 }
 
-function spawnFloatText(tileEl, text, isMiss, isCrit){
+function spawnFloatText(tileEl, text, kind, topPct){
   if(!tileEl) return;
   const d = document.createElement('div');
-  d.className = 'dmgFloat'+(isMiss?' miss':'')+(isCrit?' crit':'');
+  d.className = 'dmgFloat'+(kind ? ' '+kind : '');
   d.textContent = text;
-  d.style.left = '50%'; d.style.top='10%'; d.style.transform='translateX(-50%)';
-  tileEl.appendChild(d);
+  // v0.6.4: popup tinggal di lapisan #boardWrap (position:relative),
+  // BUKAN di dalam petak — render ulang papan menghapus isi #board
+  // dan dulu ikut menghapus popup sebelum sempat terlihat.
+  const wrap = document.getElementById('boardWrap');
+  if(wrap){
+    let leftPct = 50, topPctAbs = 40;
+    try {
+      const wr = wrap.getBoundingClientRect();
+      const tr = tileEl.getBoundingClientRect();
+      if(wr.width > 0 && wr.height > 0 && tr.width > 0){
+        leftPct = (tr.left + tr.width / 2 - wr.left) / wr.width * 100;
+        topPctAbs = (tr.top - wr.top + tr.height * ((topPct != null ? topPct : 10) / 100)) / wr.height * 100;
+      }
+    } catch (e) { /* posisi cadangan */ }
+    d.style.left = leftPct + '%';
+    d.style.top = topPctAbs + '%';
+    d.style.transform = 'translateX(-50%)';
+    wrap.appendChild(d);
+  } else {
+    d.style.left = '50%'; d.style.top = (topPct != null ? topPct : 10)+'%'; d.style.transform='translateX(-50%)';
+    tileEl.appendChild(d);
+  }
   setTimeout(()=>d.remove(),900);
+}
+
+/* v0.6.4: Defense (armor) adalah perisai aktif — damage memotong
+   poin Defense dulu; hanya sisa damage yang mencapai HP.
+   Mengembalikan rincian serapan untuk popup & SFX. */
+function applyDamage(target, dmg){
+  dmg = Math.max(0, Math.round(dmg));
+  let absorbed = 0;
+  if(dmg > 0 && target.armor > 0){
+    absorbed = Math.min(target.armor, dmg);
+    target.armor -= absorbed;
+  }
+  const hpDmg = dmg - absorbed;
+  target.hp -= hpDmg;
+  return { absorbed, hpDmg, brokeShield: absorbed > 0 && target.armor === 0 };
+}
+
+/* Popup hasil serangan di karakter target: angka damage HP (atau
+   angka yang tertahan perisai), label CRITICAL, dan penanda saat
+   perisai pecah. */
+function showHitFloats(tileEl, res, totalDmg, isCrit){
+  if(res.hpDmg > 0){
+    spawnFloatText(tileEl, '-'+res.hpDmg, isCrit ? 'crit' : '');
+  } else if(res.absorbed > 0){
+    spawnFloatText(tileEl, '-'+totalDmg, 'shield');
+  }
+  if(isCrit) spawnFloatText(tileEl, 'CRITICAL', 'critLabel', -16);
+  if(res.brokeShield) spawnFloatText(tileEl, 'Perisai Hancur', 'shieldbreak', 34);
 }
 
 function showBanner(text){
@@ -614,13 +686,24 @@ function enemyAct(e, done){
     if(dist(e,p)<=1 && p.alive){
       if (window.AudioManager) AudioManager.sfx('swing'); // v0.3.8
       animateAttack(e.id, p.id, ()=>{
-        const dmg = Math.round(rand(e.dmgMin,e.dmgMax));
-        const realDmg = Math.max(1, Math.round(dmg - p.armor*0.3));
-        p.hp -= realDmg;
-        if (window.AudioManager) AudioManager.sfx('hit'); // v0.3.8
-        const el = findUnitTileEl(p.id);
-        spawnFloatText(el, '-'+realDmg, false, false);
+        // v0.6.4: serangan musuh kini juga bisa meleset & kritis
+        const hitChance = clamp(92 - dist(e,p)*4, 25, 97);
+        if(Math.random()*100 > hitChance){
+          if (window.AudioManager) AudioManager.sfx('miss');
+          render();
+          spawnFloatText(findUnitTileEl(p.id), 'MISS', 'miss');
+          finish();
+          return;
+        }
+        const critChance = (typeof e.critChance === 'number') ? e.critChance : 10;
+        const isCrit = (Math.random()*100) < critChance;
+        let dmg = Math.round(rand(e.dmgMin,e.dmgMax));
+        if(isCrit) dmg = Math.round(dmg * 1.5);
+        // v0.6.4: Defense pemain menyerap damage sebelum HP
+        const res = applyDamage(p, dmg);
+        if (window.AudioManager) AudioManager.sfx(isCrit ? 'crit' : 'hit'); // v0.3.8
         render();
+        showHitFloats(findUnitTileEl(p.id), res, dmg, isCrit);
         finish();
       });
     } else {
@@ -720,6 +803,7 @@ function start(config){
     id:'player', isPlayer:true, alive:true, x:1, y:rows-2
   }, config.player);
   player.maxArmor = player.armor;
+  if(typeof player.critChance !== 'number') player.critChance = 5; // v0.6.4
   player.ap = player.maxAp;
   player.weapons.forEach(w=>{ if(w.ammo===undefined) w.ammo=null; if(w.maxAmmo===undefined) w.maxAmmo=w.ammo; w.iconName = w.iconName || (window.Icons ? Icons.iconName(w.icon) : 'question'); w.range = w.range || (w.iconName==='knife'?1:5); });
 
@@ -731,10 +815,12 @@ function start(config){
     const spot = spawnSpots[s++ % spawnSpots.length];
     const t = tiles.find(tt=>tt.x===spot.x && tt.y===spot.y);
     if(t) t.type = TILE.EMPTY;
-    return Object.assign({
-      id:'e'+idx, isPlayer:false, alive:true, moveRange:3, armor:0,
+    const u = Object.assign({
+      id:'e'+idx, isPlayer:false, alive:true, moveRange:3, armor:0, critChance:10,
       x:spot.x, y:spot.y
     }, e);
+    u.maxArmor = u.armor || 0; // v0.6.4: plafon perisai musuh
+    return u;
   });
 
   // clear player's own tile

@@ -101,7 +101,13 @@
     position:absolute; font-weight:bold; font-size:13px; color:#ffdf7a; text-shadow:0 1px 2px #000;
     pointer-events:none; animation:floatUp .8s ease-out forwards; z-index:20;
   }
-  .dmgFloat.miss{color:#9ab; font-style:italic; font-size:11px;}
+  .dmgFloat.miss{color:#e8f1fa; font-style:normal; font-weight:800; font-size:14px; letter-spacing:1.5px;}
+  .dmgFloat.crit{color:#ff5d5d; font-size:17px;}
+  .dmgFloat.critLabel{color:#ff4242; font-size:13px; font-weight:800; letter-spacing:2px;}
+  .dmgFloat.shield{color:#8fc7ff; font-size:12px;}
+  .dmgFloat.shieldbreak{color:#ffb84d; font-size:10px; font-weight:700;}
+  .miniDef{position:absolute; left:2px; right:2px; bottom:-10px; height:3px; background:#0c0a07; border:1px solid #000; border-radius:2px; overflow:hidden;}
+  .miniDef i{display:block; height:100%; background:#5b93c9;}
   @keyframes floatUp{ from{opacity:1; transform:translateY(0);} to{opacity:0; transform:translateY(-26px);} }
 
   #banner{
