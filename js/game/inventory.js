@@ -180,6 +180,30 @@ const Inventory = (function () {
     Events.emit('inventory:updated');
   }
 
+  // v0.6.6 — Penalti kalah battle: semua equipment yang terpasang
+  // durability-nya dipangkas ke 25% dari maksimal ("hampir rusak").
+  // Sengaja mentok di minimal 1 supaya penalti ini TIDAK PERNAH
+  // mematahkan equipment (patah tetap hanya dari pemakaian);
+  // yang durability-nya sudah di bawah 25% dibiarkan apa adanya.
+  function applyDefeatDamage() {
+    const p = getPlayer();
+    let damaged = 0;
+    ALL_EQUIP_SLOTS.forEach(slot => {
+      const equipped = p.equipment[slot];
+      if (!equipped || typeof equipped.durability !== 'number') return;
+      const def = ItemDB.get(equipped.itemId);
+      const maxDur = def && def.stats && typeof def.stats.durability === 'number' ? def.stats.durability : null;
+      if (!maxDur) return;
+      const target = Math.max(1, Math.round(maxDur * 0.25));
+      if (equipped.durability > target) {
+        equipped.durability = target;
+        damaged++;
+      }
+    });
+    if (damaged > 0) Events.emit('inventory:updated');
+    return damaged;
+  }
+
   // Total damage dari weapon yang terpasang
   function getEquippedWeaponDamage() {
     const p = getPlayer();
@@ -285,7 +309,7 @@ const Inventory = (function () {
   return {
     getInventory, addItem, removeItem, hasItem, useItem,
     equipItem, unequipItem, getEquippedWeaponDamage, getSlotForItem,
-    reduceEquipmentDurability, getEquipmentDefenseBonus, isBoostItem,
+    reduceEquipmentDurability, applyDefeatDamage, getEquipmentDefenseBonus, isBoostItem,
     getRepairCost, canRepairSlot, repairSlot
   };
 })();

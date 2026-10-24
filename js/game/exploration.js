@@ -58,6 +58,37 @@ const Exploration = (function () {
     return scavengeLoot[Math.floor(Math.random() * scavengeLoot.length)];
   }
 
+  // v0.6.6 — Pilih item dari pool lokasi dengan BOBOT geografis
+  // (locations.json field `scavengeWeights`, mis. Kalimantan: kayu 40).
+  // Item tanpa bobot tertulis bobotnya 1. `exclude` = item yang sudah
+  // terpilih di scavenge ini (supaya 1-3 jenisnya berbeda-beda).
+  function pickLootWeighted(loc, exclude) {
+    const pool = (loc.scavengeLoot || []).filter(id => !(exclude || []).includes(id));
+    if (pool.length === 0) return null;
+    const weights = loc.scavengeWeights || {};
+    let total = 0;
+    const entries = pool.map(id => {
+      const w = weights[id] || 1;
+      total += w;
+      return { id, w };
+    });
+    let roll = Math.random() * total;
+    for (const e of entries) {
+      roll -= e.w;
+      if (roll <= 0) return e.id;
+    }
+    return entries[entries.length - 1].id;
+  }
+
+  // v0.6.6 — Jumlah jenis item per scavenge: 1 jenis 40%,
+  // 2 jenis 40%, 3 jenis 20% (tidak pelit lagi).
+  function rollLootTypeCount() {
+    const r = Math.random();
+    if (r < 0.4) return 1;
+    if (r < 0.8) return 2;
+    return 3;
+  }
+
   // --- SCAVENGE ---
   function scavenge() {
     const p = getPlayer();
@@ -81,16 +112,27 @@ const Exploration = (function () {
     const rupiah = Math.floor(Math.random() * 35) + 10;
     p.currency.rupiah += rupiah;
 
-    const itemId = pickLootByRarity(loc.scavengeLoot);
-    const qty = Math.random() < 0.3 ? 2 : 1;
-    Inventory.addItem(itemId, qty);
+    // v0.6.6: 1-3 jenis item berbeda dari pool berbobot wilayah.
+    const items = [];
+    const typeCount = Math.min(rollLootTypeCount(), loc.scavengeLoot.length);
+    for (let i = 0; i < typeCount; i++) {
+      const itemId = pickLootWeighted(loc, items.map(x => x.itemId));
+      if (!itemId) break;
+      const qty = Math.random() < 0.3 ? 2 : 1;
+      items.push({ itemId, qty });
+      Inventory.addItem(itemId, qty);
+    }
 
-    // Bonus loot tambahan berdasarkan LUCK + skill Scavenger
+    // Bonus loot tambahan berdasarkan LUCK + skill Scavenger:
+    // 1 jenis ekstra (berbeda) di atas hasil dasar.
     const scavengerBonus = window.Skills ? Skills.getSkillBonusPct('scavenger') / 100 : 0;
     const lootBonusChance = Math.min(0.8, (p.stats.int * 0.4) / 100 + scavengerBonus);
     if (Math.random() < lootBonusChance) {
-      const bonusItemId = pickLootByRarity(loc.scavengeLoot);
-      Inventory.addItem(bonusItemId, 1);
+      const bonusItemId = pickLootWeighted(loc, items.map(x => x.itemId));
+      if (bonusItemId) {
+        items.push({ itemId: bonusItemId, qty: 1 });
+        Inventory.addItem(bonusItemId, 1);
+      }
     }
 
     const exp = Math.floor(Math.random() * 4) + 2;
@@ -98,9 +140,15 @@ const Exploration = (function () {
     if (window.Skills) Skills.addSkillExp('scavenger', 5);
     if (window.FactionSystem) FactionSystem.grantScavengeProgress();
 
-    Events.emit('notify', { message: `Scavenge selesai: +Rp ${rupiah}, +${exp} EXP.` });
+    const itemNames = items.map(x => {
+      const def = ItemDB.get(x.itemId);
+      return def ? def.name + (x.qty > 1 ? ' ×' + x.qty : '') : x.itemId;
+    }).join(', ');
+    Events.emit('notify', { message: `Scavenge selesai: +${itemNames}, +Rp ${rupiah}, +${exp} EXP.` });
     Events.emit('player:updated');
-    return { rupiah, itemId, qty, exp };
+    // itemId/qty pertama dipertahankan untuk reveal UI lama.
+    const first = items[0] || { itemId: null, qty: 0 };
+    return { rupiah, itemId: first.itemId, qty: first.qty, items, exp };
   }
 
   // --- TRAVEL ---
@@ -129,7 +177,7 @@ const Exploration = (function () {
   return {
     getCurrentLocation, getAllOtherLocations,
     canScavenge, canHunt, canTravel,
-    scavenge, travelTo, pickLootByRarity,
+    scavenge, travelTo, pickLootByRarity, pickLootWeighted, rollLootTypeCount,
     SCAVENGE_ENERGY_COST, HUNTING_ENERGY_COST, TRAVEL_ENERGY_COST,
     SCAVENGE_COOLDOWN_MS, TRAVEL_COOLDOWN_MS
   };

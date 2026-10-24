@@ -37,12 +37,52 @@ const LocationDB = (function () {
     return { id: t.id, name: t.name, color, isBoss: t.id === 'mythic' };
   }
 
+  // v0.6.6 — Tier sebagai SIFAT TETAP musuh (bukan dari level):
+  // tier musuh kini ditulis di locations.json (field `tier`), levelnya
+  // justru di-generate dari level pemain saat Hunting dibuka.
+  const KIND_TIER_NAMES = { common: 'Common', uncommon: 'Uncommon', rare: 'Rare', epic: 'Epic', legendary: 'Legendary', boss: 'BOSS' };
+  function tierForKind(tierId) {
+    const id = KIND_TIER_NAMES[tierId] ? tierId : 'common';
+    const rarityId = id === 'boss' ? 'mythic' : id;
+    const color = (window.Rarity && Rarity.getColor) ? Rarity.getColor(rarityId) : TIER_FALLBACK_COLORS[rarityId];
+    return { id, name: KIND_TIER_NAMES[id], color, isBoss: id === 'boss' };
+  }
+
+  // v0.6.6 — Offset level per tier (contoh user: pemain lv 10 ->
+  // musuh putih lv 10, ungu lv 15, boss lv 20).
+  const TIER_OFFSETS = { common: 0, uncommon: 2, rare: 3, epic: 5, legendary: 7, boss: 10 };
+
+  // Hasilkan salinan musuh yang level & statnya disesuaikan dengan
+  // level pemain. Stat dihitung ULANG dari base stat (baseHp dst) x
+  // pengali level baru — jadi musuh lv 15 benar-benar lebih tebal &
+  // lebih sakit daripada lv 10, bukan sekadar angka level ditempel.
+  function scaleEnemyForPlayer(enemy, playerLevel) {
+    if (!enemy) return enemy;
+    const tierId = (typeof enemy.tier === 'string') ? enemy.tier : null;
+    const tier = tierId ? tierForKind(tierId) : (enemy.tier || tierForLevel(enemy.level));
+    const scaled = Object.assign({}, enemy, { tier });
+    if (typeof enemy.baseHp !== 'number') return scaled; // musuh lama tanpa base stat: apa adanya
+    const offset = TIER_OFFSETS[tier.id] || 0;
+    const level = Math.max(1, Math.min(100, (playerLevel || 1) + offset));
+    const mult = levelMultiplier(level);
+    scaled.level = level;
+    scaled.hp = Math.max(1, Math.round(enemy.baseHp * mult));
+    scaled.damageMin = Math.max(1, Math.round((enemy.baseDamageMin || 0) * mult));
+    scaled.damageMax = Math.max(scaled.damageMin, Math.round((enemy.baseDamageMax || 0) * mult));
+    scaled.expReward = Math.max(1, Math.round((enemy.baseExpReward || 0) * mult));
+    scaled.rupiahMin = Math.max(0, Math.round((enemy.baseRupiahMin || 0) * mult));
+    scaled.rupiahMax = Math.max(scaled.rupiahMin, Math.round((enemy.baseRupiahMax || 0) * mult));
+    return scaled;
+  }
+
   function levelMultiplier(level) {
     return 1 + 0.5 * (Math.max(1, level || 1) - 1);
   }
 
   // Isi stat akhir (hp, damageMin, ...) dari base stat x multiplier level
-  // + tempel info tier. Musuh lama tanpa base stat dibiarkan apa adanya.
+  // + tempel info tier. v0.6.6: kalau musuh punya field `tier` (sifat
+  // tetap), tier itu yang dipakai — bukan dari level. Musuh lama tanpa
+  // base stat dibiarkan apa adanya.
   function normalizeEnemy(e) {
     if (!e || typeof e.baseHp !== 'number') return e;
     const mult = levelMultiplier(e.level);
@@ -52,7 +92,7 @@ const LocationDB = (function () {
     e.expReward = Math.max(1, Math.round((e.baseExpReward || 0) * mult));
     e.rupiahMin = Math.max(0, Math.round((e.baseRupiahMin || 0) * mult));
     e.rupiahMax = Math.max(e.rupiahMin, Math.round((e.baseRupiahMax || 0) * mult));
-    e.tier = tierForLevel(e.level);
+    e.tier = (typeof e.tier === 'string') ? tierForKind(e.tier) : tierForLevel(e.level);
     return e;
   }
 
@@ -81,7 +121,7 @@ const LocationDB = (function () {
     return locations;
   }
 
-  return { load, get, all, tierForLevel, levelMultiplier, ENEMY_TIERS };
+  return { load, get, all, tierForLevel, tierForKind, scaleEnemyForPlayer, levelMultiplier, ENEMY_TIERS, TIER_OFFSETS };
 })();
 
 window.LocationDB = LocationDB;

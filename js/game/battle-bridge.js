@@ -30,6 +30,18 @@ const BattleBridge = (function () {
     const dmgMin = Math.max(1, finalDmg - 2);
     const dmgMax = finalDmg + 2;
 
+    // v0.6.5 (Battle System v5): jarak serang, biaya AP, critical,
+    // dan peluru kini berasal dari stat item. Senjata jarak dekat
+    // tetap 1 kotak; senjata api 3-6 kotak dan memotong peluru dari
+    // inventaris tiap tembakan (dihitung di onWeaponUse).
+    const wStats = (weaponDef && weaponDef.stats) || {};
+    const ammoType = wStats.ammoType || null;
+    let ammo = null;
+    if (ammoType && window.Inventory) {
+      const entry = Inventory.getInventory().find(e => e.itemId === ammoType);
+      ammo = entry ? entry.qty : 0;
+    }
+
     const weaponEntry = {
       name: weaponDef ? weaponDef.name : 'Tangan Kosong',
       icon: weaponDef ? '🔪' : '👊',
@@ -37,10 +49,12 @@ const BattleBridge = (function () {
       // v0.3.2: pakai gambar aset asli item (mis. machete.webp) untuk
       // icon senjata di battle, bukan lagi icon SVG generik.
       iconImg: weaponDef && weaponDef.icon ? 'assets/images/items/' + weaponDef.icon : null,
-      apCost: 1,
+      apCost: wStats.apCost || 1,
       dmgMin, dmgMax,
-      range: 1,
-      ammo: null,
+      range: wStats.range || 1,
+      ammo: ammo,
+      critChance: (typeof wStats.crit === 'number') ? wStats.crit : null,
+      ammoType: ammoType,
       refItemId: weapon ? weapon.itemId : null // dipakai utk kurangi durability
     };
 
@@ -129,6 +143,11 @@ const BattleBridge = (function () {
       // ikut berkurang durability-nya tiap Attack.
       Inventory.reduceEquipmentDurability(1);
     }
+    // v0.6.5: senjata api memotong 1 peluru dari inventaris tiap
+    // tembakan (engine memotong penghitung tampilannya sendiri).
+    if (weapon && weapon.ammoType && window.Inventory) {
+      Inventory.removeItem(weapon.ammoType, 1);
+    }
   }
 
   function applyBattleResult(summary) {
@@ -163,10 +182,15 @@ const BattleBridge = (function () {
 
       Events.emit('notify', { message: `Menang! +Rp ${totalRupiah}, +${totalExp} EXP.` });
     } else if (summary.result === 'lose') {
-      const expLost = Math.floor(p.exp * 0.5);
+      // v0.6.6 — Penalti kalah (menggantikan aturan lama 50% EXP):
+      // -5% EXP dari kebutuhan naik level (expToNext), dipotong dari
+      // progres level saat ini (tidak sampai minus); semua equipment
+      // terpasang dipangkas ke 25% durability (hampir rusak, tidak patah).
+      const expLost = Math.floor((p.expToNext || 0) * 0.05);
       p.exp = Math.max(0, p.exp - expLost);
       p.survival.health = 15; // hindari softlock, sama seperti sistem lama
-      Events.emit('notify', { message: `Kalah dan kehilangan ${expLost} EXP.`, type: 'error' });
+      if (window.Inventory && Inventory.applyDefeatDamage) Inventory.applyDefeatDamage();
+      Events.emit('notify', { message: `Kalah! -${expLost} EXP, equipment rusak 75%.`, type: 'error' });
     } else if (summary.result === 'flee') {
       Events.emit('notify', { message: 'Berhasil kabur dari pertempuran.' });
     }

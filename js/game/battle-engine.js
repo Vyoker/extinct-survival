@@ -434,7 +434,10 @@ function tryAttackUnit(target){
   animateAttack(p.id, target.id, ()=>{
     if(roll<=hitChance){
       // v0.6.4: critical = lemparan peluang dari stat critChance
-      const critChance = (typeof p.critChance === 'number') ? p.critChance : 5;
+      // v0.6.5: senjata bisa punya crit sendiri (stat crit item) —
+      // bila ada, itu yang dipakai; selain itu crit karakter.
+      const critChance = (typeof w.critChance === 'number') ? w.critChance
+        : (typeof p.critChance === 'number') ? p.critChance : 5;
       const isCrit = (Math.random()*100) < critChance;
       let dmg = Math.round(rand(w.dmgMin,w.dmgMax));
       if(isCrit) dmg = Math.round(dmg * 1.5);

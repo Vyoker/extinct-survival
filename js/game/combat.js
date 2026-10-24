@@ -157,14 +157,16 @@ const Combat = (function () {
     const p = getPlayer();
     c.status = 'lost';
 
-    // Kalah: kehilangan sebagian EXP progress level ini, HP dipulihkan
-    // sedikit supaya tidak softlock.
-    const expLost = Math.floor(p.exp * 0.5);
+    // v0.6.6 — Penalti kalah (disamakan dengan jalur battle tactical):
+    // -5% EXP dari kebutuhan naik level + equipment ke 25% durability.
+    // HP dipulihkan sedikit supaya tidak softlock.
+    const expLost = Math.floor((p.expToNext || 0) * 0.05);
     p.exp = Math.max(0, p.exp - expLost);
     p.survival.health = 15;
+    if (window.Inventory && Inventory.applyDefeatDamage) Inventory.applyDefeatDamage();
 
-    log(c, `💀 Kamu kalah melawan ${c.enemy.name}. Kehilangan ${expLost} EXP.`);
-    Events.emit('notify', { message: `Kalah dan kehilangan ${expLost} EXP.`, type: 'error' });
+    log(c, `💀 Kamu kalah melawan ${c.enemy.name}. Kehilangan ${expLost} EXP, equipment rusak 75%.`);
+    Events.emit('notify', { message: `Kalah! -${expLost} EXP, equipment rusak 75%.`, type: 'error' });
   }
 
   function endBattle() {

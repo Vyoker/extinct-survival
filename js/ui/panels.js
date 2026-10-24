@@ -302,17 +302,26 @@ const Panels = (function () {
 
   // v0.4.1: reveal 3 kolom — ITEM | RUPIAH | EXP — terisi berurutan
   // dengan animasi stagger, lalu ditahan sampai selesai baru tutup.
+  // v0.6.6: kalau scavenge dapat >1 jenis, jenis tambahannya
+  // ditampilkan sebagai baris kecil di bawah kolom ITEM.
   function renderScavReveal(loot) {
     const def = loot.itemId ? ItemDB.get(loot.itemId) : null;
     const rcolor = def && def.rarity && window.Rarity ? Rarity.getColor(def.rarity) : '#e8c26a';
     const iconSrc = def && def.icon ? `assets/images/items/${def.icon}` : 'assets/images/items/_placeholder.png';
     const qtyTxt = loot.qty > 1 ? ` ×${loot.qty}` : '';
+    const extraTxt = (loot.items && loot.items.length > 1)
+      ? loot.items.slice(1).map(x => {
+          const d = ItemDB.get(x.itemId);
+          return d ? d.name + (x.qty > 1 ? ' ×' + x.qty : '') : x.itemId;
+        }).join(', ')
+      : '';
     return `
       <div class="scav-scene" id="scav-scene">
         <div class="scav-loot-tag">DITEMUKAN</div>
         <div class="scav-loot-pop" style="--rc:${rcolor};">
           <img src="${iconSrc}" alt="${def ? def.name : ''}" onerror="this.onerror=null;this.src='assets/images/items/_placeholder.png';">
         </div>
+        ${extraTxt ? `<div style="font-size:12px;color:var(--text-dim);margin-top:6px;">Juga: ${extraTxt}</div>` : ''}
         <div class="scav-result-row">
           <div class="scav-result-col" style="--d:0.05s;">
             <div class="scav-result-label">ITEM</div>
@@ -414,14 +423,19 @@ const Panels = (function () {
   // =========================================================
   function renderHuntingSelect() {
     const loc = Exploration.getCurrentLocation();
-    const enemies = (loc && loc.enemies) || [];
+    const p = GameState.get().player;
+    // v0.6.6: level & stat musuh di-generate dari level pemain.
+    const enemies = ((loc && loc.enemies) || []).map(en =>
+      (window.LocationDB && LocationDB.scaleEnemyForPlayer)
+        ? LocationDB.scaleEnemyForPlayer(en, p.level) : en);
 
     const rows = enemies.map(en => {
       // v0.4.2: thumbnail ikon musuh dari aset gambar (fallback ikon template).
       const iconHtml = (window.BattleBridge && BattleBridge.enemyIconHtml)
         ? BattleBridge.enemyIconHtml('assets/images/enemies/' + en.id + '.webp', en.icon)
         : (window.Icons ? Icons.fromEmoji(en.icon) : en.icon);
-      // v0.5.2: warna ikon + badge level mengikuti tier rarity dari level musuh
+      // v0.6.6: warna ikon + badge level mengikuti tier SIFAT musuh
+      // (bukan dari level) & level hasil generate dari level pemain
       const tier = en.tier || { color: '#f5f5f5', isBoss: false };
       const bossTag = tier.isBoss ? ' <span style="color:#ff3b3b; font-weight:bold; font-size:11px; letter-spacing:1px;">BOSS</span>' : '';
       return `
@@ -454,8 +468,12 @@ const Panels = (function () {
           return;
         }
         const loc = Exploration.getCurrentLocation();
-        const enemyDef = loc.enemies.find(e => e.id === btn.dataset.huntTarget);
-        if (!enemyDef) return;
+        const rawDef = loc.enemies.find(e => e.id === btn.dataset.huntTarget);
+        if (!rawDef) return;
+        // v0.6.6: battle memakai salinan musuh yang sudah di-scale
+        // (level + stat dari level pemain), sama seperti daftar tampil.
+        const enemyDef = (window.LocationDB && LocationDB.scaleEnemyForPlayer)
+          ? LocationDB.scaleEnemyForPlayer(rawDef, p.level) : rawDef;
 
         p.energy -= Exploration.HUNTING_ENERGY_COST;
 
@@ -923,7 +941,7 @@ const Panels = (function () {
     { id: 'barter', iconName: 'gift', action: 'barter', title: 'Barter' },
     { id: 'quest', iconName: 'target', action: 'quest', title: 'Misi' },
     { id: 'spin', iconName: 'wheel', action: 'locked', title: 'Spin Wheel (terkunci)' },
-    { id: 'mall', iconName: 'gem', action: 'toast-mall', title: 'Item Mall (segera)' },
+    { id: 'mall', iconName: 'gem', action: 'mall', title: 'Item Mall' },
     { id: 'faction', iconName: 'flag', action: 'faction', title: 'Faksi' },
     { id: 'cloud', iconName: 'cloud', action: 'cloud', title: 'Simpan Online' },
     { id: 'audio', iconName: 'volume', action: 'audio', title: 'Pengaturan Audio' }
@@ -1045,9 +1063,12 @@ const Panels = (function () {
         else Events.emit('notify', { message: 'Modul cloud save belum termuat.', type: 'error' });
         break;
       }
-      case 'toast-mall':
-        Events.emit('notify', { message: 'Fitur Item Mall masih tahap pengembangan.' });
+      case 'mall': {
+        // v0.6.5: Item Mall aktif (Kredit) — senjata pabrikan + peluru.
+        if (window.Mall) Mall.open();
+        else Events.emit('notify', { message: 'Modul Item Mall belum termuat.', type: 'error' });
         break;
+      }
       case 'audio': {
         // v0.3.8: pengaturan volume BGM/SFX + mute
         if (window.AudioManager) AudioManager.openSettings();

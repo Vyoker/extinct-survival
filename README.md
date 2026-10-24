@@ -29,8 +29,29 @@ framework). Progres tersimpan di `localStorage`.
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.6.4
+## Rilis Terbaru — v0.6.6
 
+- **Ammo per senjata:** Peluru dan Selongsong lama dipecah jadi 4
+  jenis — 9mm Ammo untuk pistol, 5.56mm Ammo untuk rifle,
+  12 Gauge Ammo untuk shotgun, dan 7.62mm Ammo untuk sniper.
+  Di Item Mall, keempatnya rata: pak ×50 seharga 10 Kredit.
+  Resep craftingnya sama seperti sebelumnya.
+- **Scavenge lebih royal:** sekali Scavenge kini dapat 1–3 jenis
+  item sekaligus (bukan 1 item pelit lagi), plus peluang bonus dari
+  INT dan skill Scavenger seperti biasa.
+- **Loot sesuai geografis:** tiap wilayah punya ciri khasnya —
+  Kalimantan sering memberi kayu dan tali, Bali sering memberi
+  air dan herbal, Jakarta dan Bandung kaya besi rongsokan dan
+  suku cadang, Surabaya kaya makanan kaleng.
+- **Musuh auto-generate dari levelmu:** level musuh kini mengikuti
+  level pemain ditambah offset tier-nya — musuh putih sama dengan
+  levelmu, ungu +5, boss +10 (mentok level 100). HP, damage, EXP,
+  dan Rupiah musuh ikut dihitung ulang dari level barunya, jadi
+  musuh yang lebih tinggi levelnya benar-benar lebih berat.
+- **Penalti kalah battle:** kehilangan 5% EXP (dari kebutuhan naik
+  level) dan semua equipment yang terpasang rusak 75% — durability
+  tersisa 25%, hampir rusak tapi tidak langsung patah. HP tetap
+  dipulihkan ke 15 supaya tidak softlock.
 - **Battle System v4 — Defense kini bekerja sungguhan:** poin
   Defense-mu adalah perisai aktif. Setiap damage yang masuk
   mengurangi Defense dulu sampai habis; HP baru berkurang setelah

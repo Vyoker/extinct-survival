@@ -39,18 +39,19 @@ const Crafting = (function () {
       Inventory.removeItem(matId, qty);
     });
 
-    // Bonus INT (Crafting Bonus dari derived stats): peluang dapat 1 item ekstra
-    let qtyResult = 1;
+    // v0.6.5: item bisa punya hasil racik banyak (resultQty, mis.
+    // peluru x5 per racik). Bonus INT (Crafting Bonus dari derived
+    // stats): peluang dapat 1 item ekstra di atas hasil dasar.
+    let qtyResult = def.resultQty || 1;
     const craftingBonusPct = window.Player ? Player.getDerivedStats().craftingBonus : 0;
-    if (Math.random() * 100 < Math.min(50, craftingBonusPct)) {
-      qtyResult += 1;
-    }
+    const gotBonus = Math.random() * 100 < Math.min(50, craftingBonusPct);
+    if (gotBonus) qtyResult += 1;
 
     Inventory.addItem(itemId, qtyResult);
     if (window.AudioManager) AudioManager.sfx('craft'); // v0.3.8
     Events.emit('notify', {
       message: qtyResult > 1
-        ? `🔨 Berhasil membuat ${qtyResult}x ${def.name} (bonus Crafting Bonus)!`
+        ? `🔨 Berhasil membuat ${qtyResult}x ${def.name}${gotBonus ? ' (bonus Crafting Bonus!)' : ''}.`
         : `🔨 Berhasil membuat ${def.name}.`
     });
     if (window.Skills) Skills.addSkillExp('scavenger', 2);

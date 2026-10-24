@@ -237,7 +237,7 @@
     "recipe": {
       "scrap_metal": 4
     },
-    "icon": "tin_shield.png"
+    "icon": "tin_shield.webp"
   },
   {
     "id": "fang_necklace",
@@ -305,7 +305,7 @@
     "rarity": "uncommon",
     "description": "Kulit ular yang kuat dan lentur, bahan baku aksesoris dan armor ringan.",
     "craftable": false,
-    "icon": "snake_skin.png"
+    "icon": "snake_skin.webp"
   },
   {
     "id": "snake_venom",
@@ -372,7 +372,7 @@
     },
     "description": "Pedang seimbang tanpa keberpihakan elemen, ditempa dengan filosofi Mojang Beauty tentang harmoni.",
     "craftable": false,
-    "icon": "mojang_light_blade.png"
+    "icon": "mojang_light_blade.webp"
   },
   {
     "id": "mojang_balance_robe",
@@ -387,7 +387,7 @@
     },
     "description": "Jubah yang ditenun dari berbagai bahan berbeda, melambangkan penerimaan segala jalan hidup.",
     "craftable": false,
-    "icon": "mojang_balance_robe.png"
+    "icon": "mojang_balance_robe.webp"
   },
   {
     "id": "mojang_gem_pendant",
@@ -401,7 +401,7 @@
     },
     "description": "Permata warna-warni yang tidak terikat satu elemen, pusaka utama Mojang Beauty.",
     "craftable": false,
-    "icon": "mojang_gem_pendant.png"
+    "icon": "mojang_gem_pendant.webp"
   },
   {
     "id": "seafire_ember_machete",
@@ -459,7 +459,7 @@
     },
     "description": "Kapak perang berat khas Viking Bonex, mengandalkan tenaga mentah dibanding kecepatan.",
     "craftable": false,
-    "icon": "vikingbonex_war_axe.png"
+    "icon": "vikingbonex_war_axe.webp"
   },
   {
     "id": "vikingbonex_steel_armor",
@@ -474,7 +474,7 @@
     },
     "description": "Zirah baja tebal yang jadi identitas Viking Bonex, mengutamakan pertahanan di atas segalanya.",
     "craftable": false,
-    "icon": "vikingbonex_steel_armor.png"
+    "icon": "vikingbonex_steel_armor.webp"
   },
   {
     "id": "vikingbonex_power_bracer",
@@ -488,7 +488,7 @@
     },
     "description": "Gelang besi berat yang dipercaya menambah tenaga pemakainya, diwariskan turun-temurun di Viking Bonex.",
     "craftable": false,
-    "icon": "vikingbonex_power_bracer.png"
+    "icon": "vikingbonex_power_bracer.webp"
   },
   {
     "id": "whiteghost_pure_dagger",
@@ -502,7 +502,7 @@
     },
     "description": "Belati putih bersih tanpa noda karat, dijaga ketat oleh anggota White Ghost.",
     "craftable": false,
-    "icon": "whiteghost_pure_dagger.png"
+    "icon": "whiteghost_pure_dagger.webp"
   },
   {
     "id": "whiteghost_sacred_robe",
@@ -517,7 +517,7 @@
     },
     "description": "Jubah putih yang selalu terlihat bersih meski dipakai bertarung, simbol kemurnian White Ghost.",
     "craftable": false,
-    "icon": "whiteghost_sacred_robe.png"
+    "icon": "whiteghost_sacred_robe.webp"
   },
   {
     "id": "whiteghost_purity_necklace",
@@ -531,7 +531,7 @@
     },
     "description": "Kalung pusaka White Ghost, dipercaya menjaga pemakainya tetap murni dari pengaruh buruk dunia luar.",
     "craftable": false,
-    "icon": "whiteghost_purity_necklace.png"
+    "icon": "whiteghost_purity_necklace.webp"
   },
   {
     "id": "pass_mythic_blade",
@@ -1065,5 +1065,215 @@
     "description": "Topeng putih tanpa cela milik penjaga tertinggi White Ghost. Di baliknya, tidak ada yang tahu wajah aslinya.",
     "craftable": false,
     "icon": "whiteghost_sacred_mask.webp"
+  },
+  {
+    "id": "homemade_pistol",
+    "name": "Homemade Pistol",
+    "type": "weapon",
+    "rarity": "uncommon",
+    "icon": "homemade_pistol.webp",
+    "description": "Pistol rakitan dari pipa besi dan kayu. Kasar dan keras kepala, tapi tembakannya bicara lantang di jarak dekat.",
+    "stats": {
+      "damage": 25,
+      "durability": 75,
+      "crit": 15,
+      "range": 3,
+      "apCost": 1,
+      "ammoType": "ammo_9mm"
+    },
+    "craftable": true,
+    "recipe": {
+      "refined_metal": 2,
+      "spare_parts": 2,
+      "wood_plank": 1
+    }
+  },
+  {
+    "id": "homemade_shotgun",
+    "name": "Homemade Shotgun",
+    "type": "weapon",
+    "rarity": "uncommon",
+    "icon": "homemade_shotgun.webp",
+    "description": "Shotgun laras ganda rakitan. Semburannya menyapu bersih masalah yang berani mendekat.",
+    "stats": {
+      "damage": 35,
+      "durability": 90,
+      "crit": 35,
+      "range": 3,
+      "apCost": 2,
+      "ammoType": "ammo_12gauge"
+    },
+    "craftable": true,
+    "recipe": {
+      "refined_metal": 3,
+      "spare_parts": 2,
+      "wood_plank": 2
+    }
+  },
+  {
+    "id": "homemade_rifle",
+    "name": "Homemade Rifle",
+    "type": "weapon",
+    "rarity": "uncommon",
+    "icon": "homemade_rifle.webp",
+    "description": "Rifle baut rakitan berbalut tali. Jangkauannya jauh untuk ukuran senjata bengkel darurat.",
+    "stats": {
+      "damage": 50,
+      "durability": 125,
+      "crit": 25,
+      "range": 5,
+      "apCost": 2,
+      "ammoType": "ammo_556"
+    },
+    "craftable": true,
+    "recipe": {
+      "refined_metal": 4,
+      "spare_parts": 3,
+      "wood_plank": 2,
+      "rope": 1
+    }
+  },
+  {
+    "id": "homemade_sniper",
+    "name": "Homemade Sniper",
+    "type": "weapon",
+    "rarity": "uncommon",
+    "icon": "homemade_sniper.webp",
+    "description": "Rifle jarak jauh rakitan dengan bidikan teleskopik. Satu peluru, satu keputusan.",
+    "stats": {
+      "damage": 90,
+      "durability": 110,
+      "crit": 50,
+      "range": 6,
+      "apCost": 3,
+      "ammoType": "ammo_762"
+    },
+    "craftable": true,
+    "recipe": {
+      "refined_metal": 5,
+      "spare_parts": 4,
+      "wood_plank": 2
+    }
+  },
+  {
+    "id": "factory_pistol",
+    "name": "Pistol Pabrikan",
+    "type": "weapon",
+    "rarity": "rare",
+    "icon": "factory_pistol.webp",
+    "description": "Pistol semi-otomatis buatan pabrik. Presisi dan keandalan yang tidak dimiliki senjata rakitan.",
+    "stats": {
+      "damage": 50,
+      "durability": 150,
+      "crit": 15,
+      "range": 4,
+      "apCost": 1,
+      "ammoType": "ammo_9mm"
+    }
+  },
+  {
+    "id": "factory_shotgun",
+    "name": "Shotgun Pabrikan",
+    "type": "weapon",
+    "rarity": "rare",
+    "icon": "factory_shotgun.webp",
+    "description": "Shotgun bawah-atas buatan pabrik dengan popor poles. Daya hancur jarak dekat kelas militer.",
+    "stats": {
+      "damage": 70,
+      "durability": 180,
+      "crit": 35,
+      "range": 3,
+      "apCost": 2,
+      "ammoType": "ammo_12gauge"
+    }
+  },
+  {
+    "id": "factory_rifle",
+    "name": "Rifle Pabrikan",
+    "type": "weapon",
+    "rarity": "rare",
+    "icon": "factory_rifle.webp",
+    "description": "Rifle serbu buatan pabrik dengan perabot kayu oranye. Mesin perang yang terawat dan mematikan.",
+    "stats": {
+      "damage": 100,
+      "durability": 250,
+      "crit": 25,
+      "range": 5,
+      "apCost": 2,
+      "ammoType": "ammo_556"
+    }
+  },
+  {
+    "id": "factory_sniper",
+    "name": "Sniper Pabrikan",
+    "type": "weapon",
+    "rarity": "rare",
+    "icon": "factory_sniper.webp",
+    "description": "Rifle penembak runduk buatan pabrik berteropong. Senjata pamungkas: hampir tak ada yang selamat dari satu tembakannya.",
+    "stats": {
+      "damage": 180,
+      "durability": 220,
+      "crit": 50,
+      "range": 6,
+      "apCost": 3,
+      "ammoType": "ammo_762"
+    }
+  },
+  {
+    "id": "ammo_9mm",
+    "name": "9mm Ammo",
+    "type": "material",
+    "rarity": "common",
+    "icon": "peluru_rakitan.webp",
+    "description": "Ammo 9mm rakitan untuk pistol. Satu kali racik menghasilkan 5 butir.",
+    "craftable": true,
+    "recipe": {
+      "scrap_metal": 2,
+      "spare_parts": 1
+    },
+    "resultQty": 5
+  },
+  {
+    "id": "ammo_556",
+    "name": "5.56mm Ammo",
+    "type": "material",
+    "rarity": "common",
+    "icon": "peluru_rakitan.webp",
+    "description": "Ammo 5.56mm rakitan untuk rifle. Satu kali racik menghasilkan 5 butir.",
+    "craftable": true,
+    "recipe": {
+      "scrap_metal": 2,
+      "spare_parts": 1
+    },
+    "resultQty": 5
+  },
+  {
+    "id": "ammo_762",
+    "name": "7.62mm Ammo",
+    "type": "material",
+    "rarity": "common",
+    "icon": "peluru_rakitan.webp",
+    "description": "Ammo 7.62mm rakitan untuk sniper. Satu kali racik menghasilkan 5 butir.",
+    "craftable": true,
+    "recipe": {
+      "scrap_metal": 2,
+      "spare_parts": 1
+    },
+    "resultQty": 5
+  },
+  {
+    "id": "ammo_12gauge",
+    "name": "12 Gauge Ammo",
+    "type": "material",
+    "rarity": "common",
+    "icon": "selongsong_rakitan.webp",
+    "description": "Ammo 12 gauge rakitan untuk shotgun. Satu kali racik menghasilkan 3 butir.",
+    "craftable": true,
+    "recipe": {
+      "scrap_metal": 1,
+      "wood_plank": 1,
+      "spare_parts": 1
+    },
+    "resultQty": 3
   }
 ]
