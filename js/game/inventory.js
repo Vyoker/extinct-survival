@@ -131,14 +131,25 @@ const Inventory = (function () {
     }
 
     const p = getPlayer();
-    // Lepas item lama di slot itu (kembalikan ke tas) sebelum pasang yang baru
+    if (!p.equipmentDurability) p.equipmentDurability = {};
+    // Lepas item lama di slot itu (kembalikan ke tas) sebelum pasang yang baru.
+    // v0.6.7: durability item lama DISIMPAN dulu supaya tidak "sembuh"
+    // sendiri saat dipasang lagi nanti (bug: lepas->pasang = utuh lagi).
     const currentEquipped = p.equipment[slot];
     if (currentEquipped && currentEquipped.itemId) {
+      if (typeof currentEquipped.durability === 'number') {
+        p.equipmentDurability[currentEquipped.itemId] = currentEquipped.durability;
+      }
       addItem(currentEquipped.itemId, 1);
     }
 
     const maxDur = def.stats && typeof def.stats.durability === 'number' ? def.stats.durability : null;
-    p.equipment[slot] = { itemId, durability: maxDur };
+    // v0.6.7: pasang dengan durability yang tersimpan (kalau pernah
+    // dipakai), bukan selalu penuh. Item baru = durability penuh.
+    const remembered = p.equipmentDurability[itemId];
+    const startDur = (maxDur !== null && typeof remembered === 'number')
+      ? Math.max(0, Math.min(maxDur, remembered)) : maxDur;
+    p.equipment[slot] = { itemId, durability: startDur };
     removeItem(itemId, 1);
 
     Events.emit('notify', { message: `${def.name} dipasang di slot ${slot}.` });
@@ -151,6 +162,12 @@ const Inventory = (function () {
     const p = getPlayer();
     const equipped = p.equipment[slot];
     if (!equipped || !equipped.itemId) return false;
+    // v0.6.7: simpan durability saat dilepas, supaya saat dipasang
+    // lagi kondisinya sama (tidak kembali utuh).
+    if (!p.equipmentDurability) p.equipmentDurability = {};
+    if (typeof equipped.durability === 'number') {
+      p.equipmentDurability[equipped.itemId] = equipped.durability;
+    }
     p.equipment[slot] = null;
     addItem(equipped.itemId, 1);
     Events.emit('player:updated');
@@ -174,6 +191,9 @@ const Inventory = (function () {
       if (equipped.durability <= 0) {
         const def = ItemDB.get(equipped.itemId);
         p.equipment[slot] = null;
+        // v0.6.7: item yang patah menghapus ingatan durability-nya,
+        // supaya salinan baru yang didapat nanti mulai dari penuh.
+        if (p.equipmentDurability) delete p.equipmentDurability[equipped.itemId];
         Events.emit('notify', { message: `💔 ${def ? def.name : 'Equipment'} rusak karena terlalu sering dipakai!`, type: 'error' });
       }
     });

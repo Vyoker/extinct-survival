@@ -106,6 +106,8 @@
   .dmgFloat.critLabel{color:#ff4242; font-size:13px; font-weight:800; letter-spacing:2px;}
   .dmgFloat.shield{color:#8fc7ff; font-size:12px;}
   .dmgFloat.shieldbreak{color:#ffb84d; font-size:10px; font-weight:700;}
+  /* v0.6.8: popup isi ulang AP (kuning, sewarna pip AP). */
+  .dmgFloat.apGain{color:#ffd21f; font-size:13px; font-weight:800; letter-spacing:1px;}
   .miniDef{position:absolute; left:2px; right:2px; bottom:-10px; height:3px; background:#0c0a07; border:1px solid #000; border-radius:2px; overflow:hidden;}
   .miniDef i{display:block; height:100%; background:#5b93c9;}
   @keyframes floatUp{ from{opacity:1; transform:translateY(0);} to{opacity:0; transform:translateY(-26px);} }

@@ -767,25 +767,49 @@ const Panels = (function () {
   // =========================================================
   // CRAFTING (overlay)
   // =========================================================
+  // v0.6.9 UI Crafting v2: tiap kartu menampilkan ikon item hasil,
+  // ikon tiap material (chip dengan hitungan punya/butuh), badge
+  // jumlah hasil (x5/x3 untuk peluru), dan ringkasan stat hasil.
   function renderCraftingOverlay() {
     const items = Crafting.getCraftableItems();
+    const haveQty = (matId) => {
+      const entry = Inventory.getInventory().find(e => e.itemId === matId);
+      return entry ? entry.qty : 0;
+    };
     const rows = items.map(def => {
       const canMake = Crafting.canCraft(def.id);
-      const recipeText = Object.entries(def.recipe).map(([matId, qty]) => {
+      const mats = Object.entries(def.recipe).map(([matId, qty]) => {
         const matDef = ItemDB.get(matId);
-        const have = Inventory.hasItem(matId, qty);
-        const matName = matDef ? matDef.name : matId;
-        return `<span style="color:${have ? '#22c55e' : 'var(--accent-red)'};">${matName} x${qty}</span>`;
-      }).join(', ');
-
+        const have = haveQty(matId);
+        const ok = have >= qty;
+        const matImg = matDef && matDef.icon
+          ? `<img class="craft-mat-img" src="assets/images/items/${matDef.icon}" alt="" onerror="this.onerror=null;this.src='assets/images/items/_placeholder.png';">`
+          : '';
+        return `<span class="craft-mat ${ok ? 'ok' : 'low'}">${matImg}${matDef ? matDef.name : matId} <b>${have}/${qty}</b></span>`;
+      }).join('');
+      const statParts = [];
+      if (def.stats) {
+        if (def.stats.damage) statParts.push(`Damage ${def.stats.damage}`);
+        if (def.stats.durability) statParts.push(`Dur ${def.stats.durability}`);
+        if (def.stats.defense) statParts.push(`Def ${def.stats.defense}%`);
+        if (def.stats.crit) statParts.push(`Crit ${def.stats.crit}%`);
+        if (def.stats.range) statParts.push(`Jarak ${def.stats.range}`);
+      }
+      const itemImg = def.icon
+        ? `<img class="craft-item-img" src="assets/images/items/${def.icon}" alt="" onerror="this.onerror=null;this.src='assets/images/items/_placeholder.png';">`
+        : '';
       return `
-        <div class="card">
-          <div class="item-name rarity-${def.rarity}">${def.name}</div>
-          <div class="item-desc" style="margin-bottom:6px;">${def.description}</div>
-          <div style="font-size:11px; margin-bottom:8px;">Butuh: ${recipeText}</div>
-          <button class="action-btn" data-craft="${def.id}" ${canMake ? '' : 'disabled'} style="margin-top:0;">
-            🔨 Buat
-          </button>
+        <div class="card craft-card">
+          ${itemImg}
+          <div class="craft-info">
+            <div class="item-name rarity-${def.rarity}">${def.name}${def.resultQty > 1 ? ` <span class="craft-qty">x${def.resultQty}</span>` : ''}</div>
+            <div class="item-desc" style="margin-bottom:6px;">${def.description}</div>
+            ${statParts.length ? `<div class="craft-stats">${statParts.join(' · ')}</div>` : ''}
+            <div class="craft-mats">${mats}</div>
+            <button class="action-btn" data-craft="${def.id}" ${canMake ? '' : 'disabled'} style="margin-top:0;">
+              🔨 Buat
+            </button>
+          </div>
         </div>
       `;
     }).join('');
@@ -942,6 +966,7 @@ const Panels = (function () {
     { id: 'quest', iconName: 'target', action: 'quest', title: 'Misi' },
     { id: 'spin', iconName: 'wheel', action: 'locked', title: 'Spin Wheel (terkunci)' },
     { id: 'mall', iconName: 'gem', action: 'mall', title: 'Item Mall' },
+    { id: 'daily', iconName: 'sparkles', action: 'daily', title: 'Hadiah Harian' },
     { id: 'faction', iconName: 'flag', action: 'faction', title: 'Faksi' },
     { id: 'cloud', iconName: 'cloud', action: 'cloud', title: 'Simpan Online' },
     { id: 'audio', iconName: 'volume', action: 'audio', title: 'Pengaturan Audio' }
@@ -1067,6 +1092,12 @@ const Panels = (function () {
         // v0.6.5: Item Mall aktif (Kredit) — senjata pabrikan + peluru.
         if (window.Mall) Mall.open();
         else Events.emit('notify', { message: 'Modul Item Mall belum termuat.', type: 'error' });
+        break;
+      }
+      case 'daily': {
+        // v0.6.7: Hadiah Harian 30 hari (1 Kredit + item acak).
+        if (window.DailyReward) DailyReward.open();
+        else Events.emit('notify', { message: 'Modul Hadiah Harian belum termuat.', type: 'error' });
         break;
       }
       case 'audio': {

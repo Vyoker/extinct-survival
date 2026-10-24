@@ -92,17 +92,21 @@ const Mall = (function () {
   function renderPanelHtml() {
     var p = getPlayer();
     var kredit = (p.currency && p.currency.kredit) || 0;
+    // v0.6.7: baris mall memakai layout khusus (.mall-row), bukan
+    // .online-row lagi — .online-row memakai space-between tanpa
+    // flex:1 pada kolom info, sehingga baris dengan teks pendek
+    // (pak peluru) terdorong ke kanan dan tampil berantakan.
     var rows = getCatalog().map(function (entry) {
       var def = entry.def;
       var afford = kredit >= entry.price;
-      return '<div class="online-row">' +
-        (def.icon ? '<img class="barter-item-img" src="assets/images/items/' + def.icon + '" alt="">' : '') +
-        '<div class="online-info">' +
-          '<div class="online-name">' + escapeHtml(def.name) + (entry.qty > 1 ? ' <span class="friend-state">x' + entry.qty + '</span>' : '') + '</div>' +
-          '<div class="online-sub">' + escapeHtml(statLine(def, entry.qty)) + '</div>' +
-          '<div class="online-sub">' + ic('gem') + ' ' + entry.price + ' Kredit</div>' +
+      return '<div class="mall-row">' +
+        (def.icon ? '<img class="mall-item-img" src="assets/images/items/' + def.icon + '" alt="">' : '') +
+        '<div class="mall-info">' +
+          '<div class="mall-name">' + escapeHtml(def.name) + (entry.qty > 1 ? ' <span class="mall-qty">x' + entry.qty + '</span>' : '') + '</div>' +
+          '<div class="mall-sub">' + escapeHtml(statLine(def, entry.qty)) + '</div>' +
+          '<div class="mall-price">' + ic('gem') + ' ' + entry.price + ' Kredit</div>' +
         '</div>' +
-        '<div class="friend-actions">' +
+        '<div class="mall-actions">' +
           '<button class="mini-btn primary mall-buy" data-item="' + def.id + '"' + (afford ? '' : ' disabled') + '>Beli</button>' +
         '</div>' +
       '</div>';

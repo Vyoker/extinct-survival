@@ -389,6 +389,8 @@ function onTileClick(t){
     if(!reach) return;
     const path = bfsPath(p, t.x, t.y, p.ap);
     p.ap -= reach.cost;
+    // v0.6.8: pindah yang benar-benar memakan AP dihitung beraksi.
+    if(reach.cost > 0) state.playerActed = true;
     state.pendingAction = null;
     if(!path || !path.length){ render(); checkHazard(p); return; }
     // Segarkan panel atas & aksi (AP berkurang, hint hilang) tanpa
@@ -418,6 +420,8 @@ function tryAttackUnit(target){
   if(w.ammo!==null && w.ammo<=0) return;
 
   p.ap -= w.apCost;
+  // v0.6.8: menyerang dihitung beraksi (isi ulang berikutnya +1).
+  state.playerActed = true;
   if(w.ammo!==null) w.ammo--;
   if(typeof state.onWeaponUse === 'function') state.onWeaponUse(w);
 
@@ -743,9 +747,16 @@ function enemyAct(e, done){
 
 function finishEnemyTurn(){
   const p = state.units[0];
-  p.ap = p.maxAp;
+  // v0.6.8 Battle System v6: AP TIDAK lagi full refill tiap giliran.
+  // Isi ulang bertahap, dibatasi plafon AP: beraksi di giliran tadi
+  // -> +1 AP, akhiri giliran tanpa aksi sama sekali -> +2 AP.
+  const gain = state.playerActed ? 1 : 2;
+  p.ap = Math.min(p.maxAp, p.ap + gain);
+  state.playerActed = false;
   state.turn = 'player';
   render();
+  // v0.6.8: beri tahu pemain berapa AP yang terisi ulang.
+  spawnFloatText(findUnitTileEl(p.id), '+' + gain + ' AP', 'apGain');
   checkBattleEnd();
 }
 
@@ -839,7 +850,11 @@ function start(config){
     selectedTargetId:null,
     actingUnitId:null,
     onEnd: config.onEnd,
-    onWeaponUse: config.onWeaponUse
+    onWeaponUse: config.onWeaponUse,
+    // v0.6.8: penanda apakah pemain sudah beraksi di giliran ini
+    // (pindah atau menyerang). Menentukan isi ulang AP di awal
+    // giliran berikutnya: beraksi -> +1, diam saja -> +2.
+    playerActed:false
   };
   boardBuilt = false;
   render();

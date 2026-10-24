@@ -159,6 +159,9 @@
       // v0.6.3: nyalakan polling klaim barter masuk (60 detik)
       if (window.Barter) Barter.start();
 
+      // v0.6.7: beri tahu kalau Hadiah Harian hari ini tersedia
+      if (window.DailyReward) DailyReward.start();
+
       // v0.3.8: mulai BGM (gesture user dari tombol tadi = izin autoplay)
       if (window.AudioManager) AudioManager.playBgm();
 
