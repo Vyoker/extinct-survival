@@ -29,6 +29,10 @@ const Presence = (function () {
   var lastPingAt = 0;
   var cache = { onlineCount: 0, players: [], serverTime: 0 };
   var listOverlayId = null;
+  // v0.7.0: mode Firebase RTDB (aktif bila config terisi + SDK jalan).
+  // Bila tidak aktif, semua fungsi di bawah fallback ke Netlify lama.
+  var fbMode = false;
+  var fbUnsub = null;
 
   function ic(name) {
     return window.Icons ? Icons.svg(name) : '';
@@ -63,6 +67,16 @@ const Presence = (function () {
     return pid;
   }
 
+  function getFirstSeen() {
+    try {
+      var v = localStorage.getItem('es_presence_first_seen');
+      if (v) return Number(v);
+      var now = Date.now();
+      localStorage.setItem('es_presence_first_seen', String(now));
+      return now;
+    } catch (e) { return Date.now(); }
+  }
+
   function playerSnapshot() {
     var p = GameState.get().player;
     var locName = p.location;
@@ -84,7 +98,8 @@ const Presence = (function () {
       power: power,
       faction: p.faction || null,
       location: locName,
-      appVersion: window.APP_VERSION || null
+      appVersion: window.APP_VERSION || null,
+      firstSeen: getFirstSeen()
     };
   }
 
@@ -108,8 +123,27 @@ const Presence = (function () {
     return true;
   }
 
+  function applyFirebaseData(data) {
+    if (!data) return false;
+    cache = {
+      onlineCount: data.onlineCount || 0,
+      players: Array.isArray(data.players) ? data.players : [],
+      serverTime: data.serverTime || Date.now()
+    };
+    updateChip();
+    if (listOverlayId) renderListIntoOverlay();
+    return true;
+  }
+
   async function ping() {
     lastPingAt = Date.now();
+    // v0.7.0 Firebase: publish presence (bukan heartbeat Netlify).
+    if (fbMode && window.ESFirebase) {
+      try {
+        var ok = await ESFirebase.publishPresence(playerSnapshot());
+        return !!ok;
+      } catch (e) { return false; }
+    }
     try {
       var res = await fetch(API_BASE + '/presence', {
         method: 'POST',
@@ -126,6 +160,8 @@ const Presence = (function () {
   }
 
   async function refreshList() {
+    // v0.7.0 Firebase: listener sudah memperbarui cache realtime.
+    if (fbMode) { if (listOverlayId) renderListIntoOverlay(); return; }
     try {
       var res = await fetch(API_BASE + '/presence');
       var data = await res.json().catch(function () { return null; });
@@ -209,25 +245,43 @@ const Presence = (function () {
     refreshList().then(function () { if (listOverlayId) renderListIntoOverlay(); });
   }
 
+  function startNetlify() {
+    ping();
+    timer = setInterval(ping, HEARTBEAT_MS);
+  }
+
   function start() {
     if (started) return;
     started = true;
     var chip = document.getElementById('hud-online');
     if (chip) chip.addEventListener('click', openList);
-    ping();
-    timer = setInterval(ping, HEARTBEAT_MS);
     // Pulang ke tab/aplikasi setelah lama di-background: ping sekali
     // (dijaga jeda minimal 60 detik supaya tidak spam).
     document.addEventListener('visibilitychange', function () {
       if (!document.hidden && Date.now() - lastPingAt >= 60 * 1000) ping();
     });
+    // v0.7.0: coba Firebase dulu; gagal/konfigurasi kosong -> Netlify.
+    if (window.ESFirebase && ESFirebase.isConfigured()) {
+      ESFirebase.init().then(function (ok) {
+        if (ok && ESFirebase.isEnabled()) {
+          fbMode = true;
+          fbUnsub = ESFirebase.onPresence(applyFirebaseData);
+          ping();
+          timer = setInterval(ping, HEARTBEAT_MS);
+        } else {
+          startNetlify();
+        }
+      }).catch(function () { startNetlify(); });
+    } else {
+      startNetlify();
+    }
   }
 
   function getCache() {
     return cache;
   }
 
-  return { start: start, ping: ping, openList: openList, getCache: getCache, ensurePid: ensurePid, HEARTBEAT_MS: HEARTBEAT_MS };
+  return { start: start, ping: ping, openList: openList, getCache: getCache, ensurePid: ensurePid, HEARTBEAT_MS: HEARTBEAT_MS, isFirebaseMode: function () { return fbMode; } };
 })();
 
 window.Presence = Presence;

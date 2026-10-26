@@ -53,6 +53,9 @@ const GameState = (function () {
           hunter: { rank: 0, tier: 1, exp: 0 },
           scavenger: { rank: 0, tier: 1, exp: 0 }
         },
+        // Sub skill terpisah dari skills (mis. karhutla), supaya tidak
+        // terhapus oleh validasi skills di migrate() di bawah.
+        subSkills: {},
         inventory: [
           { itemId: 'canned_food_01', qty: 2 },
           { itemId: 'water_bottle_01', qty: 2 },
@@ -109,6 +112,9 @@ const GameState = (function () {
     Object.keys(p.skills).forEach(id => {
       if (!validSkillIds.includes(id)) delete p.skills[id];
     });
+
+    // Sub skill: field terpisah, jangan dicampur ke p.skills di atas.
+    if (!p.subSkills || typeof p.subSkills !== 'object') p.subSkills = {};
 
     // Currency: bottlecaps lama -> kredit
     if (!p.currency) p.currency = { rupiah: 0, kredit: 0 };

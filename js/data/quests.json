@@ -621,5 +621,463 @@
   "prereqQuestId": null,
   "nextQuestId": null,
   "factionId": "white_ghost"
+ },
+ {
+  "category": "event",
+  "description": "Asap dari rimba timur sudah tiga hari tidak hilang. Siapkan perbekalan tim ekspedisi sebelum berangkat ke Kalimantan Wilds.",
+  "id": "karhutla_01_asap_rimba",
+  "nextQuestId": "karhutla_02_menara_pantau",
+  "objectives": [
+   {
+    "itemId": "water_bottle_01",
+    "target": 8
+   },
+   {
+    "itemId": "canned_food_01",
+    "target": 4
+   }
+  ],
+  "prereqQuestId": "ch8_fajar_terbit",
+  "rewards": {
+   "exp": 200,
+   "rupiah": 400
+  },
+  "title": "Asap di Ujung Rimba",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Api bergerak melompat lewat semak kering. Bangun menara pantau agar arah api bisa dibaca sebelum mengepung.",
+  "id": "karhutla_02_menara_pantau",
+  "nextQuestId": "karhutla_03_jejak_panas",
+  "objectives": [
+   {
+    "itemId": "wood_plank",
+    "target": 15
+   },
+   {
+    "itemId": "rope",
+    "target": 5
+   }
+  ],
+  "prereqQuestId": "karhutla_01_asap_rimba",
+  "rewards": {
+   "exp": 250,
+   "rupiah": 500
+  },
+  "title": "Menara Pantau Rimba",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Serigala yang kabur dari api memotong jalur ekspedisi. Bersihkan jalur itu agar tim bisa bergerak.",
+  "id": "karhutla_03_jejak_panas",
+  "nextQuestId": "karhutla_04_pos_pantau",
+  "objectives": [
+   {
+    "enemyId": "serigala",
+    "name": "Serigala Liar",
+    "target": 3
+   }
+  ],
+  "prereqQuestId": "karhutla_02_menara_pantau",
+  "rewards": {
+   "exp": 300,
+   "rupiah": 600
+  },
+  "title": "Jejak Panas",
+  "type": "hunt"
+ },
+ {
+  "category": "event",
+  "description": "Pos pantau butuh rangka dan peralatan. Tanpa itu, titik api baru hanya bisa ditebak.",
+  "id": "karhutla_04_pos_pantau",
+  "nextQuestId": "karhutla_05_kabut_tidak_wajar",
+  "objectives": [
+   {
+    "itemId": "wood_plank",
+    "target": 10
+   },
+   {
+    "itemId": "scrap_metal",
+    "target": 10
+   }
+  ],
+  "prereqQuestId": "karhutla_03_jejak_panas",
+  "rewards": {
+   "exp": 350,
+   "rupiah": 700
+  },
+  "title": "Pos Pantau Rimba",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Api ini muncul di tempat yang tidak seharusnya terbakar. Siapkan tim survei dan dengarkan apa yang mereka temukan.",
+  "id": "karhutla_05_kabut_tidak_wajar",
+  "nextQuestId": "karhutla_06_jalur_evakuasi",
+  "objectives": [
+   {
+    "itemId": "herbs",
+    "target": 10
+   },
+   {
+    "itemId": "bandage_01",
+    "target": 5
+   }
+  ],
+  "prereqQuestId": "karhutla_04_pos_pantau",
+  "rewards": {
+   "exp": 300,
+   "rupiah": 600
+  },
+  "title": "Kabut yang Tidak Wajar",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Warga tiga dusun harus keluar sebelum malam. Buka jalur kedua lewat tepi rimba dengan tandu dan penanda.",
+  "id": "karhutla_06_jalur_evakuasi",
+  "nextQuestId": "karhutla_07_napas_terjebak",
+  "objectives": [
+   {
+    "itemId": "rope",
+    "target": 12
+   },
+   {
+    "itemId": "wood_plank",
+    "target": 15
+   }
+  ],
+  "prereqQuestId": "karhutla_05_kabut_tidak_wajar",
+  "rewards": {
+   "exp": 400,
+   "rupiah": 800
+  },
+  "title": "Jalur Evakuasi",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Asap lebih berbahaya daripada api itu sendiri. Bawa air untuk kain penutup wajah dan perban untuk yang terluka saat berlari.",
+  "id": "karhutla_07_napas_terjebak",
+  "nextQuestId": "karhutla_08_dapur_pengungsian",
+  "objectives": [
+   {
+    "itemId": "water_bottle_01",
+    "target": 10
+   },
+   {
+    "itemId": "bandage_01",
+    "target": 8
+   }
+  ],
+  "prereqQuestId": "karhutla_06_jalur_evakuasi",
+  "rewards": {
+   "exp": 400,
+   "rupiah": 800
+  },
+  "title": "Napas untuk yang Terjebak",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Pengungsi sudah berkumpul, dapur harus mengepul malam ini. Kumpulkan makanan dan air untuk dapur pengungsian.",
+  "id": "karhutla_08_dapur_pengungsian",
+  "nextQuestId": "karhutla_09_tabib_asap",
+  "objectives": [
+   {
+    "itemId": "canned_food_01",
+    "target": 10
+   },
+   {
+    "itemId": "water_bottle_01",
+    "target": 6
+   }
+  ],
+  "prereqQuestId": "karhutla_07_napas_terjebak",
+  "rewards": {
+   "exp": 350,
+   "rupiah": 700
+  },
+  "title": "Dapur Pengungsian",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Luka bakar dan sesak asap butuh ramuan rimba. Kumpulkan herbal dan tapal untuk tabib.",
+  "id": "karhutla_09_tabib_asap",
+  "nextQuestId": "karhutla_10_anak_tertinggal",
+  "objectives": [
+   {
+    "itemId": "herbs",
+    "target": 12
+   },
+   {
+    "itemId": "herbal_poultice",
+    "target": 4
+   }
+  ],
+  "prereqQuestId": "karhutla_08_dapur_pengungsian",
+  "rewards": {
+   "exp": 400,
+   "rupiah": 800
+  },
+  "title": "Tabib di Tengah Asap",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Seorang anak tertinggal di jalur pulang, dihalangi serigala yang panik. Buka jalan pulang untuknya.",
+  "id": "karhutla_10_anak_tertinggal",
+  "nextQuestId": "karhutla_11_hewan_panik",
+  "objectives": [
+   {
+    "enemyId": "serigala",
+    "name": "Serigala Liar",
+    "target": 4
+   }
+  ],
+  "prereqQuestId": "karhutla_09_tabib_asap",
+  "rewards": {
+   "exp": 450,
+   "rupiah": 900
+  },
+  "title": "Anak yang Tertinggal",
+  "type": "hunt"
+ },
+ {
+  "category": "event",
+  "description": "Babi hutan dan beruang madu yang ketakutan masuk ke pemukiman. Halau mereka kembali ke rimba.",
+  "id": "karhutla_11_hewan_panik",
+  "nextQuestId": "karhutla_12_sekat_bakar",
+  "objectives": [
+   {
+    "enemyId": "babi_hutan",
+    "name": "Babi Hutan",
+    "target": 3
+   },
+   {
+    "enemyId": "beruang",
+    "name": "Beruang Madu",
+    "target": 1
+   }
+  ],
+  "prereqQuestId": "karhutla_10_anak_tertinggal",
+  "rewards": {
+   "exp": 500,
+   "rupiah": 1000
+  },
+  "title": "Hewan yang Panik",
+  "type": "hunt"
+ },
+ {
+  "category": "event",
+  "description": "Air saja tidak cukup. Potong jalan api dengan sekat bakar dari kayu, supaya api kehabisan bahan bakar.",
+  "id": "karhutla_12_sekat_bakar",
+  "nextQuestId": "karhutla_13_rantai_air",
+  "objectives": [
+   {
+    "itemId": "wood_plank",
+    "target": 20
+   }
+  ],
+  "prereqQuestId": "karhutla_11_hewan_panik",
+  "rewards": {
+   "exp": 550,
+   "rupiah": 1100
+  },
+  "title": "Sekat Bakar Pertama",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Air harus mengalir tanpa putus dari sumber ke garis api. Ini misi pemadaman terbesar dalam event ini.",
+  "id": "karhutla_13_rantai_air",
+  "nextQuestId": "karhutla_14_jaga_sumber_air",
+  "objectives": [
+   {
+    "itemId": "water_bottle_01",
+    "target": 20
+   }
+  ],
+  "prereqQuestId": "karhutla_12_sekat_bakar",
+  "rewards": {
+   "exp": 700,
+   "rupiah": 1500,
+   "kredit": 5
+  },
+  "title": "Rantai Air",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Sumber air dikuasai pemburu suku yang menghalangi siapa pun membawa air. Rebut kembali sumber itu.",
+  "id": "karhutla_14_jaga_sumber_air",
+  "nextQuestId": "karhutla_15_angin_berbalik",
+  "objectives": [
+   {
+    "enemyId": "pemburu_suku",
+    "name": "Pemburu Suku",
+    "target": 4
+   }
+  ],
+  "prereqQuestId": "karhutla_13_rantai_air",
+  "rewards": {
+   "exp": 600,
+   "rupiah": 1200
+  },
+  "title": "Jaga Sumber Air",
+  "type": "hunt"
+ },
+ {
+  "category": "event",
+  "description": "Angin berbalik dan tim harus mundur. Rawat tim yang kembali dengan air dan perban.",
+  "id": "karhutla_15_angin_berbalik",
+  "nextQuestId": "karhutla_16_hati_api",
+  "objectives": [
+   {
+    "itemId": "water_bottle_01",
+    "target": 10
+   },
+   {
+    "itemId": "bandage_01",
+    "target": 10
+   }
+  ],
+  "prereqQuestId": "karhutla_14_jaga_sumber_air",
+  "rewards": {
+   "exp": 500,
+   "rupiah": 1000
+  },
+  "title": "Angin Berbalik",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Tinggal satu titik: jantung api di tengah rimba. Serang titik itu dengan air dan kayu untuk serangan terakhir.",
+  "id": "karhutla_16_hati_api",
+  "nextQuestId": "karhutla_17_abu_berbicara",
+  "objectives": [
+   {
+    "itemId": "water_bottle_01",
+    "target": 20
+   },
+   {
+    "itemId": "wood_plank",
+    "target": 20
+   }
+  ],
+  "prereqQuestId": "karhutla_15_angin_berbalik",
+  "rewards": {
+   "exp": 800,
+   "rupiah": 1800,
+   "kredit": 5
+  },
+  "title": "Hati Api",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Api padam, tapi sisa peralatan di titik api pertama menunjukkan api ini sengaja dinyalakan. Kumpulkan sisanya.",
+  "id": "karhutla_17_abu_berbicara",
+  "nextQuestId": "karhutla_18_saksi_diam",
+  "objectives": [
+   {
+    "itemId": "scrap_metal",
+    "target": 12
+   },
+   {
+    "itemId": "spare_parts",
+    "target": 5
+   }
+  ],
+  "prereqQuestId": "karhutla_16_hati_api",
+  "rewards": {
+   "exp": 600,
+   "rupiah": 1200
+  },
+  "title": "Abu yang Berbicara",
+  "type": "collect"
+ },
+ {
+  "category": "event",
+  "description": "Seorang saksi melihat siapa yang membawa alat pembakar, tapi ia dibungkam oleh ketakutan. Singkirkan penjaganya.",
+  "id": "karhutla_18_saksi_diam",
+  "nextQuestId": "karhutla_19_kontrak_terbakar",
+  "objectives": [
+   {
+    "enemyId": "pemburu_suku",
+    "name": "Pemburu Suku",
+    "target": 3
+   }
+  ],
+  "prereqQuestId": "karhutla_17_abu_berbicara",
+  "rewards": {
+   "exp": 700,
+   "rupiah": 1400
+  },
+  "title": "Saksi yang Diam",
+  "type": "hunt"
+ },
+ {
+  "category": "event",
+  "description": "Dalangnya terungkap: King Redbull, pembakar bayaran yang menyalakan rimba untuk pihak ketiga. Akhiri kontraknya.",
+  "id": "karhutla_19_kontrak_terbakar",
+  "nextQuestId": "karhutla_20_fajar_setelah_asap",
+  "objectives": [
+   {
+    "enemyId": "pemburu_suku",
+    "name": "Pemburu Suku",
+    "target": 3
+   },
+   {
+    "enemyId": "king_redbull",
+    "name": "King Redbull",
+    "target": 1
+   }
+  ],
+  "prereqQuestId": "karhutla_18_saksi_diam",
+  "rewards": {
+   "exp": 1000,
+   "rupiah": 2500,
+   "kredit": 10
+  },
+  "title": "Kontrak yang Terbakar",
+  "type": "hunt"
+ },
+ {
+  "category": "event",
+  "description": "Api padam dan dalang tumbang. Sekarang pulihkan rimba: air, herbal, dan makanan untuk penanaman kembali. Hadiah utama: Sub Skill Karhutla.",
+  "id": "karhutla_20_fajar_setelah_asap",
+  "nextQuestId": null,
+  "objectives": [
+   {
+    "itemId": "water_bottle_01",
+    "target": 10
+   },
+   {
+    "itemId": "herbs",
+    "target": 10
+   },
+   {
+    "itemId": "canned_food_01",
+    "target": 6
+   }
+  ],
+  "prereqQuestId": "karhutla_19_kontrak_terbakar",
+  "rewards": {
+   "exp": 900,
+   "rupiah": 2000,
+   "kredit": 15,
+   "items": [
+    {
+     "itemId": "karhutla_fire_axe",
+     "qty": 1
+    }
+   ]
+  },
+  "title": "Fajar Setelah Asap",
+  "type": "collect"
  }
 ]

@@ -19,7 +19,8 @@
  */
 const { json } = require('./utils/response');
 const { getBarterStore, getPresenceStore } = require('./utils/blob-store');
-const { cleanPid, isOnline, listPresence } = require('./utils/presence');
+const { cleanPid, isOnline } = require('./utils/presence');
+const { getPresenceRecords } = require('./utils/presence-source');
 const F = require('./utils/friends');
 const B = require('./utils/barter');
 
@@ -35,7 +36,7 @@ exports.handler = async (event) => {
     const pid = cleanPid((event.queryStringParameters || {}).pid);
     if (!pid) return json(400, { error: 'ID pemain tidak valid.' });
 
-    const records = await listPresence(presenceStore, now);
+    const records = await getPresenceRecords(presenceStore, now);
     const me = records.find(r => r.pid === pid) || null;
     const myLoc = me ? (me.location || '') : '';
     const players = (me && isOnline(me, now) && myLoc)
@@ -98,7 +99,7 @@ exports.handler = async (event) => {
     const items = B.cleanItems(payload.items);
     if (!items) return json(400, { error: 'Daftar item tidak valid.' });
 
-    const records = await listPresence(presenceStore, now);
+    const records = await getPresenceRecords(presenceStore, now);
     const me = records.find(r => r.pid === pid) || null;
     if (!me || !isOnline(me, now)) {
       return json(403, { error: 'Kamu belum terdeteksi online. Tunggu sebentar lalu coba lagi.' });

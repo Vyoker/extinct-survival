@@ -55,8 +55,24 @@ const BattleBridge = (function () {
       ammo: ammo,
       critChance: (typeof wStats.crit === 'number') ? wStats.crit : null,
       ammoType: ammoType,
+      // v0.7.3: efek atribut senjata (Burn/Stun/Bleeding/Poison) dari
+      // items.json; hanya senjata yang di-equip yang membawa efek ini.
+      effect: (weaponDef && weaponDef.effect) ? weaponDef.effect : null,
       refItemId: weapon ? weapon.itemId : null // dipakai utk kurangi durability
     };
+
+    // v0.7.3: bonus armor — set lengkap 3/3 atau standalone/resist
+    // per piece. Dihitung di Effects supaya angkanya satu sumber.
+    let armorBonus = null;
+    if (window.Effects && window.ItemDB) {
+      const armorSlots = ['head', 'chest', 'legs', 'offhand', 'accessory'];
+      const equippedDefs = armorSlots.map(slot => {
+        const eq = p.equipment && p.equipment[slot];
+        return (eq && eq.itemId) ? ItemDB.get(eq.itemId) : null;
+      });
+      const allDefs = Object.keys(ItemDB.all()).map(k => ItemDB.all()[k]);
+      armorBonus = Effects.resolveArmorBonus(equippedDefs, allDefs);
+    }
 
     return {
       name: p.name,
@@ -75,6 +91,7 @@ const BattleBridge = (function () {
       // damage lebih dulu sebelum HP berkurang, per battle.
       armor: Math.round(derived.defensePct),
       critChance: Math.round(derived.critChance || 5), // v0.6.4
+      armorBonus: armorBonus, // v0.7.3: bonus set armor / standalone / resist
       maxAp: 6,
       weapons: [weaponEntry]
     };
@@ -127,7 +144,12 @@ const BattleBridge = (function () {
       dmgMin: enemyDef.damageMin,
       dmgMax: enemyDef.damageMax,
       moveRange: 3,
-      armor: 0,
+      // v0.7.3: armor musuh dari hasil scale (0 normal, >0 bila
+      // musuh event — Defense event = baseDefense x pengali x1,5).
+      armor: (typeof enemyDef.armor === 'number') ? enemyDef.armor : 0,
+      // v0.7.3: boss kebal Stun — tier sudah di-scale jadi objek
+      // {isBoss} di LocationDB, tapi tetap terima string 'boss'.
+      isBoss: !!(enemyDef.tier && (enemyDef.tier.isBoss || enemyDef.tier === 'boss')),
       // Field custom asli dititipkan supaya bisa dibaca lagi di summary onEnd
       expReward: enemyDef.expReward,
       rupiahMin: enemyDef.rupiahMin,

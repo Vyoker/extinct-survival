@@ -1,0 +1,30 @@
+{
+  "rules": {
+    "chat": {
+      "banned": {
+        ".read": "auth != null",
+        ".write": false
+      },
+      "last": {
+        "$pid": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        }
+      },
+      "messages": {
+        "$mid": {
+          ".validate": "newData.hasChildren(['id', 'pid', 'name', 'level', 'role', 'text', 'ts']) && newData.child('role').val() == 'player' && newData.child('text').isString() && newData.child('text').val().length >= 1 && newData.child('text').val().length <= 200 && newData.child('name').val().length <= 24",
+          ".write": "auth != null"
+        },
+        ".read": "auth != null"
+      }
+    },
+    "presence": {
+      "$pid": {
+        ".validate": "newData.hasChildren(['pid', 'name', 'level', 'lastSeen']) && newData.child('name').isString() && newData.child('name').val().length <= 24 && newData.child('level').isNumber()",
+        ".write": "auth != null"
+      },
+      ".read": "auth != null"
+    }
+  }
+}

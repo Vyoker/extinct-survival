@@ -18,7 +18,8 @@
  */
 const { json } = require('./utils/response');
 const { getFriendsStore, getPresenceStore } = require('./utils/blob-store');
-const { cleanText, cleanPid, isOnline, listPresence } = require('./utils/presence');
+const { cleanText, cleanPid, isOnline } = require('./utils/presence');
+const { getPresenceRecords } = require('./utils/presence-source');
 const F = require('./utils/friends');
 
 const MAX_BODY_BYTES = 2048;
@@ -26,7 +27,7 @@ const MAX_SEARCH_RESULTS = 10;
 
 async function buildContext(store, presenceStore, pid) {
   const now = Date.now();
-  const records = await listPresence(presenceStore, now);
+  const records = await getPresenceRecords(presenceStore, now);
   const byPid = new Map(records.map(r => [r.pid, r]));
   const [friends, reqIn, reqOut] = await Promise.all([
     F.loadFriends(store, pid),

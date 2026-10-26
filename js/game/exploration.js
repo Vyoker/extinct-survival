@@ -68,7 +68,9 @@ const Exploration = (function () {
     const weights = loc.scavengeWeights || {};
     let total = 0;
     const entries = pool.map(id => {
-      const w = weights[id] || 1;
+      const baseW = weights[id] || 1;
+      const w = (typeof window !== 'undefined' && window.SubSkillKarhutla)
+        ? window.SubSkillKarhutla.woodWeight(baseW, id) : baseW;
       total += w;
       return { id, w };
     });
@@ -118,7 +120,9 @@ const Exploration = (function () {
     for (let i = 0; i < typeCount; i++) {
       const itemId = pickLootWeighted(loc, items.map(x => x.itemId));
       if (!itemId) break;
-      const qty = Math.random() < 0.3 ? 2 : 1;
+      const baseQty = Math.random() < 0.3 ? 2 : 1;
+      const qty = (typeof window !== 'undefined' && window.SubSkillKarhutla)
+        ? window.SubSkillKarhutla.woodQty(baseQty, itemId) : baseQty;
       items.push({ itemId, qty });
       Inventory.addItem(itemId, qty);
     }
@@ -130,8 +134,10 @@ const Exploration = (function () {
     if (Math.random() < lootBonusChance) {
       const bonusItemId = pickLootWeighted(loc, items.map(x => x.itemId));
       if (bonusItemId) {
-        items.push({ itemId: bonusItemId, qty: 1 });
-        Inventory.addItem(bonusItemId, 1);
+        const bonusQty = (typeof window !== 'undefined' && window.SubSkillKarhutla)
+          ? window.SubSkillKarhutla.woodQty(1, bonusItemId) : 1;
+        items.push({ itemId: bonusItemId, qty: bonusQty });
+        Inventory.addItem(bonusItemId, bonusQty);
       }
     }
 

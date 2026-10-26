@@ -436,3 +436,19 @@
   }
   #actionRow .actBtn { flex: 0 0 150px; }
 }
+
+/* v0.7.3: efek atribut senjata & set armor — tanpa emoticon, warna
+   tegas gaya Day R supaya status terbaca sekilas di papan battle. */
+.dmgFloat.burn { color: #ff7a2f; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
+.dmgFloat.poison { color: #8fd14f; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
+.dmgFloat.bleed { color: #ff4242; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
+.dmgFloat.stun { color: #ffd21f; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
+.dmgFloat.immune { color: #e8f1fa; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+#enemyStrip .eStatus { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
+.statusBadge { font-size: 8px; font-weight: 800; letter-spacing: 0.5px; padding: 1px 4px; border-radius: 3px; border: 1px solid #5c5138; background: #171410; }
+.statusBadge.burn { color: #ff7a2f; border-color: #ff7a2f; }
+.statusBadge.poison { color: #8fd14f; border-color: #8fd14f; }
+.statusBadge.bleed { color: #ff4242; border-color: #ff4242; }
+.statusBadge.stun { color: #ffd21f; border-color: #ffd21f; }
+.unitTok .miniStatus { font-size: 7px; font-weight: 800; letter-spacing: 0.5px; color: #ffd21f; text-align: center; line-height: 1.2; margin-top: 1px; text-shadow: 0 1px 2px #000; }
+#actionRow .actEffect { color: #ff7a2f; font-weight: 800; }

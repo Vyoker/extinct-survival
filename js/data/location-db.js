@@ -56,7 +56,17 @@ const LocationDB = (function () {
   // level pemain. Stat dihitung ULANG dari base stat (baseHp dst) x
   // pengali level baru — jadi musuh lv 15 benar-benar lebih tebal &
   // lebih sakit daripada lv 10, bukan sekadar angka level ditempel.
-  function scaleEnemyForPlayer(enemy, playerLevel) {
+  // v0.7.3 (revisi final, DIKUNCI user 2026-10-26: x5 — setelah
+  // simulasi x1,5 terasa lemah, x10 terlalu sadis, x3 masih ringan):
+  // musuh event lebih sulit. Metodenya TETAP sama seperti
+  // sebelumnya (base x pengali level), hanya ditambah pengali
+  // event x5 untuk HP, damage (ATK), dan Defense — bila
+  // options.eventHard true. EXP dan Rupiah TIDAK ikut dikali,
+  // supaya hadiah tidak ikut membengkak. Defense musuh normal
+  // selama ini 0 di battle, jadi Defense event dihitung dari
+  // baseDefense (Kalimantan saja) x pengali level x5; di luar
+  // event armor tetap 0 seperti sebelumnya.
+  function scaleEnemyForPlayer(enemy, playerLevel, options) {
     if (!enemy) return enemy;
     const tierId = (typeof enemy.tier === 'string') ? enemy.tier : null;
     const tier = tierId ? tierForKind(tierId) : (enemy.tier || tierForLevel(enemy.level));
@@ -65,13 +75,18 @@ const LocationDB = (function () {
     const offset = TIER_OFFSETS[tier.id] || 0;
     const level = Math.max(1, Math.min(100, (playerLevel || 1) + offset));
     const mult = levelMultiplier(level);
+    const eventHard = !!(options && options.eventHard);
+    const eventMult = eventHard ? 5 : 1;
     scaled.level = level;
-    scaled.hp = Math.max(1, Math.round(enemy.baseHp * mult));
-    scaled.damageMin = Math.max(1, Math.round((enemy.baseDamageMin || 0) * mult));
-    scaled.damageMax = Math.max(scaled.damageMin, Math.round((enemy.baseDamageMax || 0) * mult));
+    scaled.eventHard = eventHard;
+    scaled.hp = Math.max(1, Math.round(enemy.baseHp * mult * eventMult));
+    scaled.damageMin = Math.max(1, Math.round((enemy.baseDamageMin || 0) * mult * eventMult));
+    scaled.damageMax = Math.max(scaled.damageMin, Math.round((enemy.baseDamageMax || 0) * mult * eventMult));
     scaled.expReward = Math.max(1, Math.round((enemy.baseExpReward || 0) * mult));
     scaled.rupiahMin = Math.max(0, Math.round((enemy.baseRupiahMin || 0) * mult));
     scaled.rupiahMax = Math.max(scaled.rupiahMin, Math.round((enemy.baseRupiahMax || 0) * mult));
+    scaled.armor = (eventHard && typeof enemy.baseDefense === 'number')
+      ? Math.round(enemy.baseDefense * mult * 5) : 0;
     return scaled;
   }
 

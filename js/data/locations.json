@@ -1,467 +1,493 @@
 [
-  {
-    "id": "surabaya_stronghold",
-    "name": "Surabaya Stronghold",
-    "type": "safe_zone",
-    "faction": "surabaya_militia",
-    "description": "Benteng militeristik yang menjaga ketat perbatasannya. Zona paling aman di Jawa Timur, tapi preman pasar gelap kadang mencari masalah.",
-    "scavengeLoot": [
-      "scrap_metal",
-      "canned_food_01",
-      "water_bottle_01",
-      "bandage_01",
-      "ragged_hat",
-      "rusty_knife_01"
+ {
+  "id": "surabaya_stronghold",
+  "name": "Surabaya Stronghold",
+  "type": "safe_zone",
+  "faction": "surabaya_militia",
+  "description": "Benteng militeristik yang menjaga ketat perbatasannya. Zona paling aman di Jawa Timur, tapi preman pasar gelap kadang mencari masalah.",
+  "scavengeLoot": [
+   "scrap_metal",
+   "canned_food_01",
+   "water_bottle_01",
+   "bandage_01",
+   "ragged_hat",
+   "rusty_knife_01"
+  ],
+  "enemies": [
+   {
+    "id": "preman_pasar",
+    "name": "Preman Pasar Gelap",
+    "lootChance": 0.3,
+    "lootTable": [
+     "scrap_metal"
     ],
-    "enemies": [
-      {
-        "id": "preman_pasar",
-        "name": "Preman Pasar Gelap",
-        "lootChance": 0.3,
-        "lootTable": [
-          "scrap_metal"
-        ],
-        "icon": "🥊",
-        "level": 9,
-        "baseHp": 5.6,
-        "baseDamageMin": 0.6,
-        "baseDamageMax": 1.6,
-        "baseExpReward": 2.4,
-        "baseRupiahMin": 4,
-        "baseRupiahMax": 9,
-        "tier": "common"
-      },
-      {
-        "id": "algojo_pasar",
-        "name": "Algojo Pasar Gelap",
-        "level": 58,
-        "baseHp": 5.8,
-        "baseDamageMin": 1.0,
-        "baseDamageMax": 1.4,
-        "baseExpReward": 3.6,
-        "baseRupiahMin": 6,
-        "baseRupiahMax": 12,
-        "lootChance": 0.5,
-        "lootTable": [
-          "scrap_metal",
-          "canned_food_01"
-        ],
-        "icon": "🔪",
-        "tier": "epic"
-      },
-      {
-        "id": "raja_pasar_gelap",
-        "name": "Raja Pasar Gelap",
-        "level": 93,
-        "baseHp": 7.6,
-        "baseDamageMin": 0.8,
-        "baseDamageMax": 1.1,
-        "baseExpReward": 5,
-        "baseRupiahMin": 12,
-        "baseRupiahMax": 22,
-        "lootChance": 0.7,
-        "lootTable": [
-          "first_aid_kit_01",
-          "energy_drink_01"
-        ],
-        "icon": "💰",
-        "tier": "boss"
-      }
+    "icon": "🥊",
+    "level": 9,
+    "baseHp": 5.6,
+    "baseDamageMin": 0.6,
+    "baseDamageMax": 1.6,
+    "baseExpReward": 2.4,
+    "baseRupiahMin": 4,
+    "baseRupiahMax": 9,
+    "tier": "common"
+   },
+   {
+    "id": "algojo_pasar",
+    "name": "Algojo Pasar Gelap",
+    "level": 58,
+    "baseHp": 5.8,
+    "baseDamageMin": 1.0,
+    "baseDamageMax": 1.4,
+    "baseExpReward": 3.6,
+    "baseRupiahMin": 6,
+    "baseRupiahMax": 12,
+    "lootChance": 0.5,
+    "lootTable": [
+     "scrap_metal",
+     "canned_food_01"
     ],
-    "scavengeWeights": {
-      "scrap_metal": 30,
-      "canned_food_01": 25,
-      "water_bottle_01": 20,
-      "bandage_01": 10,
-      "ragged_hat": 8,
-      "rusty_knife_01": 7
-    }
-  },
-  {
-    "id": "bandung_collective",
-    "name": "Bandung Collective",
-    "type": "safe_zone",
-    "faction": "bandung_tech",
-    "description": "Kolektif teknokratis yang mengandalkan energi surya dan riset. Banyak suku cadang bekas berserakan, tapi ular berbisa kerap bersembunyi di reruntuhan gudang riset.",
-    "scavengeLoot": [
-      "scrap_metal",
-      "spare_parts",
-      "water_bottle_01",
-      "energy_drink_01",
-      "scrap_helmet",
-      "tin_shield"
+    "icon": "🔪",
+    "tier": "epic"
+   },
+   {
+    "id": "raja_pasar_gelap",
+    "name": "Raja Pasar Gelap",
+    "level": 93,
+    "baseHp": 7.6,
+    "baseDamageMin": 0.8,
+    "baseDamageMax": 1.1,
+    "baseExpReward": 5,
+    "baseRupiahMin": 12,
+    "baseRupiahMax": 22,
+    "lootChance": 0.7,
+    "lootTable": [
+     "first_aid_kit_01",
+     "energy_drink_01"
     ],
-    "enemies": [
-      {
-        "id": "ular",
-        "name": "Ular Berbisa",
-        "lootChance": 0.4,
-        "lootTable": [
-          "snake_skin",
-          "snake_venom"
-        ],
-        "icon": "🐍",
-        "level": 10,
-        "baseHp": 4,
-        "baseDamageMin": 1.1,
-        "baseDamageMax": 2.2,
-        "baseExpReward": 2.7,
-        "baseRupiahMin": 1.8,
-        "baseRupiahMax": 4.5,
-        "tier": "common"
-      },
-      {
-        "id": "penjaga_otomatis",
-        "name": "Penjaga Otomatis Purwarupa",
-        "level": 62,
-        "baseHp": 6.2,
-        "baseDamageMin": 0.9,
-        "baseDamageMax": 1.3,
-        "baseExpReward": 3.8,
-        "baseRupiahMin": 4,
-        "baseRupiahMax": 9,
-        "lootChance": 0.55,
-        "lootTable": [
-          "spare_parts",
-          "scrap_metal"
-        ],
-        "icon": "🤖",
-        "tier": "epic"
-      },
-      {
-        "id": "inti_pertahanan",
-        "name": "Inti Pertahanan Bunker",
-        "level": 96,
-        "baseHp": 8.4,
-        "baseDamageMin": 0.8,
-        "baseDamageMax": 1.05,
-        "baseExpReward": 5.2,
-        "baseRupiahMin": 8,
-        "baseRupiahMax": 16,
-        "lootChance": 0.7,
-        "lootTable": [
-          "spare_parts",
-          "first_aid_kit_01"
-        ],
-        "icon": "🛡️",
-        "tier": "boss"
-      }
-    ],
-    "scavengeWeights": {
-      "scrap_metal": 30,
-      "spare_parts": 25,
-      "energy_drink_01": 15,
-      "water_bottle_01": 15,
-      "scrap_helmet": 8,
-      "tin_shield": 7
-    }
-  },
-  {
-    "id": "bali_enclave",
-    "name": "Bali Enclave",
-    "type": "safe_zone",
-    "faction": "bali_exclusive",
-    "description": "Wilayah eksklusif dan tertutup, sulit dimasuki pendatang baru. Alamnya masih hijau, kaya tanaman obat.",
-    "scavengeLoot": [
-      "herbs",
-      "water_bottle_01",
-      "canned_food_01",
-      "bandage_01",
-      "fang_necklace"
-    ],
-    "enemies": [
-      {
-        "id": "penyusup_enclave",
-        "name": "Penyusup Enclave",
-        "lootChance": 0.35,
-        "lootTable": [
-          "herbs"
-        ],
-        "icon": "🥷",
-        "level": 11,
-        "baseHp": 4.2,
-        "baseDamageMin": 0.7,
-        "baseDamageMax": 1.5,
-        "baseExpReward": 2.3,
-        "baseRupiahMin": 4.2,
-        "baseRupiahMax": 8.3,
-        "tier": "common"
-      },
-      {
-        "id": "dukun_bayangan",
-        "name": "Dukun Bayangan",
-        "level": 66,
-        "baseHp": 5.4,
-        "baseDamageMin": 1.0,
-        "baseDamageMax": 1.5,
-        "baseExpReward": 3.9,
-        "baseRupiahMin": 5,
-        "baseRupiahMax": 10,
-        "lootChance": 0.5,
-        "lootTable": [
-          "herbs",
-          "snake_venom"
-        ],
-        "icon": "🔮",
-        "tier": "epic"
-      },
-      {
-        "id": "penjaga_agung",
-        "name": "Penjaga Agung Enclave",
-        "level": 97,
-        "baseHp": 8.2,
-        "baseDamageMin": 0.8,
-        "baseDamageMax": 1.1,
-        "baseExpReward": 5.4,
-        "baseRupiahMin": 10,
-        "baseRupiahMax": 18,
-        "lootChance": 0.7,
-        "lootTable": [
-          "first_aid_kit_01",
-          "herbs"
-        ],
-        "icon": "🗿",
-        "tier": "boss"
-      }
-    ],
-    "scavengeWeights": {
-      "water_bottle_01": 40,
-      "herbs": 20,
-      "canned_food_01": 20,
-      "bandage_01": 10,
-      "fang_necklace": 10
-    }
-  },
-  {
-    "id": "jakarta_ruins",
-    "name": "Jakarta Ruins",
-    "type": "danger_zone",
-    "faction": null,
-    "description": "Reruntuhan ibu kota lama. Kaya akan loot langka, tapi bandit dan anjing liar berkeliaran di setiap sudut.",
-    "scavengeLoot": [
-      "scrap_metal",
-      "canned_food_01",
-      "spare_parts",
-      "first_aid_kit_01",
-      "leather_vest",
-      "rusty_knife_01"
-    ],
-    "enemies": [
-      {
-        "id": "bandit_jakarta",
-        "name": "Bandit Jakarta",
-        "lootChance": 0.4,
-        "lootTable": [
-          "scrap_metal",
-          "machete_01"
-        ],
-        "icon": "🔫",
-        "level": 12,
-        "baseHp": 7,
-        "baseDamageMin": 1.2,
-        "baseDamageMax": 2.5,
-        "baseExpReward": 3.8,
-        "baseRupiahMin": 6.2,
-        "baseRupiahMax": 13.8,
-        "tier": "common"
-      },
-      {
-        "id": "anjing_liar",
-        "name": "Anjing Liar",
-        "lootChance": 0.2,
-        "lootTable": [
-          "dog_fang",
-          "bone"
-        ],
-        "icon": "🐕",
-        "level": 4,
-        "baseHp": 8,
-        "baseDamageMin": 2,
-        "baseDamageMax": 4.4,
-        "baseExpReward": 4,
-        "baseRupiahMin": 2,
-        "baseRupiahMax": 6,
-        "tier": "common"
-      },
-      {
-        "id": "eksekutor_reruntuhan",
-        "name": "Eksekutor Reruntuhan",
-        "level": 55,
-        "baseHp": 5.5,
-        "baseDamageMin": 1.0,
-        "baseDamageMax": 1.5,
-        "baseExpReward": 3.5,
-        "baseRupiahMin": 5,
-        "baseRupiahMax": 11,
-        "lootChance": 0.5,
-        "lootTable": [
-          "scrap_metal",
-          "spare_parts"
-        ],
-        "icon": "🪓",
-        "tier": "epic"
-      },
-      {
-        "id": "tiran_jakarta",
-        "name": "Tiran Jakarta",
-        "level": 95,
-        "baseHp": 8,
-        "baseDamageMin": 0.8,
-        "baseDamageMax": 1.1,
-        "baseExpReward": 5,
-        "baseRupiahMin": 10,
-        "baseRupiahMax": 20,
-        "lootChance": 0.7,
-        "lootTable": [
-          "first_aid_kit_01",
-          "refined_metal",
-          "spare_parts"
-        ],
-        "icon": "👑",
-        "tier": "boss"
-      }
-    ],
-    "scavengeWeights": {
-      "scrap_metal": 35,
-      "spare_parts": 25,
-      "canned_food_01": 15,
-      "first_aid_kit_01": 10,
-      "leather_vest": 8,
-      "rusty_knife_01": 7
-    }
-  },
-  {
-    "id": "kalimantan_wilds",
-    "name": "Kalimantan Wilds",
-    "type": "wilderness",
-    "faction": "kalimantan_tribes",
-    "description": "Hutan liar yang dihuni suku-suku pemburu pasca-Collapse. Melimpah kayu dan tali, tapi babi hutan dan pemburu suku bisa menyerang tiba-tiba.",
-    "scavengeLoot": [
-      "wood_plank",
-      "rope",
-      "herbs",
-      "bandage_01",
-      "torn_jacket",
-      "ripped_pants"
-    ],
-    "enemies": [
-      {
-        "id": "babi_hutan",
-        "name": "Babi Hutan",
-        "lootChance": 0.3,
-        "lootTable": [
-          "wood_plank"
-        ],
-        "icon": "🐗",
-        "level": 16,
-        "baseHp": 3.8,
-        "baseDamageMin": 0.7,
-        "baseDamageMax": 1.4,
-        "baseExpReward": 2.1,
-        "baseRupiahMin": 0,
-        "baseRupiahMax": 1.2,
-        "tier": "uncommon"
-      },
-      {
-        "id": "pemburu_suku",
-        "name": "Pemburu Suku",
-        "lootChance": 0.35,
-        "lootTable": [
-          "rope",
-          "herbs"
-        ],
-        "icon": "🏹",
-        "level": 20,
-        "baseHp": 3.6,
-        "baseDamageMin": 0.7,
-        "baseDamageMax": 1.3,
-        "baseExpReward": 2.1,
-        "baseRupiahMin": 1.9,
-        "baseRupiahMax": 5.2,
-        "tier": "uncommon"
-      },
-      {
-        "id": "serigala",
-        "name": "Serigala Liar",
-        "lootChance": 0.45,
-        "lootTable": [
-          "wolf_fang",
-          "wolf_fur",
-          "bone"
-        ],
-        "icon": "🐺",
-        "level": 18,
-        "baseHp": 3.6,
-        "baseDamageMin": 0.7,
-        "baseDamageMax": 1.4,
-        "baseExpReward": 2.1,
-        "baseRupiahMin": 1.1,
-        "baseRupiahMax": 3.2,
-        "tier": "uncommon"
-      },
-      {
-        "id": "beruang",
-        "name": "Beruang Madu",
-        "lootChance": 0.5,
-        "lootTable": [
-          "bear_fur",
-          "bone"
-        ],
-        "icon": "🐻",
-        "level": 26,
-        "baseHp": 5.2,
-        "baseDamageMin": 1.0,
-        "baseDamageMax": 1.8,
-        "baseExpReward": 3.3,
-        "baseRupiahMin": 2.2,
-        "baseRupiahMax": 5.2,
-        "tier": "uncommon"
-      },
-      {
-        "id": "macan_kumbang",
-        "name": "Macan Kumbang",
-        "level": 68,
-        "baseHp": 5.9,
-        "baseDamageMin": 1.1,
-        "baseDamageMax": 1.6,
-        "baseExpReward": 4.0,
-        "baseRupiahMin": 3,
-        "baseRupiahMax": 7,
-        "lootChance": 0.55,
-        "lootTable": [
-          "wolf_fur",
-          "bone"
-        ],
-        "icon": "🐆",
-        "tier": "epic"
-      },
-      {
-        "id": "behemoth_rimba",
-        "name": "Behemoth Rimba",
-        "level": 99,
-        "baseHp": 9,
-        "baseDamageMin": 0.85,
-        "baseDamageMax": 1.15,
-        "baseExpReward": 6,
-        "baseRupiahMin": 6,
-        "baseRupiahMax": 12,
-        "lootChance": 0.75,
-        "lootTable": [
-          "bear_fur",
-          "first_aid_kit_01",
-          "bone"
-        ],
-        "icon": "🦏",
-        "tier": "boss"
-      }
-    ],
-    "scavengeWeights": {
-      "wood_plank": 40,
-      "rope": 20,
-      "herbs": 15,
-      "bandage_01": 10,
-      "torn_jacket": 8,
-      "ripped_pants": 7
-    }
+    "icon": "💰",
+    "tier": "boss"
+   }
+  ],
+  "scavengeWeights": {
+   "scrap_metal": 30,
+   "canned_food_01": 25,
+   "water_bottle_01": 20,
+   "bandage_01": 10,
+   "ragged_hat": 8,
+   "rusty_knife_01": 7
   }
+ },
+ {
+  "id": "bandung_collective",
+  "name": "Bandung Collective",
+  "type": "safe_zone",
+  "faction": "bandung_tech",
+  "description": "Kolektif teknokratis yang mengandalkan energi surya dan riset. Banyak suku cadang bekas berserakan, tapi ular berbisa kerap bersembunyi di reruntuhan gudang riset.",
+  "scavengeLoot": [
+   "scrap_metal",
+   "spare_parts",
+   "water_bottle_01",
+   "energy_drink_01",
+   "scrap_helmet",
+   "tin_shield"
+  ],
+  "enemies": [
+   {
+    "id": "ular",
+    "name": "Ular Berbisa",
+    "lootChance": 0.4,
+    "lootTable": [
+     "snake_skin",
+     "snake_venom"
+    ],
+    "icon": "🐍",
+    "level": 10,
+    "baseHp": 4,
+    "baseDamageMin": 1.1,
+    "baseDamageMax": 2.2,
+    "baseExpReward": 2.7,
+    "baseRupiahMin": 1.8,
+    "baseRupiahMax": 4.5,
+    "tier": "common"
+   },
+   {
+    "id": "penjaga_otomatis",
+    "name": "Penjaga Otomatis Purwarupa",
+    "level": 62,
+    "baseHp": 6.2,
+    "baseDamageMin": 0.9,
+    "baseDamageMax": 1.3,
+    "baseExpReward": 3.8,
+    "baseRupiahMin": 4,
+    "baseRupiahMax": 9,
+    "lootChance": 0.55,
+    "lootTable": [
+     "spare_parts",
+     "scrap_metal"
+    ],
+    "icon": "🤖",
+    "tier": "epic"
+   },
+   {
+    "id": "inti_pertahanan",
+    "name": "Inti Pertahanan Bunker",
+    "level": 96,
+    "baseHp": 8.4,
+    "baseDamageMin": 0.8,
+    "baseDamageMax": 1.05,
+    "baseExpReward": 5.2,
+    "baseRupiahMin": 8,
+    "baseRupiahMax": 16,
+    "lootChance": 0.7,
+    "lootTable": [
+     "spare_parts",
+     "first_aid_kit_01"
+    ],
+    "icon": "🛡️",
+    "tier": "boss"
+   }
+  ],
+  "scavengeWeights": {
+   "scrap_metal": 30,
+   "spare_parts": 25,
+   "energy_drink_01": 15,
+   "water_bottle_01": 15,
+   "scrap_helmet": 8,
+   "tin_shield": 7
+  }
+ },
+ {
+  "id": "bali_enclave",
+  "name": "Bali Enclave",
+  "type": "safe_zone",
+  "faction": "bali_exclusive",
+  "description": "Wilayah eksklusif dan tertutup, sulit dimasuki pendatang baru. Alamnya masih hijau, kaya tanaman obat.",
+  "scavengeLoot": [
+   "herbs",
+   "water_bottle_01",
+   "canned_food_01",
+   "bandage_01",
+   "fang_necklace"
+  ],
+  "enemies": [
+   {
+    "id": "penyusup_enclave",
+    "name": "Penyusup Enclave",
+    "lootChance": 0.35,
+    "lootTable": [
+     "herbs"
+    ],
+    "icon": "🥷",
+    "level": 11,
+    "baseHp": 4.2,
+    "baseDamageMin": 0.7,
+    "baseDamageMax": 1.5,
+    "baseExpReward": 2.3,
+    "baseRupiahMin": 4.2,
+    "baseRupiahMax": 8.3,
+    "tier": "common"
+   },
+   {
+    "id": "dukun_bayangan",
+    "name": "Dukun Bayangan",
+    "level": 66,
+    "baseHp": 5.4,
+    "baseDamageMin": 1.0,
+    "baseDamageMax": 1.5,
+    "baseExpReward": 3.9,
+    "baseRupiahMin": 5,
+    "baseRupiahMax": 10,
+    "lootChance": 0.5,
+    "lootTable": [
+     "herbs",
+     "snake_venom"
+    ],
+    "icon": "🔮",
+    "tier": "epic"
+   },
+   {
+    "id": "penjaga_agung",
+    "name": "Penjaga Agung Enclave",
+    "level": 97,
+    "baseHp": 8.2,
+    "baseDamageMin": 0.8,
+    "baseDamageMax": 1.1,
+    "baseExpReward": 5.4,
+    "baseRupiahMin": 10,
+    "baseRupiahMax": 18,
+    "lootChance": 0.7,
+    "lootTable": [
+     "first_aid_kit_01",
+     "herbs"
+    ],
+    "icon": "🗿",
+    "tier": "boss"
+   }
+  ],
+  "scavengeWeights": {
+   "water_bottle_01": 40,
+   "herbs": 20,
+   "canned_food_01": 20,
+   "bandage_01": 10,
+   "fang_necklace": 10
+  }
+ },
+ {
+  "id": "jakarta_ruins",
+  "name": "Jakarta Ruins",
+  "type": "danger_zone",
+  "faction": null,
+  "description": "Reruntuhan ibu kota lama. Kaya akan loot langka, tapi bandit dan anjing liar berkeliaran di setiap sudut.",
+  "scavengeLoot": [
+   "scrap_metal",
+   "canned_food_01",
+   "spare_parts",
+   "first_aid_kit_01",
+   "leather_vest",
+   "rusty_knife_01"
+  ],
+  "enemies": [
+   {
+    "id": "bandit_jakarta",
+    "name": "Bandit Jakarta",
+    "lootChance": 0.4,
+    "lootTable": [
+     "scrap_metal",
+     "machete_01"
+    ],
+    "icon": "🔫",
+    "level": 12,
+    "baseHp": 7,
+    "baseDamageMin": 1.2,
+    "baseDamageMax": 2.5,
+    "baseExpReward": 3.8,
+    "baseRupiahMin": 6.2,
+    "baseRupiahMax": 13.8,
+    "tier": "common"
+   },
+   {
+    "id": "anjing_liar",
+    "name": "Anjing Liar",
+    "lootChance": 0.2,
+    "lootTable": [
+     "dog_fang",
+     "bone"
+    ],
+    "icon": "🐕",
+    "level": 4,
+    "baseHp": 8,
+    "baseDamageMin": 2,
+    "baseDamageMax": 4.4,
+    "baseExpReward": 4,
+    "baseRupiahMin": 2,
+    "baseRupiahMax": 6,
+    "tier": "common"
+   },
+   {
+    "id": "eksekutor_reruntuhan",
+    "name": "Eksekutor Reruntuhan",
+    "level": 55,
+    "baseHp": 5.5,
+    "baseDamageMin": 1.0,
+    "baseDamageMax": 1.5,
+    "baseExpReward": 3.5,
+    "baseRupiahMin": 5,
+    "baseRupiahMax": 11,
+    "lootChance": 0.5,
+    "lootTable": [
+     "scrap_metal",
+     "spare_parts"
+    ],
+    "icon": "🪓",
+    "tier": "epic"
+   },
+   {
+    "id": "tiran_jakarta",
+    "name": "Tiran Jakarta",
+    "level": 95,
+    "baseHp": 8,
+    "baseDamageMin": 0.8,
+    "baseDamageMax": 1.1,
+    "baseExpReward": 5,
+    "baseRupiahMin": 10,
+    "baseRupiahMax": 20,
+    "lootChance": 0.7,
+    "lootTable": [
+     "first_aid_kit_01",
+     "refined_metal",
+     "spare_parts"
+    ],
+    "icon": "👑",
+    "tier": "boss"
+   }
+  ],
+  "scavengeWeights": {
+   "scrap_metal": 35,
+   "spare_parts": 25,
+   "canned_food_01": 15,
+   "first_aid_kit_01": 10,
+   "leather_vest": 8,
+   "rusty_knife_01": 7
+  }
+ },
+ {
+  "id": "kalimantan_wilds",
+  "name": "Kalimantan Wilds",
+  "type": "wilderness",
+  "faction": "kalimantan_tribes",
+  "description": "Hutan liar yang dihuni suku-suku pemburu pasca-Collapse. Melimpah kayu dan tali, tapi babi hutan dan pemburu suku bisa menyerang tiba-tiba.",
+  "scavengeLoot": [
+   "wood_plank",
+   "rope",
+   "herbs",
+   "bandage_01",
+   "torn_jacket",
+   "ripped_pants"
+  ],
+  "enemies": [
+   {
+    "id": "babi_hutan",
+    "name": "Babi Hutan",
+    "lootChance": 0.3,
+    "lootTable": [
+     "wood_plank"
+    ],
+    "icon": "🐗",
+    "level": 16,
+    "baseHp": 3.8,
+    "baseDamageMin": 0.7,
+    "baseDamageMax": 1.4,
+    "baseExpReward": 2.1,
+    "baseRupiahMin": 0,
+    "baseRupiahMax": 1.2,
+    "tier": "uncommon",
+    "baseDefense": 2
+   },
+   {
+    "id": "pemburu_suku",
+    "name": "Pemburu Suku",
+    "lootChance": 0.35,
+    "lootTable": [
+     "rope",
+     "herbs"
+    ],
+    "icon": "🏹",
+    "level": 20,
+    "baseHp": 3.6,
+    "baseDamageMin": 0.7,
+    "baseDamageMax": 1.3,
+    "baseExpReward": 2.1,
+    "baseRupiahMin": 1.9,
+    "baseRupiahMax": 5.2,
+    "tier": "uncommon",
+    "baseDefense": 2
+   },
+   {
+    "id": "king_redbull",
+    "name": "King Redbull",
+    "lootChance": 0.75,
+    "lootTable": [
+     "rope",
+     "herbs",
+     "first_aid_kit_01"
+    ],
+    "icon": "👑",
+    "level": 99,
+    "baseHp": 5.5,
+    "baseDamageMin": 1.2,
+    "baseDamageMax": 2.0,
+    "baseExpReward": 4.0,
+    "baseRupiahMin": 5,
+    "baseRupiahMax": 10,
+    "tier": "boss",
+    "baseDefense": 4
+   },
+   {
+    "id": "serigala",
+    "name": "Serigala Liar",
+    "lootChance": 0.45,
+    "lootTable": [
+     "wolf_fang",
+     "wolf_fur",
+     "bone"
+    ],
+    "icon": "🐺",
+    "level": 18,
+    "baseHp": 3.6,
+    "baseDamageMin": 0.7,
+    "baseDamageMax": 1.4,
+    "baseExpReward": 2.1,
+    "baseRupiahMin": 1.1,
+    "baseRupiahMax": 3.2,
+    "tier": "uncommon",
+    "baseDefense": 2
+   },
+   {
+    "id": "beruang",
+    "name": "Beruang Madu",
+    "lootChance": 0.5,
+    "lootTable": [
+     "bear_fur",
+     "bone"
+    ],
+    "icon": "🐻",
+    "level": 26,
+    "baseHp": 5.2,
+    "baseDamageMin": 1.0,
+    "baseDamageMax": 1.8,
+    "baseExpReward": 3.3,
+    "baseRupiahMin": 2.2,
+    "baseRupiahMax": 5.2,
+    "tier": "uncommon",
+    "baseDefense": 3
+   },
+   {
+    "id": "macan_kumbang",
+    "name": "Macan Kumbang",
+    "level": 68,
+    "baseHp": 5.9,
+    "baseDamageMin": 1.1,
+    "baseDamageMax": 1.6,
+    "baseExpReward": 4.0,
+    "baseRupiahMin": 3,
+    "baseRupiahMax": 7,
+    "lootChance": 0.55,
+    "lootTable": [
+     "wolf_fur",
+     "bone"
+    ],
+    "icon": "🐆",
+    "tier": "epic",
+    "baseDefense": 3
+   },
+   {
+    "id": "behemoth_rimba",
+    "name": "Behemoth Rimba",
+    "level": 99,
+    "baseHp": 9,
+    "baseDamageMin": 0.85,
+    "baseDamageMax": 1.15,
+    "baseExpReward": 6,
+    "baseRupiahMin": 6,
+    "baseRupiahMax": 12,
+    "lootChance": 0.75,
+    "lootTable": [
+     "bear_fur",
+     "first_aid_kit_01",
+     "bone"
+    ],
+    "icon": "🦏",
+    "tier": "boss",
+    "baseDefense": 5
+   }
+  ],
+  "scavengeWeights": {
+   "wood_plank": 40,
+   "rope": 20,
+   "herbs": 15,
+   "bandage_01": 10,
+   "torn_jacket": 8,
+   "ripped_pants": 7
+  }
+ }
 ]

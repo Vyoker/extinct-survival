@@ -26,31 +26,47 @@ framework). Progres tersimpan di `localStorage`.
 - Elite Pass 100 level, jalur Free & Premium
 - Faksi: reputasi dan faction shop eksklusif
 - Shop dengan harga dinamis, quest bertahap, dan sistem Mail
+- Event Karhutla sekali jalan, dialog Visual Novel di semua misi, dan Sub Skill Karhutla
 - Top Up QRIS dengan verifikasi manual admin
 - Cloud Save: simpan dan pulihkan progres antar perangkat
 
-## Rilis Terbaru — v0.6.9
+## Rilis Terbaru — v0.7.3
 
-- **Perbaikan bug crafting:** item hasil craft tidak lagi bisa
-  hilang. Dulu, kalau tas penuh saat membuat item jenis baru
-  (mis. Homemade Pistol pertama), material sudah terpotong tapi
-  itemnya gagal masuk tas — dan game tetap bilang "Berhasil
-  membuat". Kini game memeriksa dulu apakah hasil craft muat di
-  tas sebelum memotong material; kalau tidak muat, craft ditolak
-  dan materialmu utuh. Lapisan pengaman kedua: bila hasil tetap
-  gagal masuk, semua material dikembalikan. Semua 32 resep sudah
-  diaudit dan dites satu per satu.
-- **UI Crafting v2:** tiap kartu resep kini menampilkan ikon item
-  hasil, ikon tiap material (dengan hitungan punya/butuh, mis.
-  Logam Tempa 1/2 — hijau kalau cukup, merah kalau kurang), badge
-  jumlah hasil (peluru x5/x3), dan ringkasan stat hasil (Damage,
-  Durabilitas, Crit, Jarak) supaya tidak perlu menebak sebelum
-  membuat.
+- **Chat & presence realtime:** chat global dan pemain online kini
+  realtime tanpa polling tiap 15 detik, jadi lebih ringan dan status
+  online langsung hilang saat koneksi putus. Bila layanan realtime
+  belum tersedia, game otomatis kembali ke cara lama — game tidak
+  rusak. Hosting, top-up, kredit, dan cloud save tetap seperti
+  sebelumnya.
+- **Event Karhutla (sekali jalan):** setelah cerita utama selesai,
+  kebakaran hutan dan lahan melanda Kalimantan Wilds. Ikuti 20 misi
+  berantai: ekspedisi, penyelamatan warga, pemadaman, sampai
+  menghadapi dalang di balik api, King Redbull.
+- **Visual Novel untuk semua misi:** setiap misi kini dibuka dan
+  ditutup dengan dialog karakter — 20 misi karhutla, 10 main quest,
+  10 side quest, dan 5 kontrak faksi — dengan potret pembicara dan
+  papan nama, gaya panel dialog Day R.
+- **Sub Skill Karhutla:** selesaikan event sampai akhir untuk
+  membuka skill pasif ini. Kayu dari Scavenge menjadi 2x lipat dan
+  peluang mendapat kayu naik 20%.
+- **Potret Visual Novel faksi:** dialog kini menampilkan potret
+  pembicara untuk Blue Tiger, Seafire, dan White Ghost, termasuk
+  figur karakter White Ghost lengkap.
+- **Efek atribut senjata & set armor:** senjata langka yang dipakai
+  kini bisa membakar, meracuni, melukai, atau membuat musuh pingsan
+  selama beberapa giliran (boss kebal pingsan). Set armor faksi yang
+  lengkap memberi bonus bertahan masing-masing, dan Zirah Elite Pass
+  memulihkan Defense tiap giliran.
+- **Musuh event lebih sulit:** selama misi event aktif, musuh event
+  (dan semua musuh di Kalimantan Wilds) punya HP, damage, dan Defense
+  dikali 5 dengan metode scaling yang sama seperti sebelumnya.
+  Hadiah EXP dan Rupiah tidak ikut naik.
+
 
 ## Teknologi
 
 Vanilla JavaScript (ES6, modul IIFE) · CSS custom properties ·
-Netlify Functions + Netlify Blobs untuk backend Top Up & Cloud Save.
+Netlify Functions + Netlify Blobs untuk backend Top Up & Cloud Save, plus Firebase Realtime Database untuk chat & presence (v0.7.0).
 
 ## Dibuat oleh
 

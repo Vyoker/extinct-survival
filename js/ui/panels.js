@@ -421,13 +421,30 @@ const Panels = (function () {
   // =========================================================
   // JELAJAH - Hunting (pilih target lalu masuk battle)
   // =========================================================
+  // v0.7.3 (revisi final, DIKUNCI x5): musuh event lebih sulit. Event
+  // di sini = event karhutla: berlaku bila pemain sedang memegang
+  // misi event yang aktif. Cakupannya: (a) musuh yang jadi target
+  // misi event aktif itu, di lokasi mana pun; dan (b) semua musuh
+  // di Kalimantan Wilds selama ada misi event aktif — karena event
+  // karhutla berlangsung di sana. Di luar itu, stat tetap normal.
+  function isEventHardEnemy(enemyId, locationId) {
+    try {
+      if (!window.QuestSystem) return false;
+      const eventQuests = QuestSystem.getAcceptedQuestsByCategory
+        ? QuestSystem.getAcceptedQuestsByCategory('event') : [];
+      if (!eventQuests || !eventQuests.length) return false;
+      if (locationId === 'kalimantan_wilds') return true;
+      return eventQuests.some(q => (q.objectives || []).some(o => o.enemyId === enemyId));
+    } catch (e) { return false; }
+  }
+
   function renderHuntingSelect() {
     const loc = Exploration.getCurrentLocation();
     const p = GameState.get().player;
     // v0.6.6: level & stat musuh di-generate dari level pemain.
     const enemies = ((loc && loc.enemies) || []).map(en =>
       (window.LocationDB && LocationDB.scaleEnemyForPlayer)
-        ? LocationDB.scaleEnemyForPlayer(en, p.level) : en);
+        ? LocationDB.scaleEnemyForPlayer(en, p.level, { eventHard: isEventHardEnemy(en.id, loc && loc.id) }) : en);
 
     const rows = enemies.map(en => {
       // v0.4.2: thumbnail ikon musuh dari aset gambar (fallback ikon template).
@@ -438,12 +455,13 @@ const Panels = (function () {
       // (bukan dari level) & level hasil generate dari level pemain
       const tier = en.tier || { color: '#f5f5f5', isBoss: false };
       const bossTag = tier.isBoss ? ' <span style="color:#ff3b3b; font-weight:bold; font-size:11px; letter-spacing:1px;">BOSS</span>' : '';
+      const eventTag = en.eventHard ? ' <span style="color:#ff7a2f; font-weight:bold; font-size:11px; letter-spacing:1px;">EVENT x5</span>' : '';
       return `
       <div class="card travel-row">
         <div class="huntIcon" style="border-color:${tier.color}; box-shadow:0 0 10px ${tier.color}55;">${iconHtml}</div>
         <div style="flex:1;min-width:0;">
-          <div class="location-name" style="font-size:13px;">${en.name} <span style="color:${tier.color}; font-size:11px; font-weight:bold;">Lv ${en.level || 1}</span>${bossTag}</div>
-          <p class="location-desc" style="margin:2px 0 0;">HP ${en.hp} • Damage ${en.damageMin}-${en.damageMax}</p>
+          <div class="location-name" style="font-size:13px;">${en.name} <span style="color:${tier.color}; font-size:11px; font-weight:bold;">Lv ${en.level || 1}</span>${bossTag}${eventTag}</div>
+          <p class="location-desc" style="margin:2px 0 0;">HP ${en.hp} • Damage ${en.damageMin}-${en.damageMax}${en.eventHard && en.armor ? ` • Def ${en.armor}` : ''}</p>
         </div>
         <button class="mini-btn" data-hunt-target="${en.id}">Buru</button>
       </div>`;
@@ -472,8 +490,10 @@ const Panels = (function () {
         if (!rawDef) return;
         // v0.6.6: battle memakai salinan musuh yang sudah di-scale
         // (level + stat dari level pemain), sama seperti daftar tampil.
+        // v0.7.3: pengali event yang sama dipakai di sini, supaya angka
+        // di daftar dan di battle tidak berbeda.
         const enemyDef = (window.LocationDB && LocationDB.scaleEnemyForPlayer)
-          ? LocationDB.scaleEnemyForPlayer(rawDef, p.level) : rawDef;
+          ? LocationDB.scaleEnemyForPlayer(rawDef, p.level, { eventHard: isEventHardEnemy(rawDef.id, loc && loc.id) }) : rawDef;
 
         p.energy -= Exploration.HUNTING_ENERGY_COST;
 
@@ -716,6 +736,7 @@ const Panels = (function () {
         </div>
         <div class="card">${statLines}</div>
         <p style="font-size:11px; color:var(--text-dim); line-height:1.5;">${def.description}</p>
+        ${(window.Effects && Effects.formatItemEffect(def)) ? `<p style="font-size:11px; color:#e8c26a; line-height:1.5;">${Effects.formatItemEffect(def)}</p>` : ''}
         <div class="mini-popup-actions">
           ${canUse ? `<button class="action-btn" id="ov-use-item" ${onCooldown ? 'disabled' : ''}>${useLabel}</button>` : ''}
           ${canEquip ? `<button class="action-btn" id="ov-equip-item">Pasang</button>` : ''}
@@ -928,9 +949,29 @@ const Panels = (function () {
       `;
     }).join('');
 
+    // Sub Skill Karhutla: kartu terpisah, tidak mengubah 3 kartu skill di atas.
+    // Terkunci = badge redup + syarat; aktif = badge penuh + efek pasif.
+    const karhutlaActive = (typeof window !== 'undefined' && window.SubSkillKarhutla)
+      ? window.SubSkillKarhutla.isUnlocked() : false;
+    const karhutlaCard = `
+      <div class="skill-card-mini" style="--rank-color:#cd7f32; --rank-glow:rgba(205,127,50,0.45);">
+        <div style="text-align:center; margin-bottom:6px;">
+          <img src="assets/images/badges/karhutla-badge.webp" alt="Badge Karhutla"
+            style="width:72px; height:72px; object-fit:cover; border-radius:8px; ${karhutlaActive ? '' : 'filter:grayscale(1); opacity:0.45;'}">
+        </div>
+        <div class="skill-mini-title">SUB SKILL KARHUTLA</div>
+        <div class="skill-mini-rank" style="color:#cd7f32;">${karhutlaActive ? 'AKTIF' : 'TERKUNCI'}</div>
+        <div class="skill-mini-bonus">${karhutlaActive
+          ? 'Kayu Scavenge x2, chance Kayu +20%'
+          : 'Selesaikan event karhutla (sekali jalan) untuk membuka.'}</div>
+      </div>
+    `;
+
     return `
       <h2 class="panel-title">${Icons.svg('medal')} Skills</h2>
       <div class="skills-grid">${cards}</div>
+      <h3 style="margin:16px 0 8px; font-size:13px; color:var(--text-primary);">Sub Skill</h3>
+      <div class="skills-grid">${karhutlaCard}</div>
       <div class="card" style="margin-top:14px;">
         <p style="font-size:11px; color:var(--text-dim); line-height:1.7;">
           <b style="color:var(--text-primary);">Cara naik:</b><br>
@@ -1611,6 +1652,7 @@ const Panels = (function () {
         </div>
         <div class="card">${statLines}</div>
         <p style="font-size:11px; color:var(--text-dim); line-height:1.5;">${def.description}</p>
+        ${(window.Effects && Effects.formatItemEffect(def)) ? `<p style="font-size:11px; color:#e8c26a; line-height:1.5;">${Effects.formatItemEffect(def)}</p>` : ''}
         <div class="mini-popup-actions">
           <button class="action-btn" id="fi-buy" ${check.ok ? '' : 'disabled'}>${check.ok ? 'Tukar Koin' : check.reason}</button>
         </div>
@@ -1696,7 +1738,7 @@ const Panels = (function () {
   // detail item Tas / Shop) berisi objective, hadiah, dan tombol aksi
   // (Ambil / Klaim / Batalkan tergantung status misi itu).
   // =========================================================
-  let questTab = 'main'; // 'main' | 'side' | 'contract' (v0.4.9)
+  let questTab = 'main'; // 'main' | 'side' | 'contract' (v0.4.9) | 'event' (v0.7.1)
 
   function renderQuestRow(quest, statusLabel, statusColor) {
     return `
@@ -1727,9 +1769,10 @@ const Panels = (function () {
       renderQuestRow(q, 'Belum diambil — tap untuk lihat detail', 'var(--text-dim)')
     ).join('');
 
-    const tabLabel = questTab === 'main' ? 'utama' : questTab === 'contract' ? 'kontrak faksi' : 'sampingan';
+    const tabLabel = questTab === 'main' ? 'utama' : questTab === 'contract' ? 'kontrak faksi' : questTab === 'event' ? 'event' : 'sampingan';
     const tabCap = questTab === 'main' ? QuestSystem.MAX_ACTIVE_MAIN
-      : questTab === 'contract' ? QuestSystem.MAX_ACTIVE_CONTRACT : QuestSystem.MAX_ACTIVE_SIDE;
+      : questTab === 'contract' ? QuestSystem.MAX_ACTIVE_CONTRACT
+      : questTab === 'event' ? QuestSystem.MAX_ACTIVE_EVENT : QuestSystem.MAX_ACTIVE_SIDE;
     const emptyMsg = (accepted.length === 0 && available.length === 0)
       ? `<p style="font-size:12px; color:var(--text-dim); text-align:center; padding:14px 0;">Tidak ada misi ${tabLabel} saat ini.</p>`
       : '';
@@ -1743,6 +1786,7 @@ const Panels = (function () {
         <div class="segmented-tab ${questTab === 'main' ? 'active' : ''}" id="quest-tab-main">Main Quest</div>
         <div class="segmented-tab ${questTab === 'side' ? 'active' : ''}" id="quest-tab-side">Side Quest</div>
         <div class="segmented-tab ${questTab === 'contract' ? 'active' : ''}" id="quest-tab-contract">Kontrak Faksi</div>
+        <div class="segmented-tab ${questTab === 'event' ? 'active' : ''}" id="quest-tab-event">Event</div>
       </div>
       ${emptyMsg}
       ${accepted.length > 0 ? `<div style="color:var(--accent-orange); font-size:11px; margin:10px 0 6px;">SEDANG DIAMBIL (${accepted.length}/${tabCap})</div>${acceptedRows}` : ''}
@@ -1769,12 +1813,27 @@ const Panels = (function () {
       const mainTab = panel.querySelector('#quest-tab-main');
       const sideTab = panel.querySelector('#quest-tab-side');
       const contractTab = panel.querySelector('#quest-tab-contract');
+      const eventTab = panel.querySelector('#quest-tab-event');
       if (mainTab) mainTab.addEventListener('click', () => { questTab = 'main'; refreshQuestListPanel(); });
       if (sideTab) sideTab.addEventListener('click', () => { questTab = 'side'; refreshQuestListPanel(); });
       if (contractTab) contractTab.addEventListener('click', () => { questTab = 'contract'; refreshQuestListPanel(); });
+      if (eventTab) eventTab.addEventListener('click', () => { questTab = 'event'; refreshQuestListPanel(); });
 
       panel.querySelectorAll('[data-quest-row]').forEach(row => {
-        row.addEventListener('click', () => openQuestDetail(row.dataset.questRow));
+        row.addEventListener('click', () => {
+          // v0.7.3-fix VN: dialog pembuka tampil SEGERA saat baris misi
+          // ditap (bukan tersembunyi di balik tombol Ambil), lalu detail
+          // misi dibuka sesudah dialog ditutup. Misi yang sudah diambil
+          // langsung ke detail (dialognya bisa diputar ulang dari tombol
+          // Lihat Dialog di detail).
+          const qid = row.dataset.questRow;
+          if (typeof window !== 'undefined' && window.VN
+            && !QuestSystem.isAccepted(qid) && VN.has(qid, 'open')) {
+            VN.show(qid, 'open', () => openQuestDetail(qid));
+          } else {
+            openQuestDetail(qid);
+          }
+        });
       });
     };
 
@@ -1805,6 +1864,16 @@ const Panels = (function () {
     if (rewards.exp) rewardParts.push(`+${rewards.exp} EXP`);
     if (rewards.rupiah) rewardParts.push(`+Rp ${rewards.rupiah.toLocaleString('id-ID')}`);
     if (rewards.kredit) rewardParts.push(`+${rewards.kredit} 💎 Kredit`);
+    // v0.7.3: tampilkan hadiah item (mis. Kapak Karhutla Api) di detail misi.
+    if (Array.isArray(rewards.items)) {
+      rewards.items.forEach(entry => {
+        const itemId = typeof entry === 'string' ? entry : entry.itemId;
+        const qty = typeof entry === 'string' ? 1 : (entry.qty || 1);
+        const itemName = (typeof window !== 'undefined' && window.ItemDB && ItemDB.get(itemId))
+          ? ItemDB.get(itemId).name : itemId;
+        rewardParts.push(`+${qty}x ${itemName}`);
+      });
+    }
 
     let objectiveRows = '';
     let ready = false;
@@ -1826,11 +1895,21 @@ const Panels = (function () {
       `).join('');
     }
 
-    const categoryBadge = quest.category === 'main' ? '⭐ Main Quest' : '📌 Side Quest';
+    const categoryBadge = quest.category === 'main' ? '⭐ Main Quest'
+      : quest.category === 'contract' ? '🤝 Kontrak Faksi'
+      : quest.category === 'event' ? '🔥 Event Karhutla' : '📌 Side Quest';
+
+    // Tombol putar ulang dialog, supaya VN tidak pernah tersembunyi:
+    // misi yang sudah diambil (mis. prolog yang auto-accept) tetap
+    // bisa melihat dialog pembukanya dari sini.
+    const vnButton = (typeof window !== 'undefined' && window.VN && VN.has(questId, 'open'))
+      ? '<button class="action-btn secondary" id="qd-vn">Lihat Dialog</button>'
+      : '';
 
     let actionsHtml;
     if (accepted) {
       actionsHtml = `
+        ${vnButton}
         <button class="action-btn" id="qd-claim" ${ready ? '' : 'disabled'}>
           ${ready ? '🎁 Klaim Hadiah' : 'Objective belum lengkap'}
         </button>
@@ -1838,7 +1917,7 @@ const Panels = (function () {
       `;
     } else {
       const check = QuestSystem.canAccept(questId);
-      actionsHtml = `<button class="action-btn" id="qd-accept" ${check.ok ? '' : 'disabled'}>${check.ok ? '📋 Ambil Misi' : check.reason}</button>`;
+      actionsHtml = `${vnButton}<button class="action-btn" id="qd-accept" ${check.ok ? '' : 'disabled'}>${check.ok ? '📋 Ambil Misi' : check.reason}</button>`;
     }
 
     return `
@@ -1871,8 +1950,21 @@ const Panels = (function () {
       const closeBtn = panel.querySelector('#qd-close');
       if (closeBtn) closeBtn.addEventListener('click', () => OverlayManager.close(popId));
 
+      const vnBtn = panel.querySelector('#qd-vn');
+      if (vnBtn) vnBtn.addEventListener('click', () => {
+        // Putar ulang dialog pembuka, lalu kembali ke detail yang sama.
+        // Tutup detail dulu supaya VN tidak jadi layer ke-3 yang ditolak
+        // OverlayManager MAX_DEPTH 2.
+        OverlayManager.close(popId);
+        VN.show(questId, 'open', () => openQuestDetail(questId));
+      });
+
       const acceptBtn = panel.querySelector('#qd-accept');
       if (acceptBtn) acceptBtn.addEventListener('click', () => {
+        // v0.7.3-fix VN: dialog pembuka SUDAH tampil saat baris misi
+        // ditap, jadi Ambil langsung accept tanpa memutar dialog lagi.
+        // Kalau detail dibuka tanpa lewat baris, dialog tetap bisa
+        // diputar dari tombol Lihat Dialog di atas.
         QuestSystem.acceptQuest(questId);
         OverlayManager.close(popId);
         refreshQuestListPanel();
@@ -1884,8 +1976,16 @@ const Panels = (function () {
         const ok = QuestSystem.claimQuest(questId);
         if (ok) {
           OverlayManager.close(popId);
-          refreshQuestListPanel();
-          Renderer.renderHUD();
+          // v0.7.1 VN: dialog penutup sesudah claim (hadiah sudah masuk).
+          const afterVN = () => {
+            refreshQuestListPanel();
+            Renderer.renderHUD();
+          };
+          if (typeof window !== 'undefined' && window.VN && VN.has(questId, 'close')) {
+            VN.show(questId, 'close', afterVN);
+          } else {
+            afterVN();
+          }
         }
       });
 

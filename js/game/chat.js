@@ -15,6 +15,10 @@
  *
  * Berfungsi penuh hanya di deploy Netlify; di build statis panel
  * menampilkan pesan tidak dapat terhubung.
+ *
+ * v0.7.0: bila Firebase RTDB terkonfigurasi, chat pindah ke RTDB
+ * (listener realtime, tanpa polling Netlify). Bila tidak, fallback
+ * ke Netlify Functions lama seperti di atas.
  */
 const GlobalChat = (function () {
   'use strict';
@@ -31,6 +35,13 @@ const GlobalChat = (function () {
   var cooldownUntil = 0;
   var messages = [];
   var sending = false;
+  // v0.7.0: mode Firebase RTDB (listener, bukan polling). Fallback Netlify.
+  var fbMode = false;
+  var fbUnsub = null;
+
+  function useFirebase() {
+    return !!(window.ESFirebase && ESFirebase.isEnabled());
+  }
 
   function ic(name) {
     return window.Icons ? Icons.svg(name) : '';
@@ -162,6 +173,16 @@ const GlobalChat = (function () {
   // ---- jaringan ----
 
   async function fetchMessages() {
+    // v0.7.0 Firebase: listener sudah berjalan selama panel terbuka.
+    if (fbMode && window.ESFirebase) {
+      if (!fbUnsub) {
+        fbUnsub = ESFirebase.onMessages(function (msgs) {
+          messages = msgs;
+          refreshMessagesView(true);
+        });
+      }
+      return true;
+    }
     try {
       var res = await fetch(API_BASE + '/chat');
       var data = await res.json().catch(function () { return null; });
@@ -185,6 +206,27 @@ const GlobalChat = (function () {
 
     sending = true;
     var p = GameState.get().player;
+    // v0.7.0 Firebase: kirim via RTDB, role selalu player.
+    if (fbMode && window.ESFirebase) {
+      try {
+        var fbRes = await ESFirebase.sendMessage({ pid: getPid(), name: p.name, level: p.level, text: text });
+        if (!fbRes.ok) {
+          setStatus(fbRes.error || 'Gagal mengirim pesan.', true);
+          if (fbRes.retryAfterSec) startCooldown(fbRes.retryAfterSec);
+          return;
+        }
+        input.value = '';
+        updateCounter(panel);
+        setStatus('');
+        refreshMessagesView(false);
+        startCooldown(fbRes.cooldownSec || 15);
+      } catch (e) {
+        setStatus('Tidak dapat terhubung ke server chat Firebase.', true);
+      } finally {
+        sending = false;
+      }
+      return;
+    }
     var headers = { 'Content-Type': 'application/json' };
     var pw = getAdminPw();
     if (pw) headers['x-chat-admin'] = pw;
@@ -226,6 +268,8 @@ const GlobalChat = (function () {
   // ---- polling (hanya selama panel terbuka) ----
 
   function startPolling() {
+    // v0.7.0 Firebase: listener menggantikan polling.
+    if (fbMode) return;
     stopPolling();
     pollTimer = setInterval(function () {
       if (!panelEl()) { stopPolling(); return; }
@@ -253,6 +297,12 @@ const GlobalChat = (function () {
 
     var adminBtn = panel.querySelector('#chat-admin-toggle');
     if (adminBtn) adminBtn.addEventListener('click', function () {
+      // v0.7.0 Firebase: badge ADMIN tidak bisa diklaim dari klien.
+      // Moderasi (hapus/ban) hanya lewat dashboard admin.
+      if (fbMode) {
+        Events.emit('notify', { message: 'Mode Firebase: moderasi chat lewat dashboard admin, bukan dari panel ini.' });
+        return;
+      }
       if (getAdminPw()) {
         setAdminPw('');
         Events.emit('notify', { message: 'Mode Admin chat dimatikan.' });
@@ -272,6 +322,9 @@ const GlobalChat = (function () {
   }
 
   function open() {
+    // v0.7.0: Presence.start() sudah menginisialisasi Firebase bila
+    // config ada; chat mengikuti status itu (bukan init ulang).
+    fbMode = useFirebase();
     overlayId = OverlayManager.open(renderPanelHtml(), { closeOnBackdrop: true });
     // OverlayManager memasang panel secara sinkron — ikat event
     // langsung (tanpa menunggu frame animasi) supaya panel siap
@@ -291,6 +344,7 @@ const GlobalChat = (function () {
 
   function close() {
     stopPolling();
+    if (fbUnsub) { try { fbUnsub(); } catch (e) {} fbUnsub = null; }
     if (cooldownTimer) { clearInterval(cooldownTimer); cooldownTimer = null; }
     if (overlayId) OverlayManager.close(overlayId);
     overlayId = null;

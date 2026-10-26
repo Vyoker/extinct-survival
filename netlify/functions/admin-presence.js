@@ -10,7 +10,8 @@
 const { isAdminAuthorized } = require('./utils/auth');
 const { json } = require('./utils/response');
 const { getPresenceStore } = require('./utils/blob-store');
-const { isOnline, listPresence } = require('./utils/presence');
+const { isOnline } = require('./utils/presence');
+const { getPresenceRecords } = require('./utils/presence-source');
 
 const RECENT_MS = 24 * 60 * 60 * 1000;
 const MAX_LIST = 300;
@@ -21,7 +22,7 @@ exports.handler = async (event) => {
 
   const store = getPresenceStore();
   const now = Date.now();
-  const records = await listPresence(store, now);
+  const records = await getPresenceRecords(store, now);
 
   const players = records
     .filter(r => now - r.lastSeen <= RECENT_MS)

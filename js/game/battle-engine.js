@@ -14,6 +14,17 @@
  * - Popup tempur di karakter: "MISS" saat serangan meleset,
  *   "CRITICAL" saat kritis, "Perisai Hancur" saat Defense habis.
  *
+ * v0.7.3 (Efek Atribut Senjata & Set Armor):
+ * - Senjata yang di-equip bisa menempelkan status Burn / Poison /
+ *   Bleeding / Stun sesuai data effect di items.json (peluang 5-25%).
+ *   DoT menetes tiap awal giliran target dan DISERAP Defense dulu,
+ *   sama seperti damage biasa. Status yang sama tidak menumpuk,
+ *   hanya memperbarui durasi. Boss kebal Stun.
+ * - Bonus armor dari config.player.armorBonus (dihitung BattleBridge
+ *   via Effects): set faksi hanya aktif bila 3/3 terpasang, standalone
+ *   (Elite Pass/event) aktif cukup satu piece, resist per piece aktif
+ *   bila piece itu terpasang.
+ *
  * Hook integrasi tambahan (di luar file asli, utk nyambung ke game):
  *  - config.onWeaponUse(weapon): dipanggil tiap kali player berhasil
  *    menyerang (dipakai utk kurangi durability senjata asli)
@@ -237,6 +248,7 @@ function renderEnemyStrip(){
           <span>${ic('shield')} ${u.armor||0}</span>
           <span class="dmg">${ic('fang')} ${u.dmgMin}-${u.dmgMax}</span>
         </div>
+        ${(u.statuses && u.statuses.length) ? `<div class="eStatus">${u.statuses.map(s => `<span class="statusBadge ${statusCss(s.type)}">${statusLabel(s.type)} ${s.turnsLeft}</span>`).join('')}</div>` : ''}
       </div>
     `;
     if(u.alive){
@@ -318,6 +330,13 @@ function renderBoard(){
         df.innerHTML = `<i style="width:${Math.max(0,u.armor/u.maxArmor*100)}%"></i>`;
         tok.appendChild(df);
       }
+      // v0.7.3: label status aktif di token (BURN/RACUN/BLEED/STUN + sisa giliran)
+      if(u.statuses && u.statuses.length){
+        const st = document.createElement('div');
+        st.className='miniStatus';
+        st.textContent = u.statuses.map(s => statusLabel(s.type) + ' ' + s.turnsLeft).join(' ');
+        tok.appendChild(st);
+      }
       el.appendChild(tok);
     }
     board.appendChild(el);
@@ -365,6 +384,7 @@ function renderActions(){
           <div class="actStats">
             <span>${ic('crosshair')} ${w.dmgMin}–${w.dmgMax}</span>
             ${w.ammo!==null ? `<span>${ic('bullet')} ${w.ammo}/${w.maxAmmo}</span>` : ''}
+            ${(w.effect && window.Effects) ? `<span class="actEffect">${Effects.weaponEffectShort(w.effect)}</span>` : ''}
           </div>
         </div>
       </div>
@@ -457,6 +477,12 @@ function tryAttackUnit(target){
       // papan dan akan menghapus popup yang sudah terlanjur dibuat.
       render();
       showHitFloats(findUnitTileEl(target.id), res, dmg, isCrit);
+      // v0.7.3: efek senjata — hanya bila target masih hidup dan
+      // pukulan mengenai (bukan MISS). Peluang dari data effect item.
+      if(target.alive && w.effect && Math.random()*100 < (w.effect.chance || 0)){
+        applyStatus(target, w.effect, dmg);
+        render();
+      }
     } else {
       if (window.AudioManager) AudioManager.sfx('miss'); // v0.3.8
       render();
@@ -633,6 +659,123 @@ function showHitFloats(tileEl, res, totalDmg, isCrit){
   if(res.brokeShield) spawnFloatText(tileEl, 'Perisai Hancur', 'shieldbreak', 34);
 }
 
+/* ---------------- STATUS EFEK v0.7.3 ----------------
+   Status disimpan di unit.statuses: [{type, turnsLeft, dot}].
+   - DoT (burn/poison/bleeding): dot = damage per giliran, dihitung
+     dari damage pukulan pemicu x dotPct. Menetes di awal giliran
+     target lewat tickStatuses(), dan lewat applyDamage() sehingga
+     tetap diserap Defense dulu.
+   - Stun: turnsLeft 1, target kehilangan giliran berikutnya.
+     Boss (unit.isBoss) kebal Stun.
+   - Resist pemain (dari armorBonus): dicek di sini, bukan di
+     pemanggil, supaya berlaku untuk semua sumber status. */
+function statusLabel(type){
+  if (window.Effects && Effects.STATUS_LABEL && Effects.STATUS_LABEL[type]) return Effects.STATUS_LABEL[type];
+  return (type || '').toUpperCase();
+}
+function statusCss(type){
+  if (window.Effects && Effects.STATUS_CSS && Effects.STATUS_CSS[type]) return Effects.STATUS_CSS[type];
+  return type || '';
+}
+function hasStatus(unit, type){
+  return !!(unit.statuses || []).find(s => s.type === type);
+}
+function playerArmorBonus(){
+  const p = state && state.units && state.units[0];
+  return (p && p.armorBonus) || null;
+}
+function applyStatus(target, effect, baseDmg){
+  if(!target || !target.alive || !effect || !effect.type) return false;
+  const tileEl = findUnitTileEl(target.id);
+  // Boss kebal Stun (aturan dikunci user).
+  if(effect.type === 'stun' && target.isBoss){
+    spawnFloatText(tileEl, 'KEBAL STUN', 'immune', 34);
+    return false;
+  }
+  // Resist pemain: resist spesifik dulu, lalu resist status umum
+  // dari set Mojang. Keduanya peluang, bukan kebal total.
+  if(target.isPlayer){
+    const bonus = playerArmorBonus();
+    if(bonus){
+      const specific = (bonus.resists && bonus.resists[effect.type]) || 0;
+      if(specific > 0 && Math.random()*100 < specific){
+        spawnFloatText(tileEl, 'TAHAN', 'immune', 34);
+        return false;
+      }
+      if(bonus.statusResistChance > 0 && Math.random()*100 < bonus.statusResistChance){
+        spawnFloatText(tileEl, 'TAHAN', 'immune', 34);
+        return false;
+      }
+    }
+  }
+  const dot = effect.dotPct ? Math.max(1, Math.round((baseDmg || 0) * effect.dotPct / 100)) : 0;
+  const existing = (target.statuses || []).find(s => s.type === effect.type);
+  if(existing){
+    existing.turnsLeft = effect.duration || 1;
+    existing.dot = dot;
+  } else {
+    if(!target.statuses) target.statuses = [];
+    target.statuses.push({ type: effect.type, turnsLeft: effect.duration || 1, dot: dot });
+  }
+  spawnFloatText(tileEl, statusLabel(effect.type), statusCss(effect.type), 34);
+  return true;
+}
+// Meneteskan semua DoT di awal giliran unit. Mengembalikan true
+// bila unit mati karena DoT (pemanggil yang menandai skip giliran).
+function tickStatuses(unit){
+  if(!unit || !unit.alive || !unit.statuses || !unit.statuses.length) return false;
+  let died = false;
+  const tileEl = findUnitTileEl(unit.id);
+  // Salinan daftar karena status kedaluwarsa dihapus saat iterasi.
+  unit.statuses.slice().forEach(s => {
+    if(s.type === 'stun' || !unit.alive) return;
+    if(s.dot > 0){
+      const res = applyDamage(unit, s.dot);
+      const shown = res.hpDmg > 0 ? res.hpDmg : s.dot;
+      spawnFloatText(tileEl, '-' + shown + ' ' + statusLabel(s.type), statusCss(s.type), 10);
+    }
+    s.turnsLeft -= 1;
+    if(s.turnsLeft <= 0){
+      unit.statuses = unit.statuses.filter(x => x !== s);
+    }
+    if(unit.hp <= 0){
+      unit.hp = 0;
+      unit.alive = false;
+      died = true;
+    }
+  });
+  return died;
+}
+function consumeStun(unit){
+  if(!unit.statuses) return false;
+  const had = hasStatus(unit, 'stun');
+  if(had) unit.statuses = unit.statuses.filter(s => s.type !== 'stun');
+  return had;
+}
+// Awal giliran pemain: bersihkan DoT (White Ghost), tetesi DoT,
+// lalu regen Defense (Elite Pass) kecuali masih kena Poison —
+// Poison memblokir regen Defense sesuai draf yang disetujui.
+function applyPlayerTurnStart(){
+  const p = state.units[0];
+  if(!p.alive) return false;
+  const bonus = playerArmorBonus();
+  if(bonus && bonus.cleanseChance > 0){
+    const dots = (p.statuses || []).filter(s => s.type !== 'stun');
+    if(dots.length > 0 && Math.random()*100 < bonus.cleanseChance){
+      const removed = dots[0];
+      p.statuses = p.statuses.filter(s => s !== removed);
+      spawnFloatText(findUnitTileEl(p.id), 'BERSIH', 'immune', 34);
+    }
+  }
+  tickStatuses(p);
+  if(p.alive && bonus && bonus.defenseRegen > 0 && !hasStatus(p, 'poison')){
+    const before = p.armor;
+    p.armor = Math.min(p.maxArmor || p.armor, p.armor + bonus.defenseRegen);
+    if(p.armor > before) spawnFloatText(findUnitTileEl(p.id), '+' + (p.armor - before) + ' DEF', 'shield', 34);
+  }
+  return p.alive;
+}
+
 function showBanner(text){
   const b = document.getElementById('banner');
   b.textContent = text;
@@ -669,6 +812,26 @@ function runEnemyTurn(){
       return;
     }
     const e = enemies[i];
+    // v0.7.3: awal giliran musuh — DoT menetes dulu (lewat Defense),
+    // lalu Stun menghabiskan giliran ini tanpa menyerang.
+    const diedByDot = tickStatuses(e);
+    if(diedByDot){
+      if (window.AudioManager) AudioManager.sfx('hit');
+      showBanner((e.name)+' tumbang!');
+      render();
+      i++;
+      setTimeout(step, 250);
+      return;
+    }
+    if(consumeStun(e)){
+      state.actingUnitId = e.id;
+      render();
+      spawnFloatText(findUnitTileEl(e.id), 'STUN', 'stun', 10);
+      i++;
+      state.actingUnitId = null;
+      setTimeout(step, 400);
+      return;
+    }
     state.actingUnitId = e.id;
     render();
     setTimeout(()=>{
@@ -693,6 +856,23 @@ function enemyAct(e, done){
     if(dist(e,p)<=1 && p.alive){
       if (window.AudioManager) AudioManager.sfx('swing'); // v0.3.8
       animateAttack(e.id, p.id, ()=>{
+        // v0.7.3: bonus armor pemain — menghindar (Blue Tiger) dan
+        // tangkis (Perisai) dicek sebelum lemparan kena/meleset.
+        const bonus = playerArmorBonus();
+        if(bonus && bonus.dodgeChance > 0 && Math.random()*100 < bonus.dodgeChance){
+          if (window.AudioManager) AudioManager.sfx('miss');
+          render();
+          spawnFloatText(findUnitTileEl(p.id), 'HINDAR', 'immune');
+          finish();
+          return;
+        }
+        if(bonus && bonus.blockChance > 0 && Math.random()*100 < bonus.blockChance){
+          if (window.AudioManager) AudioManager.sfx('miss');
+          render();
+          spawnFloatText(findUnitTileEl(p.id), 'TANGKIS', 'shield');
+          finish();
+          return;
+        }
         // v0.6.4: serangan musuh kini juga bisa meleset & kritis
         const hitChance = clamp(92 - dist(e,p)*4, 25, 97);
         if(Math.random()*100 > hitChance){
@@ -706,11 +886,24 @@ function enemyAct(e, done){
         const isCrit = (Math.random()*100) < critChance;
         let dmg = Math.round(rand(e.dmgMin,e.dmgMax));
         if(isCrit) dmg = Math.round(dmg * 1.5);
+        // v0.7.3: Iron Guard (Viking) — peluang damage masuk dipotong.
+        let guarded = false;
+        if(bonus && bonus.ironGuardChance > 0 && Math.random()*100 < bonus.ironGuardChance){
+          dmg = Math.round(dmg * (1 - (bonus.ironGuardReductionPct || 50) / 100));
+          guarded = true;
+        }
         // v0.6.4: Defense pemain menyerap damage sebelum HP
         const res = applyDamage(p, dmg);
         if (window.AudioManager) AudioManager.sfx(isCrit ? 'crit' : 'hit'); // v0.3.8
         render();
         showHitFloats(findUnitTileEl(p.id), res, dmg, isCrit);
+        if(guarded) spawnFloatText(findUnitTileEl(p.id), 'TAHAN', 'shield', 34);
+        // v0.7.3: Burn Reflect (Seafire) — hanya serangan melee (di
+        // sini jarak selalu <=1) dan hanya bila penyerang masih hidup.
+        if(bonus && bonus.burnReflect && e.alive && Math.random()*100 < bonus.burnReflect.chance){
+          applyStatus(e, { type: 'burn', chance: bonus.burnReflect.chance, duration: bonus.burnReflect.duration, dotPct: bonus.burnReflect.dotPct }, dmg);
+          render();
+        }
         finish();
       });
     } else {
@@ -747,6 +940,18 @@ function enemyAct(e, done){
 
 function finishEnemyTurn(){
   const p = state.units[0];
+  // v0.7.3: awal giliran pemain — DoT menetes, regen Defense jalan
+  // (kecuali kena Poison). Bila pemain kena Stun (saat ini belum ada
+  // sumbernya dari musuh, tapi disiapkan untuk nanti), giliran ini
+  // hangus: Stun dikonsumsi lalu langsung giliran musuh lagi.
+  if(p.alive && consumeStun(p)){
+    render();
+    spawnFloatText(findUnitTileEl(p.id), 'STUN', 'stun', 10);
+    state.turn = 'enemy';
+    setTimeout(runEnemyTurn, 400);
+    return;
+  }
+  if(p.alive) applyPlayerTurnStart();
   // v0.6.8 Battle System v6: AP TIDAK lagi full refill tiap giliran.
   // Isi ulang bertahap, dibatasi plafon AP: beraksi di giliran tadi
   // -> +1 AP, akhiri giliran tanpa aksi sama sekali -> +2 AP.
@@ -816,6 +1021,8 @@ function start(config){
   const player = Object.assign({
     id:'player', isPlayer:true, alive:true, x:1, y:rows-2
   }, config.player);
+  player.statuses = []; // v0.7.3: status aktif (Burn/Poison/Bleeding/Stun)
+  player.armorBonus = config.player.armorBonus || null; // v0.7.3
   player.maxArmor = player.armor;
   if(typeof player.critChance !== 'number') player.critChance = 5; // v0.6.4
   player.ap = player.maxAp;
@@ -833,6 +1040,7 @@ function start(config){
       id:'e'+idx, isPlayer:false, alive:true, moveRange:3, armor:0, critChance:10,
       x:spot.x, y:spot.y
     }, e);
+    u.statuses = []; // v0.7.3
     u.maxArmor = u.armor || 0; // v0.6.4: plafon perisai musuh
     return u;
   });

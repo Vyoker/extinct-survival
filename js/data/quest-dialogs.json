@@ -1,0 +1,498 @@
+{
+  "karhutla_01_asap_rimba": {
+    "close": [
+      "Perbekalan sudah lengkap. Bagus. Sekarang kita tidak berangkat buta-buta. Kita berangkat dengan bekal."
+    ],
+    "open": [
+      "Asap itu sudah tiga hari tidak hilang. Bukan asap dapur, bukan kabut pagi. Rimba di timur terbakar, dan angin membawanya ke arah pemukiman.",
+      "Aku butuh tim yang bisa jalan dulu sebelum api jalan lebih jauh. Siapkan air dan makanan kaleng. Kita berangkat selagi jalan masih bisa dilewati."
+    ],
+    "portrait": "",
+    "speaker": "Kepala Pos Kalimantan"
+  },
+  "karhutla_02_menara_pantau": {
+    "close": [
+      "Dari menara ini, titik api terlihat jelas. Sekarang kita tahu ke mana harus lari, dan ke mana harus melawan."
+    ],
+    "open": [
+      "Api tidak bergerak lurus. Ia melompat lewat semak kering, lalu diam di tanah basah. Kalau kau tidak tahu polanya, kau akan dikepung dari belakang.",
+      "Bangun menara pantau dari kayu dan tali. Dari atas, kita bisa membaca arah api sebelum ia membaca kita."
+    ],
+    "portrait": "assets/images/character/vn_bluetiger.png",
+    "speaker": "Pelacak Blue Tiger"
+  },
+  "karhutla_03_jejak_panas": {
+    "close": [
+      "Jalur sudah bersih. Hewan-hewan itu sudah menjauh, dan kita bisa bergerak tanpa dikejar dari dua arah."
+    ],
+    "open": [
+      "Serigala-serigala itu bukan menyerang karena lapar. Mereka kabur dari api, dan jalur kabur mereka memotong jalur kita.",
+      "Bersihkan jalur itu. Jangan biarkan hewan yang panik menjadi penghalang kedua setelah api."
+    ],
+    "portrait": "assets/images/character/vn_bluetiger.png",
+    "speaker": "Pelacak Blue Tiger"
+  },
+  "karhutla_04_pos_pantau": {
+    "close": [
+      "Pos sudah berdiri. Alat pantau sudah jalan. Mulai sekarang, setiap titik api baru akan ketahuan sebelum membesar."
+    ],
+    "open": [
+      "Pos pantau tanpa bahan itu cuma tenda. Aku butuh kayu untuk rangka dan besi rongsokan untuk peralatan. Tanpa itu, kita cuma menebak-nebak.",
+      "Bawa materialnya. Nanti aku yang merakit, kau yang menjaga agar api tidak sampai ke sini dulu."
+    ],
+    "portrait": "",
+    "speaker": "Teknisi Bandung Collective"
+  },
+  "karhutla_05_kabut_tidak_wajar": {
+    "close": [
+      "Tim survei kembali dengan selamat, dan kabar yang mereka bawa menguatkan dugaanku. Api ini tidak sepenuhnya alami."
+    ],
+    "open": [
+      "Rimba ini sudah kenal api. Api musim kemarau punya bau sendiri. Yang ini berbeda. Ia muncul di tempat yang tidak seharusnya terbakar.",
+      "Bawa herbal dan perban untuk tim survei. Dan dengarkan baik-baik: kalau kau menemukan sesuatu yang sengaja dibuat, jangan diam."
+    ],
+    "portrait": "assets/images/enemies/dukun_bayangan.webp",
+    "speaker": "Dukun Suku"
+  },
+  "karhutla_06_jalur_evakuasi": {
+    "close": [
+      "Jalur evakuasi sudah terbuka dan ditandai. Sekarang warga punya jalan keluar, bukan cuma doa."
+    ],
+    "open": [
+      "Warga di tiga dusun harus keluar sebelum malam. Jalan utama sudah tertutup asap, jadi kita buka jalur kedua lewat tepi rimba.",
+      "Tali untuk tandu dan penanda, kayu untuk jembatan darurat. Kalau jalur ini gagal, mereka terjebak di antara api dan sungai."
+    ],
+    "portrait": "",
+    "speaker": "Kepala Pos Kalimantan"
+  },
+  "karhutla_07_napas_terjebak": {
+    "close": [
+      "Mereka yang terjebak sudah bisa bernapas lagi. Ada yang batuk, ada yang lemas, tapi tidak ada yang tertinggal."
+    ],
+    "open": [
+      "Yang paling berbahaya dari kebakaran bukan apinya, tapi asapnya. Orang bisa pingsan sebelum sempat berlari.",
+      "Bawa air dan perban. Air untuk membasahi kain penutup wajah, perban untuk yang sudah terluka saat berlari."
+    ],
+    "portrait": "",
+    "speaker": "Tabib Mojang Beauty"
+  },
+  "karhutla_08_dapur_pengungsian": {
+    "close": [
+      "Dapur sudah mengepul. Malam ini, setidaknya perut mereka terisi. Besok kita pikirkan langkah berikutnya."
+    ],
+    "open": [
+      "Pengungsi sudah berkumpul, tapi dapur belum berasap. Orang yang lapar tidak bisa berpikir jernih, apalagi berjalan jauh.",
+      "Kumpulkan makanan kaleng. Dapur harus jalan malam ini, sebelum dingin dan putus asa datang bersamaan."
+    ],
+    "portrait": "",
+    "speaker": "Kepala Pos Kalimantan"
+  },
+  "karhutla_09_tabib_asap": {
+    "close": [
+      "Ramuan sudah dibagikan. Yang sesak mulai bisa tidur, yang luka mulai berhenti mengeluh. Rimba masih memberi, meski sedang terbakar."
+    ],
+    "open": [
+      "Luka bakar dan sesak asap tidak bisa diobati dengan keberanian saja. Rimba menyediakan obatnya, kalau kau tahu di mana mencarinya.",
+      "Bawa herbal segar dan perban. Aku akan meramu, kau yang memastikan ramuan itu sampai ke yang membutuhkan."
+    ],
+    "portrait": "assets/images/enemies/dukun_bayangan.webp",
+    "speaker": "Dukun Suku"
+  },
+  "karhutla_10_anak_tertinggal": {
+    "close": [
+      "Anak itu sudah kembali ke pengungsian. Ia diam saja, tapi ibunya menangis. Itu cukup sebagai kabar baik hari ini."
+    ],
+    "open": [
+      "Ada anak yang tertinggal di jalur pulang. Serigala yang panik menghalangi jalan itu, dan anak itu tidak berani bergerak.",
+      "Usir serigala itu. Jangan kejar sampai ke dalam api, cukup buka jalan pulang untuknya."
+    ],
+    "portrait": "assets/images/character/vn_bluetiger.png",
+    "speaker": "Pelacak Blue Tiger"
+  },
+  "karhutla_11_hewan_panik": {
+    "close": [
+      "Pemukiman sudah tenang lagi. Hewan-hewan itu kembali ke rimba, dan kita tidak perlu menambah korban hari ini."
+    ],
+    "open": [
+      "Babi hutan dan beruang madu sudah masuk ke pemukiman. Mereka bukan musuh, mereka korban yang ketakutan. Tapi ketakutan itu tetap bisa melukai.",
+      "Halau mereka keluar dari pemukiman, jangan biarkan mereka mengobrak-abrik dapur dan tenda pengungsi."
+    ],
+    "portrait": "assets/images/character/vn_bluetiger.png",
+    "speaker": "Pelacak Blue Tiger"
+  },
+  "karhutla_12_sekat_bakar": {
+    "close": [
+      "Sekat pertama sudah jadi. Api berhenti di garis itu, seperti orang yang kehabisan napas. Ini baru awal, tapi ini bukti cara ini bekerja."
+    ],
+    "open": [
+      "Melawan api dengan air saja tidak cukup. Kita harus memotong jalannya. Tebang jalur kosong di depan api, supaya ia kehabisan bahan bakar.",
+      "Kayu hasil tebang itu jangan dibuang. Kita pakai untuk pos dan jembatan. Api yang kita potong, kita pakai untuk bertahan."
+    ],
+    "portrait": "",
+    "speaker": "Teknisi Bandung Collective"
+  },
+  "karhutla_13_rantai_air": {
+    "close": [
+      "Rantai air tidak putus. Garis api basah, dan untuk pertama kalinya sejak kebakaran ini mulai, api mundur."
+    ],
+    "open": [
+      "Ini misi paling berat. Air harus mengalir tanpa putus dari sumber ke garis api. Satu orang berhenti, rantai putus, api maju lagi.",
+      "Kumpulkan air sebanyak-banyaknya. Jangan hitung botolnya, hitung napas warga yang bergantung pada rantai ini."
+    ],
+    "portrait": "",
+    "speaker": "Kepala Pos Kalimantan"
+  },
+  "karhutla_14_jaga_sumber_air": {
+    "close": [
+      "Sumber air kembali terbuka untuk semua. Tidak ada lagi yang bisa memeras air di tengah kebakaran."
+    ],
+    "open": [
+      "Sumber air itu nyawa kita. Dan ada yang mencoba menguasainya selagi semua orang sibuk memadamkan api.",
+      "Pemburu suku yang berjaga di sana bukan penjaga. Mereka menghalangi siapa pun yang membawa air. Singkirkan mereka."
+    ],
+    "portrait": "assets/images/character/vn_bluetiger.png",
+    "speaker": "Pelacak Blue Tiger"
+  },
+  "karhutla_15_angin_berbalik": {
+    "close": [
+      "Tim sudah kembali dan dirawat. Mundur bukan kalah. Mundur adalah cara supaya kita masih bisa melawan besok."
+    ],
+    "open": [
+      "Angin berbalik. Api yang tadi mundur sekarang datang dari arah yang tidak kita jaga. Tim harus mundur, dan yang mundur itu tetap bisa terluka.",
+      "Siapkan air dan perban untuk tim yang kembali. Jangan tanya kenapa mereka mundur. Tanya apa yang mereka butuhkan."
+    ],
+    "portrait": "",
+    "speaker": "Tabib Mojang Beauty"
+  },
+  "karhutla_16_hati_api": {
+    "close": [
+      "Jantung api padam. Asap masih ada, tapi tidak lagi mengejar. Rimba mulai bisa bernapas, dan kita juga."
+    ],
+    "open": [
+      "Tinggal satu titik: jantung api di tengah rimba. Kalau titik ini padam, sisanya hanya bara yang bisa kita injak satu per satu.",
+      "Air dan kayu untuk serangan terakhir. Jangan setengah-setengah. Api yang dibiarkan setengah padam akan bangun lagi malam ini."
+    ],
+    "portrait": "",
+    "speaker": "Kepala Pos Kalimantan"
+  },
+  "karhutla_17_abu_berbicara": {
+    "close": [
+      "Sisa peralatan itu jelas: ada yang sengaja menyalakan api, dengan alat yang sengaja dibawa. Ini bukan kecelakaan."
+    ],
+    "open": [
+      "Api sudah padam, tapi pertanyaan belum. Aku menemukan sisa peralatan di titik api pertama. Bukan peralatan pemadam, bukan peralatan petani.",
+      "Kumpulkan besi rongsokan dan suku cadang dari sisa itu. Abu bisa berbohong, tapi logam tidak."
+    ],
+    "portrait": "",
+    "speaker": "Teknisi Bandung Collective"
+  },
+  "karhutla_18_saksi_diam": {
+    "close": [
+      "Saksi itu akhirnya bicara. Namanya satu, dan nama itu akan kita kejar sampai ke ujung rimba."
+    ],
+    "open": [
+      "Ada saksi yang melihat siapa yang membawa alat itu. Ia diam karena takut. Dan yang membuatnya takut masih berkeliaran.",
+      "Lindungi saksi itu. Singkirkan yang menghalanginya bicara. Kebenaran tidak akan datang sendiri kalau ketakutan masih dijaga."
+    ],
+    "portrait": "assets/images/enemies/dukun_bayangan.webp",
+    "speaker": "Dukun Suku"
+  },
+  "karhutla_19_kontrak_terbakar": {
+    "close": [
+      "King Redbull tumbang. Kontraknya terbakar bersama apinya. Siapa yang membayarnya, itu urusan berikutnya. Hari ini, rimba bebas darinya."
+    ],
+    "open": [
+      "Jadi kau yang memadamkan api itu. Sayang sekali. Api itu pesanan, dan pesanan yang gagal harus dibayar dengan sesuatu.",
+      "Aku King Redbull. Aku yang menyalakan rimba ini untuk pihak yang membayar. Dan kau sudah merusak kontrakku."
+    ],
+    "portrait": "assets/images/enemies/king_redbull.webp",
+    "speaker": "King Redbull"
+  },
+  "karhutla_20_fajar_setelah_asap": {
+    "close": [
+      "Fajar setelah asap akhirnya datang. Rimba tidak kembali seperti dulu, tapi ia hidup lagi. Dan kau, penjaga rimba, akan selalu diingat di sini.",
+      "Sebagai tanda, kau menerima Sub Skill Karhutla. Kayumu dari Scavenge kini berlipat, dan rimba akan lebih mudah memberimu kayu."
+    ],
+    "open": [
+      "Api padam, dalang tumbang, tapi rimba belum sembuh. Yang tersisa adalah abu, dan abu harus ditanami lagi.",
+      "Bawa air, herbal, dan makanan untuk pemulihan. Ini bukan lagi misi memadamkan, ini misi menghidupkan kembali."
+    ],
+    "portrait": "",
+    "speaker": "Kepala Pos Kalimantan"
+  },
+  "prolog_build_fortress": {
+    "speaker": "Kepala Benteng",
+    "portrait": "",
+    "open": [
+      "Wilayah ini belum bisa disebut tempat berlindung. Dindingnya bolong, gerbangnya miring, dan malam pertama selalu paling berbahaya.",
+      "Kumpulkan materialnya. Kayu, besi, dan perbekalan. Benteng tidak dibangun dengan harapan, tapi dengan bahan."
+    ],
+    "close": [
+      "Benteng sudah berdiri. Malam ini, untuk pertama kalinya, kita bisa tidur tanpa menjaga pintu bergiliran. Terima kasih."
+    ]
+  },
+  "prolog_hunt_wildlife": {
+    "speaker": "Pemburu Senior",
+    "portrait": "",
+    "open": [
+      "Benteng sudah kuat, tapi hewan di sekitarnya makin berani. Mereka mencium dapur kita dari jauh.",
+      "Buru dan kurangi populasi mereka. Jangan biarkan mereka menganggap benteng ini sebagai tempat makan."
+    ],
+    "close": [
+      "Jalur sekitar benteng sudah tenang. Hewan-hewan itu belajar menjauh, dan kita belajar bertahan."
+    ]
+  },
+  "ch1_jakarta_sinyal": {
+    "speaker": "Suara Parau",
+    "portrait": "",
+    "open": [
+      "... Proyek Fajar ... Jakarta ... menara ... suara ini ... kalau kau mendengar ini, cari menara itu ...",
+      "Sinyal itu terputus sebelum sempat menjelaskan. Tapi satu nama tertinggal di kepalamu: Proyek Fajar."
+    ],
+    "close": [
+      "Sinyal itu bukan kebetulan. Seseorang di Jakarta masih mencoba menghubungi dunia luar. Dan sekarang, kau yang mendengarnya."
+    ]
+  },
+  "ch2_jakarta_markas": {
+    "speaker": "Pemandu Jakarta",
+    "portrait": "",
+    "open": [
+      "Menara itu dikuasai bandit. Mereka memakai sinyalnya untuk memancing siapa pun yang masih percaya pada dunia lama.",
+      "Rebut menara itu. Bukan karena menaranya, tapi karena apa yang disembunyikannya."
+    ],
+    "close": [
+      "Menara sudah kembali. Di dalamnya, ada koordinat samar menuju Surabaya. Jejak Proyek Fajar makin jelas."
+    ]
+  },
+  "ch3_surabaya_informasi": {
+    "speaker": "Pedagang Surabaya",
+    "portrait": "",
+    "open": [
+      "Informasi di sini bukan barang gratis. Pedagang tahu soal Proyek Fajar, tapi pengetahuan itu dibayar dengan barang, bukan janji.",
+      "Bawa apa yang mereka minta. Di Surabaya, kejujuran diukur dari apa yang kau bawa di tas, bukan dari kata-katamu."
+    ],
+    "close": [
+      "Informasi sudah di tangan. Bandung. Bunker riset yang terbakar. Di sanalah arsip itu disimpan, kalau masih ada yang tersisa."
+    ]
+  },
+  "ch4_bandung_arsip": {
+    "speaker": "Peneliti Bandung",
+    "portrait": "",
+    "open": [
+      "Arsip Proyek Fajar ada di bunker ini, tapi bunker ini terbakar dan dijaga oleh mereka yang tidak ingin arsip itu dibaca.",
+      "Kami butuh orang yang berani masuk. Peneliti tidak bisa bertarung, tapi kami bisa membaca apa yang kau bawa keluar."
+    ],
+    "close": [
+      "Arsip sudah selamat. Data dari Bandung menunjuk ke sebuah brankas di Bali. Jejak ini belum putus."
+    ]
+  },
+  "ch5_bali_penjaga": {
+    "speaker": "Penjaga Enclave",
+    "portrait": "",
+    "open": [
+      "Enclave tidak percaya pada orang asing. Banyak yang datang dengan janji, sedikit yang pulang dengan izin.",
+      "Buktikan dirimu lewat ujian kami. Bukan dengan kata-kata, tapi dengan apa yang kau lakukan di hadapan penjaga."
+    ],
+    "close": [
+      "Kau lulus ujian. Brankas itu ada di dalam, dan isinya bukan harta. Isinya peta menuju jantung rimba Kalimantan."
+    ]
+  },
+  "ch6_kalimantan_jejak": {
+    "speaker": "Dukun Suku",
+    "portrait": "assets/images/enemies/dukun_bayangan.webp",
+    "open": [
+      "Peta tua itu menunjuk ke pedalaman. Fasilitas Proyek Fajar tersembunyi di sana, dijaga rimba dan mereka yang menganggapnya keramat.",
+      "Siapkan perbekalan untuk ekspedisi jauh. Rimba tidak mengampuni orang yang berangkat setengah-setengah."
+    ],
+    "close": [
+      "Perbekalan sudah lengkap. Jalan ke jantung rimba sudah terbuka. Pergilah sebelum rimba berubah pikiran."
+    ]
+  },
+  "ch7_kalimantan_fasilitas": {
+    "speaker": "Penjaga Fasilitas",
+    "portrait": "",
+    "open": [
+      "Fasilitas itu nyata, tapi tidak ada jalan damai menuju pintu utamanya. Binatang buas dan pemburu suku menganggap tempat itu keramat.",
+      "Kalau kau memaksa masuk, kau harus melewati mereka. Tidak ada negosiasi dengan penjaga yang sudah bersumpah."
+    ],
+    "close": [
+      "Pintu utama sudah terbuka. Di dalamnya, inti Proyek Fajar menunggu. Kau sudah sejauh ini, jangan berhenti di ambang."
+    ]
+  },
+  "ch8_fajar_terbit": {
+    "speaker": "Teknisi Bandung Collective",
+    "portrait": "",
+    "open": [
+      "Di depanmu ada reaktor purwarupa. Satu mesin yang bisa menerangi lima wilayah sekaligus, kalau kau berani menyalakannya.",
+      "Kumpulkan komponen terakhir dan peralatan medis untuk tim yang akan menjaganya. Fajar tidak terbit sendiri."
+    ],
+    "close": [
+      "Fajar sudah terbit. Lima wilayah kini punya cahaya yang sama. Dan ceritamu, dari benteng pertama sampai ke sini, sudah lengkap. Untuk sekarang."
+    ]
+  },
+  "side_pedagang_kehausan": {
+    "speaker": "Pedagang Keliling",
+    "portrait": "",
+    "open": [
+      "Airku habis di tengah perjalanan. Daganganku masih ada, tapi tenggorokanku sudah tidak bisa diajak bicara.",
+      "Bawakan aku air bersih. Sebagai balas budi, aku tidak akan melupakan siapa yang menolong pedagang di jalan."
+    ],
+    "close": [
+      "Air itu menyelamatkan perjalananku. Dagangan bisa dicari lagi, nyawa tidak. Terima kasih, kawan."
+    ]
+  },
+  "side_bersihkan_pasar": {
+    "speaker": "Pedagang Surabaya",
+    "portrait": "",
+    "open": [
+      "Preman pasar gelap makin meresahkan pedagang kecil. Mereka memalak, mengancam, dan membuat pasar jadi tempat takut.",
+      "Usir mereka. Pasar harus jadi tempat dagang, bukan tempat pemerasan."
+    ],
+    "close": [
+      "Pasar sudah tenang lagi. Pedagang kecil bisa berdagang tanpa menoleh ke belakang setiap lima menit."
+    ]
+  },
+  "side_suku_cadang_langka": {
+    "speaker": "Peneliti Bandung",
+    "portrait": "",
+    "open": [
+      "Kolektif sedang meriset alat baru, tapi suku cadang kami tidak cukup. Reruntuhan dan penjaga otomatis rusak menyimpan apa yang kami butuhkan.",
+      "Kumpulkan suku cadang itu. Riset tidak jalan tanpa bahan, dan bahan tidak datang sendiri."
+    ],
+    "close": [
+      "Suku cadang sudah lengkap. Riset bisa lanjut, dan alat baru itu suatu hari mungkin menyelamatkan lebih banyak orang daripada senjata."
+    ]
+  },
+  "side_jakarta_pengungsi": {
+    "speaker": "Kepala Pengungsi",
+    "portrait": "",
+    "open": [
+      "Kami bertahan di basement apartemen roboh. Persediaan menipis, dan anak-anak mulai kelaparan. Kami tidak minta banyak, hanya cukup untuk bertahan.",
+      "Bawakan persediaan untuk kami. Di reruntuhan ini, setiap kaleng makanan adalah satu hari lagi untuk hidup."
+    ],
+    "close": [
+      "Persediaan sudah sampai. Anak-anak sudah makan malam ini. Kami tidak akan melupakan siapa yang datang saat tidak ada yang datang."
+    ]
+  },
+  "side_jakarta_reruntuhan": {
+    "speaker": "Tukang Besi",
+    "portrait": "",
+    "open": [
+      "Pagar pertahanan pos terdepan jebol diserang bandit. Aku bisa menempa ulang, tapi aku kehabisan besi tua dan batu.",
+      "Bawakan material itu. Pagar yang kuat adalah perbedaan antara pos yang bertahan dan pos yang jadi cerita."
+    ],
+    "close": [
+      "Pagar sudah ditempa ulang, lebih kuat dari sebelumnya. Pos ini aman lagi, untuk sekarang."
+    ]
+  },
+  "side_surabaya_konvoi": {
+    "speaker": "Kepala Konvoi",
+    "portrait": "",
+    "open": [
+      "Konvoi dagang harus melewati teritori preman pasar gelap. Mereka tidak menyerang konvoi yang dikawal, tapi mereka menyerang konvoi yang sendirian.",
+      "Kawal kami sampai lewat. Pastikan tidak ada yang berani mendekat."
+    ],
+    "close": [
+      "Konvoi sudah lewat dengan selamat. Dagangan sampai, pedagang selamat, dan preman itu belajar bahwa konvoi ini tidak sendirian."
+    ]
+  },
+  "side_bandung_obat": {
+    "speaker": "Tabib Kolektif",
+    "portrait": "",
+    "open": [
+      "Wabah demam melanda barak pengungsi. Aku merawat yang sakit, tapi herbal dan perbanku habis lebih cepat daripada pasien datang.",
+      "Bawakan herbal segar dan perban. Setiap ramuan adalah satu orang yang tidak jadi demam semalaman."
+    ],
+    "close": [
+      "Obat sudah cukup untuk semua barak. Demam mulai turun. Terima kasih sudah datang sebelum wabah ini jadi cerita duka."
+    ]
+  },
+  "side_bali_upacara": {
+    "speaker": "Penjaga Enclave",
+    "portrait": "",
+    "open": [
+      "Enclave akan menggelar upacara untuk para penjaga yang gugur. Upacara tidak bisa digelar tanpa sesaji yang layak.",
+      "Bantu siapkan herbal dan makanan untuk sesaji. Menghormati yang gugur adalah cara kami mengingat kenapa kami masih menjaga."
+    ],
+    "close": [
+      "Sesaji sudah lengkap. Upacara bisa digelar dengan layak. Para penjaga yang gugur tidak dilupakan."
+    ]
+  },
+  "side_bali_penyusup": {
+    "speaker": "Penjaga Enclave",
+    "portrait": "",
+    "open": [
+      "Penyusup terlihat menyelinap lewat pesisir selatan malam ini. Kalau mereka mencapai gerbang dalam, Enclave tidak lagi aman.",
+      "Cegat mereka sebelum gerbang dalam. Jangan biarkan mereka melihat apa yang kami lindungi."
+    ],
+    "close": [
+      "Pesisir sudah bersih. Gerbang dalam tetap tertutup, dan Enclave tetap menjadi tempat yang sulit ditembus."
+    ]
+  },
+  "side_kalimantan_ramuan": {
+    "speaker": "Dukun Suku",
+    "portrait": "assets/images/enemies/dukun_bayangan.webp",
+    "open": [
+      "Aku meramu obat kuat dari bisa ular dan herbal rimba. Bahan segar itu mahal harganya, karena rimba tidak memberikannya dengan mudah.",
+      "Bawakan bisa dan herbal itu. Aku berani membayar mahal untuk bahan yang benar-benar segar."
+    ],
+    "close": [
+      "Ramuan sudah jadi, dan khasiatnya seperti yang dijanjikan. Rimba memberi, dukun meramu, kau yang mengantar. Lingkaran itu lengkap."
+    ]
+  },
+  "contract_blue_tiger": {
+    "speaker": "Ketua Blue Tiger",
+    "portrait": "assets/images/character/vn_bluetiger.png",
+    "open": [
+      "Blue Tiger hanya menerima pemburu sejati. Kami membaca medan dari jejak, dan jejakmu akan bicara lebih jujur daripada kata-katamu.",
+      "Buktikan insting berburumu. Tumbangkan binatang buas yang meneror jalur air kami."
+    ],
+    "close": [
+      "Kau berburu seperti harimau: sabar, tepat, dan tanpa ragu. Blue Tiger menerimamu."
+    ]
+  },
+  "contract_mojang_beauty": {
+    "speaker": "Perwakilan Mojang Beauty",
+    "portrait": "",
+    "open": [
+      "Mojang Beauty percaya semua jalan bertahan hidup punya nilai. Tidak ada satu jalan yang benar untuk semua orang.",
+      "Tunjukkan keseimbanganmu: rawat yang sakit, bagi air bersih, dan jangan memilih satu jalan sambil menghina jalan lain."
+    ],
+    "close": [
+      "Keseimbanganmu sudah terbukti. Mojang Beauty menerimamu, apa pun jalan yang kau pilih sebelumnya."
+    ]
+  },
+  "contract_seafire": {
+    "speaker": "Komandan Seafire",
+    "portrait": "assets/images/character/vn_seafire.png",
+    "open": [
+      "Seafire tidak butuh pengecut. Dunia lama harus dibakar habis, mulai dari para pengacau yang merayap di reruntuhan.",
+      "Buktikan keberanianmu. Api tidak menunggu orang yang ragu."
+    ],
+    "close": [
+      "Kau sudah dibaptis api. Seafire menerimamu, dan apimu kini menyala bersama kami."
+    ]
+  },
+  "contract_viking_bonex": {
+    "speaker": "Ketua Viking Bonex",
+    "portrait": "",
+    "open": [
+      "Bagi Viking Bonex, hukumnya sederhana: yang kuat yang bertahan. Yang lemah tidak ditolong dengan kata-kata, tapi dengan kekuatan.",
+      "Hancurkan para penindas pasar dan bandit jalanan dengan tanganmu. Tunjukkan bahwa kau kuat."
+    ],
+    "close": [
+      "Kekuatanmu sudah terbukti. Viking Bonex menerimamu. Di sini, yang kuat tidak perlu menjelaskan dirinya."
+    ]
+  },
+  "contract_white_ghost": {
+    "speaker": "Penjaga White Ghost",
+    "portrait": "assets/images/character/vn_whiteghost.png",
+    "open": [
+      "White Ghost menjaga kemurnian wilayahnya dari kontaminasi dunia yang hancur. Tidak ada kompromi, tidak ada jejak, tidak ada ampun.",
+      "Bersihkan para penyusup itu. Kemurnian dijaga dengan tindakan, bukan dengan doa."
+    ],
+    "close": [
+      "Wilayah sudah bersih, tanpa jejak. White Ghost menerimamu. Kemurnian itu kini juga menjadi tanggung jawabmu."
+    ]
+  }
+}

@@ -62,6 +62,7 @@ const QuestSystem = (function () {
   const MAX_ACTIVE_MAIN = 1;
   const MAX_ACTIVE_SIDE = 5;
   const MAX_ACTIVE_CONTRACT = 5; // v0.4.9: kontrak faksi, 1 per faksi
+  const MAX_ACTIVE_EVENT = 1; // v0.7.1: event karhutla, rantai linear seperti main
 
   function getPlayer() {
     return GameState.get().player;
@@ -137,11 +138,13 @@ const QuestSystem = (function () {
     if (!prereqSatisfied(quest)) return { ok: false, reason: 'Misi sebelumnya belum diselesaikan.' };
 
     const cap = quest.category === 'main' ? MAX_ACTIVE_MAIN
-      : quest.category === 'contract' ? MAX_ACTIVE_CONTRACT : MAX_ACTIVE_SIDE;
+      : quest.category === 'contract' ? MAX_ACTIVE_CONTRACT
+      : quest.category === 'event' ? MAX_ACTIVE_EVENT : MAX_ACTIVE_SIDE;
     const activeCount = getAcceptedQuestsByCategory(quest.category).length;
     if (activeCount >= cap) {
       const label = quest.category === 'main' ? 'main quest'
-        : quest.category === 'contract' ? 'misi kontrak' : 'side quest';
+        : quest.category === 'contract' ? 'misi kontrak'
+        : quest.category === 'event' ? 'misi event' : 'side quest';
       return {
         ok: false,
         reason: quest.category === 'main'
@@ -279,6 +282,21 @@ const QuestSystem = (function () {
     if (rewards.exp) Player.addExp(rewards.exp);
     if (rewards.rupiah) p.currency.rupiah += rewards.rupiah;
     if (rewards.kredit) p.currency.kredit += rewards.kredit;
+    // v0.7.3: hadiah item (mis. Kapak Karhutla Api di misi final event).
+    // Format: rewards.items = [{itemId, qty}] atau ["itemId"].
+    // Item yang gagal masuk (tas penuh / item tak dikenal) dicatat di
+    // notifikasi supaya tidak hilang diam-diam.
+    if (Array.isArray(rewards.items)) {
+      rewards.items.forEach(entry => {
+        const itemId = typeof entry === 'string' ? entry : entry.itemId;
+        const qty = typeof entry === 'string' ? 1 : (entry.qty || 1);
+        if (itemId && typeof window !== 'undefined' && window.Inventory) {
+          if (!Inventory.addItem(itemId, qty)) {
+            Events.emit('notify', { message: `Hadiah item gagal masuk tas (tas penuh?): ${itemId}`, type: 'error' });
+          }
+        }
+      });
+    }
 
     // Pindah dari accepted -> completed, bersihkan hunt counter quest ini
     const idx = p.questProgress.acceptedQuestIds.indexOf(questId);
@@ -287,6 +305,14 @@ const QuestSystem = (function () {
     Object.keys(p.questProgress.huntCounts).forEach(key => {
       if (key.startsWith(questId + ':')) delete p.questProgress.huntCounts[key];
     });
+
+    // Sub Skill Karhutla: terbuka saat misi final event karhutla diklaim.
+    // ID final masih placeholder sampai data 20 misi ditulis, jadi hook
+    // ini aman dan tidak akan menyala sebelum itu.
+    if (typeof window !== 'undefined' && window.SubSkillKarhutla
+      && questId === window.SubSkillKarhutla.FINAL_QUEST_ID) {
+      window.SubSkillKarhutla.unlock();
+    }
 
     // Kalau ada nextQuestId (chain main quest) dan pemain belum punya/
     // selesaikan itu, otomatis langsung tersedia (bukan auto-accept,
@@ -305,7 +331,7 @@ const QuestSystem = (function () {
     canAccept, acceptQuest, abandonQuest,
     getObjectiveProgress, isQuestComplete, isAccepted, isCompleted,
     registerKill, claimQuest, ensureShape,
-    MAX_ACTIVE_MAIN, MAX_ACTIVE_SIDE, MAX_ACTIVE_CONTRACT
+    MAX_ACTIVE_MAIN, MAX_ACTIVE_SIDE, MAX_ACTIVE_CONTRACT, MAX_ACTIVE_EVENT
   };
 })();
 
