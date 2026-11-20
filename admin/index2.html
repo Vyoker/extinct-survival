@@ -166,6 +166,12 @@
     <div class="chat-card">
       <div class="online-title"><span>Chat Global — Moderasi</span><span class="online-count" id="chat-count">-</span></div>
       <p class="manual-hint">50 pesan terakhir. <b>Hapus</b> pesan bermasalah, <b>Ban</b> memblokir pemain itu dari chat (berdasarkan ID perangkatnya).</p>
+      <!-- DRAF 2026-11-20: kirim pesan sebagai ADMIN (badge) dari dashboard. -->
+      <div style="display:flex; gap:6px; margin:10px 0 4px;">
+        <input id="chat-admin-input" maxlength="200" placeholder="Tulis sebagai ADMIN..." autocomplete="off" style="flex:1; padding:10px; background:var(--bg2); border:1px solid var(--border); color:var(--text); border-radius:6px; font-size:12px;">
+        <button id="btn-chat-admin-send" style="padding:10px 14px; background:var(--orange); color:#0a0a0a; border:none; border-radius:6px; font-weight:bold; font-size:12px;">Kirim</button>
+      </div>
+      <div id="chat-admin-status" style="font-size:11px; color:var(--dim); min-height:14px;"></div>
       <div id="chat-list"><div class="empty-state">Memuat chat...</div></div>
       <div class="chat-actions" style="margin-top:10px;">
         <button class="btn-del" id="btn-chat-clear">Bersihkan Semua Pesan</button>
@@ -328,6 +334,26 @@
     });
     el.querySelectorAll('[data-chat-unban]').forEach(function (btn) {
       btn.addEventListener('click', function () { chatAdminAction({ action: 'unban', pid: btn.dataset.chatUnban }); });
+    });
+  }
+
+  // DRAF 2026-11-20: kirim sebagai ADMIN dari dashboard.
+  function sendChatAsAdmin() {
+    var input = document.getElementById('chat-admin-input');
+    var statusEl = document.getElementById('chat-admin-status');
+    var text = (input.value || '').trim();
+    if (!text) return;
+    statusEl.textContent = 'Mengirim...';
+    apiCall('/admin-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'send', text: text })
+    }).then(function () {
+      input.value = '';
+      statusEl.textContent = 'Terkirim sebagai ADMIN.';
+      loadChatAdmin();
+    }).catch(function (e) {
+      statusEl.textContent = 'Gagal: ' + e.message;
     });
   }
 
@@ -513,6 +539,8 @@
 
   document.getElementById('btn-login').addEventListener('click', doLogin);
   document.getElementById('input-password').addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+  document.getElementById('btn-chat-admin-send').addEventListener('click', sendChatAsAdmin);
+  document.getElementById('chat-admin-input').addEventListener('keydown', function (e) { if (e.key === 'Enter') sendChatAsAdmin(); });
   document.getElementById('btn-logout').addEventListener('click', logout);
   document.getElementById('btn-mc-send').addEventListener('click', sendManualCredit);
   document.getElementById('btn-chat-clear').addEventListener('click', function () {

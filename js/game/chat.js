@@ -19,6 +19,15 @@
  * v0.7.0: bila Firebase RTDB terkonfigurasi, chat pindah ke RTDB
  * (listener realtime, tanpa polling Netlify). Bila tidak, fallback
  * ke Netlify Functions lama seperti di atas.
+ *
+ * DRAF 2026-11-20 (kirim sebagai ADMIN): di mode Firebase, kirim
+ * biasa selalu role 'player' (firebase.js), jadi tombol Admin
+ * dulu cuma toast dan tidak bisa membalas sebagai admin. Sekarang
+ * tombol Admin meminta password, memverifikasi lewat GET
+ * admin-chat, lalu pesan berikutnya dikirim lewat POST admin-chat
+ * {action:'send'} — password diverifikasi server, role 'admin'
+ * dipaksa server, pesan masuk RTDB dan tampil dengan badge ADMIN.
+ * Password hanya di sessionStorage, hilang saat sesi tutup.
  */
 const GlobalChat = (function () {
   'use strict';
@@ -195,6 +204,25 @@ const GlobalChat = (function () {
     return false;
   }
 
+  // DRAF 2026-11-20: kirim sebagai ADMIN via Netlify (bukan RTDB
+  // langsung) supaya role diverifikasi password di server.
+  async function sendAsAdmin(text) {
+    var p = GameState.get().player;
+    var res = await fetch(API_BASE + '/admin-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-password': getAdminPw() },
+      body: JSON.stringify({ action: 'send', text: text, name: p.name, level: p.level, pid: getPid() })
+    });
+    var data = await res.json().catch(function () { return {}; });
+    if (res.status === 401) {
+      setAdminPw('');
+      return { ok: false, error: 'Password admin salah. Mode Admin dimatikan.' };
+    }
+    if (res.status === 429) return { ok: false, error: data.error || 'Terlalu cepat.', retryAfterSec: data.retryAfterSec };
+    if (!res.ok) return { ok: false, error: data.error || 'Gagal mengirim sebagai admin.' };
+    return { ok: true, cooldownSec: data.cooldownSec || 15 };
+  }
+
   async function send() {
     if (sending) return;
     var panel = panelEl();
@@ -206,8 +234,29 @@ const GlobalChat = (function () {
 
     sending = true;
     var p = GameState.get().player;
-    // v0.7.0 Firebase: kirim via RTDB, role selalu player.
+    // v0.7.0 Firebase: kirim via RTDB, role selalu player — KECUALI
+    // mode Admin aktif: kirim lewat admin-chat supaya dapat badge ADMIN.
     if (fbMode && window.ESFirebase) {
+      if (getAdminPw()) {
+        try {
+          var adm = await sendAsAdmin(text);
+          if (!adm.ok) {
+            setStatus(adm.error || 'Gagal mengirim sebagai admin.', true);
+            if (adm.retryAfterSec) startCooldown(adm.retryAfterSec);
+            return;
+          }
+          input.value = '';
+          updateCounter(panel);
+          setStatus('');
+          refreshMessagesView(false);
+          startCooldown(adm.cooldownSec || 15);
+        } catch (e) {
+          setStatus('Tidak dapat terhubung ke server admin.', true);
+        } finally {
+          sending = false;
+        }
+        return;
+      }
       try {
         var fbRes = await ESFirebase.sendMessage({ pid: getPid(), name: p.name, level: p.level, text: text });
         if (!fbRes.ok) {
@@ -297,27 +346,38 @@ const GlobalChat = (function () {
 
     var adminBtn = panel.querySelector('#chat-admin-toggle');
     if (adminBtn) adminBtn.addEventListener('click', function () {
-      // v0.7.0 Firebase: badge ADMIN tidak bisa diklaim dari klien.
-      // Moderasi (hapus/ban) hanya lewat dashboard admin.
-      if (fbMode) {
-        Events.emit('notify', { message: 'Mode Firebase: moderasi chat lewat dashboard admin, bukan dari panel ini.' });
-        return;
-      }
+      // DRAF 2026-11-20: tombol Admin kini berfungsi di mode Firebase
+      // juga — password diverifikasi server lewat GET admin-chat,
+      // bukan diklaim dari klien. Moderasi hapus/ban tetap lewat
+      // dashboard admin.
       if (getAdminPw()) {
         setAdminPw('');
         Events.emit('notify', { message: 'Mode Admin chat dimatikan.' });
-      } else {
-        var pw = prompt('Password admin (badge ADMIN hanya tampil bila benar):');
-        if (pw) {
-          setAdminPw(pw.trim());
-          Events.emit('notify', { message: 'Mode Admin chat aktif. Kirim pesan untuk verifikasi badge.' });
+        var freshOff = panelEl();
+        if (freshOff) {
+          var btnOff = freshOff.querySelector('#chat-admin-toggle');
+          if (btnOff) btnOff.textContent = 'Admin';
         }
+        return;
       }
-      var fresh = panelEl();
-      if (fresh) {
-        var btn = fresh.querySelector('#chat-admin-toggle');
-        if (btn) btn.textContent = getAdminPw() ? 'Mode Admin aktif — tap untuk keluar' : 'Admin';
-      }
+      var pw = prompt('Password admin (badge ADMIN hanya tampil bila benar):');
+      if (!pw) return;
+      setAdminPw(pw.trim());
+      // Verifikasi segera supaya password salah ketahuan sebelum kirim.
+      fetch(API_BASE + '/admin-chat', { headers: { 'x-admin-password': getAdminPw() } })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Unauthorized');
+          Events.emit('notify', { message: 'Mode Admin chat aktif. Pesan berikutnya terkirim sebagai ADMIN.' });
+          var fresh = panelEl();
+          if (fresh) {
+            var btn = fresh.querySelector('#chat-admin-toggle');
+            if (btn) btn.textContent = 'Mode Admin aktif — tap untuk keluar';
+          }
+        })
+        .catch(function () {
+          setAdminPw('');
+          Events.emit('notify', { message: 'Password admin salah.', type: 'error' });
+        });
     });
   }
 

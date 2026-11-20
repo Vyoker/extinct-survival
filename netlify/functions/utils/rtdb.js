@@ -111,6 +111,43 @@ async function setBanRTDB(pid, banned) {
   } catch (e) { return false; }
 }
 
+async function sendMessageRTDB(record) {
+  // DRAF 2026-11-20: kirim 1 pesan (sudah divalidasi + role dipaksa
+  // 'admin' oleh pemanggil) ke RTDB. Admin SDK melewati Rules.
+  const db = getDb();
+  if (!db) return null;
+  try {
+    const key = db.ref('chat/messages').push().key;
+    const updates = {};
+    updates['chat/messages/' + key] = record;
+    updates['chat/last/' + record.pid] = record.ts;
+    await db.ref().update(updates);
+    // Prune best-effort: sisakan 80 terbaru.
+    try {
+      const snap = await db.ref('chat/messages').orderByChild('ts').once('value');
+      const all = snap.val() || {};
+      const keys = Object.keys(all);
+      if (keys.length > 80) {
+        keys.sort(function (a, b) { return (all[a].ts || 0) - (all[b].ts || 0); });
+        const del = {};
+        keys.slice(0, keys.length - 80).forEach(function (k) { del['chat/messages/' + k] = null; });
+        await db.ref().update(del);
+      }
+    } catch (e) { /* abaikan */ }
+    return record;
+  } catch (e) { return null; }
+}
+
+async function getLastChatRTDB(pid) {
+  const db = getDb();
+  if (!db) return null;
+  try {
+    const snap = await db.ref('chat/last/' + pid).once('value');
+    const v = snap.val();
+    return typeof v === 'number' ? v : null;
+  } catch (e) { return null; }
+}
+
 async function clearMessagesRTDB() {
   const db = getDb();
   if (!db) return false;
@@ -121,5 +158,6 @@ async function clearMessagesRTDB() {
 module.exports = {
   getDb, isAvailable,
   listPresenceRTDB, listMessagesRTDB,
-  deleteMessageRTDB, setBanRTDB, clearMessagesRTDB
+  deleteMessageRTDB, setBanRTDB, clearMessagesRTDB,
+  sendMessageRTDB, getLastChatRTDB
 };

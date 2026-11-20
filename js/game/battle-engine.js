@@ -14,6 +14,14 @@
  * - Popup tempur di karakter: "MISS" saat serangan meleset,
  *   "CRITICAL" saat kritis, "Perisai Hancur" saat Defense habis.
  *
+ * DRAF HOTFIX 2026-11-20 (belum di-push/deploy, menunggu persetujuan Alfi):
+ * - Serangan gagal tidak lagi diam: di luar jangkauan / peluru habis /
+ *   AP kurang / belum pilih senjata kini memberi toast + teks di target.
+ * - Line-of-sight terhalang bukan lagi blok total, tapi penalti -20%
+ *   ke hit chance (sebelumnya ~55% tembakan awal terblokir diam-diam).
+ * - Tombol senjata menampilkan % kena ke musuh terdekat saat ini.
+ * - Rumus dasar tetap: hit = 92 - jarak*4, clamp 25-97.
+ *
  * v0.7.3 (Efek Atribut Senjata & Set Armor):
  * - Senjata yang di-equip bisa menempelkan status Burn / Poison /
  *   Bleeding / Stun sesuai data effect di items.json (peluang 5-25%).
@@ -258,13 +266,24 @@ function renderEnemyStrip(){
   });
 }
 
+// DRAF HOTFIX 2026-11-20: hit chance terpusat supaya tombol senjata,
+// tryAttackUnit, dan strip musuh memakai angka yang sama.
+function hitChanceFor(p, w, target){
+  const d = dist(p, target);
+  const blocked = w.range > 1 && !hasLineOfSight(p, target);
+  return { chance: clamp(92 - d * 4 - (blocked ? 20 : 0), 25, 97), distance: d, blocked: blocked };
+}
+function notifyBattle(msg){
+  try { if (typeof window !== 'undefined' && window.Events && Events.emit) Events.emit('notify', { message: msg, type: 'error' }); } catch (e) {}
+}
+
 function inAttackRange(target){
   const p = state.units[0];
   const w = state.pendingAction;
   if(!w) return false;
   const d = dist(p,target);
   if(d>w.range) return false;
-  if(w.range>1 && !hasLineOfSight(p,target)) return false;
+  // DRAF HOTFIX: LOS terhalang bukan lagi gagal total (lihat hitChanceFor).
   return true;
 }
 
@@ -296,7 +315,7 @@ function renderBoard(){
       const p = state.units[0];
       const d = Math.max(Math.abs(p.x-t.x), Math.abs(p.y-t.y));
       if(d<=state.pendingAction.range && !unitAt(t.x,t.y)) {
-        if(state.pendingAction.range===1 || hasLineOfSight(p,t)) el.classList.add('atkHint');
+        el.classList.add('atkHint');
       }
     }
     const tileIcon = TILE_ICON[t.type];
@@ -367,6 +386,9 @@ function renderActions(){
 
   p.weapons.forEach((w,idx)=>{
     const noAmmo = w.ammo!==null && w.ammo<=0;
+    // DRAF HOTFIX: % kena ke musuh hidup terdekat (1 musuh per battle).
+    const _foe = state.units.slice(1).find(u=>u.alive);
+    const _hc = _foe ? hitChanceFor(p, w, _foe) : null;
     const btn = document.createElement('div');
     const active = state.pendingAction===w;
     btn.className = 'actBtn'+(active?' active':'')+((p.ap<w.apCost||noAmmo||state.turn!=='player')?' disabled':'');
@@ -383,6 +405,7 @@ function renderActions(){
           <div class="lbl">${w.name}</div>
           <div class="actStats">
             <span>${ic('crosshair')} ${w.dmgMin}–${w.dmgMax}</span>
+            ${_hc ? `<span>${_hc.chance}% kena${_hc.blocked ? ' (terhalang)' : ''}</span>` : ''}
             ${w.ammo!==null ? `<span>${ic('bullet')} ${w.ammo}/${w.maxAmmo}</span>` : ''}
             ${(w.effect && window.Effects) ? `<span class="actEffect">${Effects.weaponEffectShort(w.effect)}</span>` : ''}
           </div>
@@ -434,10 +457,21 @@ function onTileClick(t){
 function tryAttackUnit(target){
   const p = state.units[0];
   const w = state.pendingAction;
-  if(!w || w==='move' || state.turn!=='player') return;
-  if(!inAttackRange(target)) return;
-  if(p.ap < w.apCost) return;
-  if(w.ammo!==null && w.ammo<=0) return;
+  if(state.turn!=='player') return;
+  if(!w || w==='move'){
+    notifyBattle('Pilih senjata dulu, lalu tap musuh.');
+    return;
+  }
+  if(!target || target.isPlayer || !target.alive) return;
+  // DRAF HOTFIX: semua gagal di bawah ini memberi tahu pemain,
+  // bukan return diam seperti sebelumnya.
+  if(dist(p,target) > w.range){
+    notifyBattle('Di luar jangkauan — jarak ' + dist(p,target) + ', range ' + w.name + ' ' + w.range + '. Mendekat dulu.');
+    spawnFloatText(findUnitTileEl(target.id), 'JAUH', 'miss');
+    return;
+  }
+  if(p.ap < w.apCost){ notifyBattle('AP tidak cukup untuk ' + w.name + '.'); return; }
+  if(w.ammo!==null && w.ammo<=0){ notifyBattle('Peluru habis — racik ammo dulu.'); return; }
 
   p.ap -= w.apCost;
   // v0.6.8: menyerang dihitung beraksi (isi ulang berikutnya +1).
@@ -445,8 +479,10 @@ function tryAttackUnit(target){
   if(w.ammo!==null) w.ammo--;
   if(typeof state.onWeaponUse === 'function') state.onWeaponUse(w);
 
-  const distance = dist(p,target);
-  const hitChance = clamp(92 - distance*4, 25, 97);
+  const _hc = hitChanceFor(p, w, target);
+  const distance = _hc.distance;
+  const hitChance = _hc.chance;
+  if(_hc.blocked) notifyBattle('Tembakan terhalang — akurasi -20%.');
   const roll = Math.random()*100;
 
   state.pendingAction = null;
@@ -486,7 +522,7 @@ function tryAttackUnit(target){
     } else {
       if (window.AudioManager) AudioManager.sfx('miss'); // v0.3.8
       render();
-      spawnFloatText(findUnitTileEl(target.id), 'MISS', 'miss');
+      spawnFloatText(findUnitTileEl(target.id), _hc && _hc.blocked ? 'TERHALANG' : 'MISS', 'miss');
     }
     checkBattleEnd();
   });
