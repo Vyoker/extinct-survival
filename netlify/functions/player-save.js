@@ -1,10 +1,12 @@
-const { json } = require('./utils/response');
+const { json, corsPreflight } = require('./utils/response');
 const { getSaveStore } = require('./utils/save-store');
 
 const MAX_BYTES = 512 * 1024; // 512 KB — cukup untuk save JSON game ini
 const CODE_RE = /^[A-Z2-9-]{8,64}$/;
 
 exports.handler = async (event) => {
+  const pre = corsPreflight(event);
+  if (pre) return pre;
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method Not Allowed' });
 
   let payload;

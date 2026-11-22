@@ -1,9 +1,12 @@
-const { json } = require('./utils/response');
+const { json, corsPreflight } = require('./utils/response');
 const { getSaveStore } = require('./utils/save-store');
 
 const CODE_RE = /^[A-Z2-9-]{8,64}$/;
 
 exports.handler = async (event) => {
+  const pre = corsPreflight(event);
+  if (pre) return pre;
+
   const code = String(
     (event.queryStringParameters && event.queryStringParameters.code) || ''
   ).toUpperCase().trim();
