@@ -1,8 +1,30 @@
 const { json, corsPreflight } = require('./utils/response');
 const { getSaveStore } = require('./utils/save-store');
+const { getBanStore, normalizeCode, isBanned } = require('./utils/ban-store');
 
 const MAX_BYTES = 512 * 1024; // 512 KB — cukup untuk save JSON game ini
 const CODE_RE = /^[A-Z2-9-]{8,64}$/;
+
+// v0.7.11: tanggal + asal pembuatan akun (panel admin).
+// Resolve dari save yang SUDAH ADA di Blobs: meta.createdAt / world.time
+// (itu waktu akun dibuat — contoh ALFIAN 21 Nov 2026 16:27 WIB).
+// Nilai ini TIDAK boleh dipercaya 100%: save dikirim dari klien,
+// pemain bisa mengedit JSON lokal sebelum upload. Karena itu
+// player-save MEMPERTAHANKAN nilai first-seen di indeks (lihat
+// bawah): sekali tercatat, save berikutnya tidak bisa mengubahnya
+// untuk menyembunyikan akun lama / asal web.
+function resolveCreated(data) {
+  var save = (data && data.save) || {};
+  var pl = save.player || {};
+  var createdAt = Number(pl.createdAt) || 0;
+  if (!createdAt) createdAt = Number(save.meta && save.meta.createdAt) || 0;
+  if (!createdAt) createdAt = Number(save.world && save.world.time) || 0;
+  var createdIn = pl.createdIn;
+  if (createdIn !== 'playstore' && createdIn !== 'web') {
+    createdIn = (pl.subSkills && pl.subSkills['beta-tester']) ? 'playstore' : 'unknown';
+  }
+  return { createdAt: createdAt || null, createdIn: createdIn };
+}
 
 exports.handler = async (event) => {
   const pre = corsPreflight(event);
@@ -19,6 +41,13 @@ exports.handler = async (event) => {
   const code = String(payload.code || '').toUpperCase().trim();
   if (!CODE_RE.test(code)) return json(400, { error: 'Kode save tidak valid.' });
 
+  // v0.7.7 Ban (full ban by kode save): kode yang di-ban ditolak di
+  // sini — pertahanan utama, klien bisa di-bypass, server tidak.
+  // Satu daftar blokir menutup web + Play Store (server masih nyatu).
+  if (await isBanned(getBanStore(), normalizeCode(code))) {
+    return json(403, { error: 'Akun ini di-banned. Hubungi admin jika ini kesalahan.' });
+  }
+
   const data = payload.data;
   if (!data || typeof data !== 'object' || !data.save || !data.save.player) {
     return json(400, { error: 'Data save tidak valid.' });
@@ -34,6 +63,37 @@ exports.handler = async (event) => {
     appVersion: data.appVersion || null
   };
   await store.setJSON('player/' + code + '.json', record);
+
+  // v0.7.7 Fase 1 (panel admin pemain): tulis juga satu baris ringkas ke
+  // indeks pemain, supaya daftar pemain bisa dibaca tanpa membuka seluruh
+  // file save (sampai 512 KB per pemain). Best-effort: gagal tulis indeks
+  // TIDAK boleh menggagalkan save utama.
+  try {
+    const pl = data.save.player || {};
+    const cur = pl.currency || {};
+    const created = resolveCreated(data);
+    // Pertahankan first-seen: kalau indeks sudah punya createdAt,
+    // pakai itu — jangan biarkan save editan menimpa tanggal/asal.
+    var existingIdx = null;
+    try { existingIdx = await store.get('player-index/' + code + '.json', { type: 'json' }); } catch (e) { existingIdx = null; }
+    if (existingIdx && existingIdx.createdAt) {
+      created.createdAt = existingIdx.createdAt;
+      if (existingIdx.createdIn) created.createdIn = existingIdx.createdIn;
+    }
+    await store.setJSON('player-index/' + code + '.json', {
+      code: code,
+      name: String(pl.name || 'Survivor').slice(0, 32),
+      level: Number(pl.level) || 1,
+      kredit: Number(cur.kredit) || 0,
+      rupiah: Number(cur.rupiah) || 0,
+      faction: pl.faction || null,
+      location: pl.location || null,
+      createdAt: created.createdAt,
+      createdIn: created.createdIn,
+      updatedAt: record.updatedAt,
+      appVersion: record.appVersion
+    });
+  } catch (e) { /* indeks gagal — save utama tetap berhasil */ }
 
   return json(200, { ok: true, updatedAt: record.updatedAt });
 };
