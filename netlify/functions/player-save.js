@@ -1,6 +1,7 @@
 const { json, corsPreflight } = require('./utils/response');
 const { getSaveStore } = require('./utils/save-store');
-const { getBanStore, normalizeCode, isBanned } = require('./utils/ban-store');
+// v0.8.0: cap level 35 + hitung ulang poin atribut (lock total 170).
+const { clampLevel, cleanAnticheat } = require('./utils/levelcap');
 
 const MAX_BYTES = 512 * 1024; // 512 KB — cukup untuk save JSON game ini
 const CODE_RE = /^[A-Z2-9-]{8,64}$/;
@@ -13,6 +14,7 @@ const CODE_RE = /^[A-Z2-9-]{8,64}$/;
 // player-save MEMPERTAHANKAN nilai first-seen di indeks (lihat
 // bawah): sekali tercatat, save berikutnya tidak bisa mengubahnya
 // untuk menyembunyikan akun lama / asal web.
+// v0.8.0: cap level 35 + anti-cheat (lihat bawah, sebelum disimpan).
 function resolveCreated(data) {
   var save = (data && data.save) || {};
   var pl = save.player || {};
@@ -41,19 +43,23 @@ exports.handler = async (event) => {
   const code = String(payload.code || '').toUpperCase().trim();
   if (!CODE_RE.test(code)) return json(400, { error: 'Kode save tidak valid.' });
 
-  // v0.7.7 Ban (full ban by kode save): kode yang di-ban ditolak di
-  // sini — pertahanan utama, klien bisa di-bypass, server tidak.
-  // Satu daftar blokir menutup web + Play Store (server masih nyatu).
-  if (await isBanned(getBanStore(), normalizeCode(code))) {
-    return json(403, { error: 'Akun ini di-banned. Hubungi admin jika ini kesalahan.' });
-  }
-
   const data = payload.data;
   if (!data || typeof data !== 'object' || !data.save || !data.save.player) {
     return json(400, { error: 'Data save tidak valid.' });
   }
   if (JSON.stringify(data).length > MAX_BYTES) {
     return json(413, { error: 'Data save terlalu besar (maks 512 KB).' });
+  }
+
+  // v0.8.0 (keputusan Alfi 25 Nov 2026): pemain di atas level 35
+  // OTOMATIS dihitung ulang saat Simpan Online — level jadi 35,
+  // total poin atribut di-lock 170, maxEnergy 168. Penegakan di sini
+  // (sebelum disimpan) supaya client lama / client yang dimodifikasi
+  // tidak bisa lolos lewat cloud save. Riwayat clamp dicatat di meta.
+  var clamped = clampLevel(data.save.player);
+  if (clamped) {
+    if (!data.save.meta) data.save.meta = {};
+    data.save.meta.levelCapClamp = { fromLevel: clamped.fromLevel, at: Date.now() };
   }
 
   const store = getSaveStore();
@@ -80,6 +86,12 @@ exports.handler = async (event) => {
       created.createdAt = existingIdx.createdAt;
       if (existingIdx.createdIn) created.createdIn = existingIdx.createdIn;
     }
+    // v0.8.0 Anti-Cheat v1: simpan hasil verifikasi terakhir pemain
+    // ke indeks (dari save.meta.anticheat) supaya panel admin bisa
+    // menampilkannya tanpa membuka file save. Kalau save ini dari
+    // build lama (belum ada anticheat), pertahankan nilai indeks lama.
+    var anticheat = cleanAnticheat(data.save.meta && data.save.meta.anticheat);
+    if (!anticheat && existingIdx && existingIdx.anticheat) anticheat = existingIdx.anticheat;
     await store.setJSON('player-index/' + code + '.json', {
       code: code,
       name: String(pl.name || 'Survivor').slice(0, 32),
@@ -90,6 +102,7 @@ exports.handler = async (event) => {
       location: pl.location || null,
       createdAt: created.createdAt,
       createdIn: created.createdIn,
+      anticheat: anticheat,
       updatedAt: record.updatedAt,
       appVersion: record.appVersion
     });

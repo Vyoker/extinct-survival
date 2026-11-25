@@ -3,7 +3,10 @@
  *
  * GET  /.netlify/functions/admin-players   (header x-admin-password)
  *   -> { ok, count, players: [{ code, name, level, kredit, rupiah,
- *        faction, location, createdAt, createdIn, updatedAt, appVersion }] }
+ *        faction, location, createdAt, createdIn, anticheat, updatedAt, appVersion }] }
+ *      v0.8.0 (25 Nov 2026): anticheat { flags, origin, checkedAt,
+ *      skewMs } dari save.meta.anticheat — hasil verifikasi Anti-Cheat
+ *      v1 terakhir pemain (null bila belum pakai build baru).
  *      v0.7.11 (koreksi 23 Nov 2026): createdAt (ms) + createdIn
  *      ('playstore' | 'web' | 'unknown') TIDAK datang dari field
  *      baru di save — datanya SUDAH ADA di Blobs, di file save
@@ -31,6 +34,8 @@
 const { isAdminAuthorized } = require('./utils/auth');
 const { json, corsPreflight } = require('./utils/response');
 const { getSaveStore } = require('./utils/save-store');
+// v0.8.0: teruskan hasil verifikasi anti-cheat ke panel admin.
+const { cleanAnticheat } = require('./utils/levelcap');
 
 const CODE_RE = /^[A-Z2-9-]{8,64}$/;
 const MAX_LIST = 300;
@@ -62,6 +67,9 @@ function summarize(code, data, updatedAt, appVersion) {
     location: pl.location || null,
     createdAt: createdAt,
     createdIn: createdIn,
+    // v0.8.0 Anti-Cheat v1: hasil verifikasi terakhir dari
+    // save.meta.anticheat (null bila pemain belum pakai build baru).
+    anticheat: cleanAnticheat(meta.anticheat),
     updatedAt: updatedAt || (data && data.exportedAt) || null,
     appVersion: appVersion || (data && data.appVersion) || null
   };
