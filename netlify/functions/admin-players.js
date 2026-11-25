@@ -85,9 +85,36 @@ exports.handler = async (event) => {
 
   // --- Detail 1 pemain: GET ?code=... ---
   if (event.httpMethod === 'GET' && qs.code) {
-    const code = String(qs.code).toUpperCase().replace(/[^A-Z0-9]/g, '');
-    if (!CODE_RE.test(code)) return json(400, { error: 'Kode save tidak valid.' });
-    const idx = await store.get('player-index/' + code + '.json', { type: 'json' });
+    // v0.8.0 (bug 25 Nov 2026, laporan Alfi "kok gabisa banned"):
+    // kode save ASLI mengandung tanda hubung (CloudSave:
+    // XXXX-XXXX-XXXX-XXXX) dan player-save menyimpan Blobs dengan
+    // kode APA ADANYA (dengan hubung). Versi lama di sini membuang
+    // hubung dulu baru lookup, jadi kuncinya tidak pernah ketemu ->
+    // detail selalu 404 "Pemain tidak ditemukan" dan kartu detail +
+    // tombol "Banned Pemain Ini" tidak pernah muncul (daftarnya
+    // sendiri tetap tampil karena dibaca langsung dari indeks).
+    // Perbaikan: lookup bentuk apa adanya dulu, lalu bentuk tanpa
+    // hubung (untuk kode lama yang mungkin tersimpan tanpa hubung),
+    // lalu bentuk hubung kanonis 4-4-4-4 (untuk permintaan yang
+    // datang tanpa hubung, karena kunci tersimpan selalu berhubung).
+    const rawCode = String(qs.code).toUpperCase().trim();
+    if (!CODE_RE.test(rawCode)) return json(400, { error: 'Kode save tidak valid.' });
+    const codeForms = [rawCode];
+    const stripped = rawCode.replace(/[^A-Z0-9]/g, '');
+    if (stripped !== rawCode) codeForms.push(stripped);
+    if (stripped.length === 16) {
+      const hyphenated = stripped.replace(/(.{4})(?=.)/g, '$1-');
+      if (codeForms.indexOf(hyphenated) === -1) codeForms.push(hyphenated);
+    }
+    async function getIdx(code) {
+      try { return await store.get('player-index/' + code + '.json', { type: 'json' }); } catch (e) { return null; }
+    }
+    async function getRec(code) {
+      try { return await store.get('player/' + code + '.json', { type: 'json' }); } catch (e) { return null; }
+    }
+    var idx = null;
+    var idxCode = null;
+    for (const c of codeForms) { idx = await getIdx(c); if (idx) { idxCode = c; break; } }
     if (idx) {
       // v0.7.10: indeks lama belum punya createdAt — lengkapi dari
       // file save-nya (best-effort, tanpa menimpa indeks di sini).
@@ -95,9 +122,9 @@ exports.handler = async (event) => {
       // juga tidak punya, kembalikan indeks apa adanya (fromIndex
       // tetap true) supaya backfill/detail tidak berputar tanpa hasil.
       if (!idx.createdAt) {
-        const recIdx = await store.get('player/' + code + '.json', { type: 'json' });
+        const recIdx = await getRec(idxCode);
         if (recIdx && recIdx.data) {
-          const enriched = summarize(code, recIdx.data, recIdx.updatedAt, recIdx.appVersion);
+          const enriched = summarize(idxCode, recIdx.data, recIdx.updatedAt, recIdx.appVersion);
           if (enriched.createdAt) {
             return json(200, { ok: true, player: enriched, fromIndex: false });
           }
@@ -105,11 +132,13 @@ exports.handler = async (event) => {
       }
       return json(200, { ok: true, player: idx, fromIndex: true });
     }
-    const rec = await store.get('player/' + code + '.json', { type: 'json' });
+    var rec = null;
+    var recCode = null;
+    for (const c of codeForms) { rec = await getRec(c); if (rec && rec.data) { recCode = c; break; } }
     if (!rec || !rec.data) return json(404, { error: 'Pemain tidak ditemukan.' });
     return json(200, {
       ok: true,
-      player: summarize(code, rec.data, rec.updatedAt, rec.appVersion),
+      player: summarize(recCode, rec.data, rec.updatedAt, rec.appVersion),
       fromIndex: false
     });
   }
