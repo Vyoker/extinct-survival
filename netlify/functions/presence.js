@@ -12,7 +12,7 @@
  * pemain bisa bernama sama; pid yang membedakan record mereka.
  * Nama & lokasi dibersihkan di server sebelum disimpan/ditampilkan.
  */
-const { json } = require('./utils/response');
+const { json, corsPreflight } = require('./utils/response');
 const { getPresenceStore } = require('./utils/blob-store');
 const {
   isOnline, cleanText, cleanFaction, cleanLevel, cleanPower, cleanPid,
@@ -23,6 +23,8 @@ const MAX_BODY_BYTES = 2048;
 const MAX_LIST = 100;
 
 exports.handler = async (event) => {
+  const pre = corsPreflight(event);
+  if (pre) return pre;
   const store = getPresenceStore();
   const now = Date.now();
 

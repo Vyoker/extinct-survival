@@ -11,3 +11,10 @@
   for = "/admin/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+# Dashboard proyek membaca versi live ES dari js/version.js (lintas origin),
+# jadi file ini butuh header CORS. (v0.8.1, 25 Nov 2026.)
+[[headers]]
+  for = "/js/version.js"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"

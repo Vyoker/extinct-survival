@@ -16,7 +16,7 @@
  *   action 'remove'  { ref }    hapus pertemanan (kedua sisi).
  * Semua POST membalas state terbaru.
  */
-const { json } = require('./utils/response');
+const { json, corsPreflight } = require('./utils/response');
 const { getFriendsStore, getPresenceStore } = require('./utils/blob-store');
 const { cleanText, cleanPid, isOnline } = require('./utils/presence');
 const { getPresenceRecords } = require('./utils/presence-source');
@@ -92,6 +92,8 @@ async function removeRequestPair(store, fromPid, toPid) {
 }
 
 exports.handler = async (event) => {
+  const pre = corsPreflight(event);
+  if (pre) return pre;
   const store = getFriendsStore();
   const presenceStore = getPresenceStore();
 

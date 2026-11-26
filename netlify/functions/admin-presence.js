@@ -8,7 +8,7 @@
  *    monitoring di panel admin topup.
  */
 const { isAdminAuthorized } = require('./utils/auth');
-const { json } = require('./utils/response');
+const { json, corsPreflight } = require('./utils/response');
 const { getPresenceStore } = require('./utils/blob-store');
 const { isOnline } = require('./utils/presence');
 const { getPresenceRecords } = require('./utils/presence-source');
@@ -17,6 +17,8 @@ const RECENT_MS = 24 * 60 * 60 * 1000;
 const MAX_LIST = 300;
 
 exports.handler = async (event) => {
+  const pre = corsPreflight(event);
+  if (pre) return pre;
   if (!isAdminAuthorized(event)) return json(401, { error: 'Unauthorized' });
   if (event.httpMethod !== 'GET') return json(405, { error: 'Method Not Allowed' });
 

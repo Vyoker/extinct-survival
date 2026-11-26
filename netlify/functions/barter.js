@@ -17,7 +17,7 @@
  *      Klien penerima mengonfirmasi kiriman yang sudah berhasil
  *      masuk inventarisnya -> dihapus dari kotak server.
  */
-const { json } = require('./utils/response');
+const { json, corsPreflight } = require('./utils/response');
 const { getBarterStore, getPresenceStore } = require('./utils/blob-store');
 const { cleanPid, isOnline } = require('./utils/presence');
 const { getPresenceRecords } = require('./utils/presence-source');
@@ -27,6 +27,8 @@ const B = require('./utils/barter');
 const MAX_BODY_BYTES = 4096;
 
 exports.handler = async (event) => {
+  const pre = corsPreflight(event);
+  if (pre) return pre;
   const store = getBarterStore();
   const presenceStore = getPresenceStore();
   const now = Date.now();

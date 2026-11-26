@@ -4,11 +4,13 @@
  * Publik: hanya pemilik kode yang bisa mengambil daftar grant-nya,
  * jadi ack dari pemilik kode adalah klaim yang sah.
  */
-const { json } = require('./utils/response');
+const { json, corsPreflight } = require('./utils/response');
 const { getCreditStore } = require('./utils/blob-store');
 const { normCode, isValidCode } = require('./utils/credit');
 
 exports.handler = async (event) => {
+  const pre = corsPreflight(event);
+  if (pre) return pre;
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method Not Allowed' });
 
   let payload;

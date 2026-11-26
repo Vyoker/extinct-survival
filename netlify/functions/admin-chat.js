@@ -25,7 +25,7 @@
  * persis seperti sebelumnya (tidak crash).
  */
 const { isAdminAuthorized } = require('./utils/auth');
-const { json } = require('./utils/response');
+const { json, corsPreflight } = require('./utils/response');
 const { getChatStore } = require('./utils/blob-store');
 const { cleanPid } = require('./utils/presence');
 const { listMessages, getBanned, setBanned, pruneMessages, maskBadwords, hasLink, MAX_TEXT_LEN, COOLDOWN_MS } = require('./utils/chat');
@@ -36,6 +36,8 @@ const {
 } = require('./utils/rtdb');
 
 exports.handler = async (event) => {
+  const pre = corsPreflight(event);
+  if (pre) return pre;
   if (!isAdminAuthorized(event)) return json(401, { error: 'Unauthorized' });
   const store = getChatStore();
   const useRtdb = isAvailable();

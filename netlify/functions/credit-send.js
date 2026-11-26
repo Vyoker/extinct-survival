@@ -7,11 +7,13 @@
  * Grant disimpan di blob "grant:<KODE16>" dan dicatat di "log".
  */
 const { isAdminAuthorized } = require('./utils/auth');
-const { json } = require('./utils/response');
+const { json, corsPreflight } = require('./utils/response');
 const { getCreditStore } = require('./utils/blob-store');
 const { normCode, isValidCode, fmtCode } = require('./utils/credit');
 
 exports.handler = async (event) => {
+  const pre = corsPreflight(event);
+  if (pre) return pre;
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method Not Allowed' });
   if (!isAdminAuthorized(event)) return json(401, { error: 'Unauthorized' });
 

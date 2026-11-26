@@ -10,7 +10,7 @@
  *      bila kepagian), tolak tautan, samarkan kata kasar, simpan
  *      pesan, balas daftar terbaru.
  */
-const { json } = require('./utils/response');
+const { json, corsPreflight } = require('./utils/response');
 const { getChatStore } = require('./utils/blob-store');
 const { cleanText, cleanLevel, cleanPid } = require('./utils/presence');
 const {
@@ -28,6 +28,8 @@ function isChatAdmin(event) {
 }
 
 exports.handler = async (event) => {
+  const pre = corsPreflight(event);
+  if (pre) return pre;
   const store = getChatStore();
   const now = Date.now();
 
